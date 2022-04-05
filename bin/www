@@ -43,6 +43,7 @@ function normalizePort (val) {
 
   if (port >= 0) {
     // port number
+    console.log('ready - started server on 0.0.0.0:' + port + ', url: http://localhost:' + port + '/')
     return port
   }
 
@@ -67,11 +68,9 @@ function onError (error) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges')
       process.exit(1)
-      break
     case 'EADDRINUSE':
       console.error(bind + ' is already in use')
       process.exit(1)
-      break
     default:
       throw error
   }
