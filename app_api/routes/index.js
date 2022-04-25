@@ -5,8 +5,15 @@ const ctrlRecipes = require('../controllers/recipes')
 
 // Recipes
 router
-  .route('/locations')
+  .route('/repipe')
   .get(ctrlRecipes.recipeReadOne)
+  // .get(ctrlLocations.locationsList)
+  .post(ctrlRecipes.recipeCreate)
+
+// Recipes
+router
+  .route('/test')
+  .get(ctrlRecipes.getRandomRecipe)
   // .get(ctrlLocations.locationsList)
   .post(ctrlRecipes.recipeCreate)
 

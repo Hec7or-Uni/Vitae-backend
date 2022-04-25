@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Rec = mongoose.model('Recipe')
+const spoon = require('./spoon')
 
 const recipeCreate = function (req, res) {
   Rec.create({
@@ -56,7 +57,20 @@ const recipeReadOne = function (req, res) {
   }
 }
 
+const getRandomRecipe = async function (req, res) {
+  console.log('aqui llego')
+  const data = await spoon.searchRecipes()
+  res
+    .status(200)
+    .json(data)
+  console.log(res)
+  console.log('de aqui salgo')
+  // Rec
+  //  .create(data)
+}
+
 module.exports = {
+  getRandomRecipe,
   recipeCreate,
   recipeReadOne
 }
