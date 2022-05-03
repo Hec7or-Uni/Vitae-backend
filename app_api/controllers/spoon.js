@@ -30,7 +30,7 @@ const dieta = 'vegetarian'
 // Search receta
 const searchRecipes = async function (query) {
   query = 'rice'
-  const params = new URLSearchParams({ apiKey: key, diet: dieta, query: query, number: '12' })
+  const params = new URLSearchParams({ apiKey: key, diet: dieta, query: query, number: '12', limitLicense: true, instructionsRequired: true, addRecipeInformation: true, addRecipeNutrition: true })
   const url = `${addr}/recipes/complexSearch?${params.toString()}`
   //  const response = await fetch(addr + '/recipes/complexSearch' + token + diet, {
   const response = await fetch(url, {
@@ -48,7 +48,7 @@ const searchRecipes = async function (query) {
 
 // get receta
 const getRecipes = async function (query) {
-  const params = new URLSearchParams({ apiKey: key, tags: dieta, number: '12' })
+  const params = new URLSearchParams({ apiKey: key, tags: dieta, number: '12', limitLicense: 'true' })
   const url = `${addr}/recipes/random?${params.toString()}`
   const response = await fetch(url, {
     method: 'get',
@@ -79,11 +79,28 @@ const getQuote = async function (query) {
   console.log(data)
 }
 
+// Get substitute
+const getSubstitute = async function (query) {
+  const params = new URLSearchParams({ apiKey: key, substitutes: query })
+  const url = `${addr}/food/ingredients/substitutes?${params.toString()}`
+  const response = await fetch(url, {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  const data = response.json()
+
+  console.log(data)
+}
+
 module.exports = {
   searchRecipes, // Busca 10 recetas con query
   getRecipes, // Trae 10 recetas aleatorias
   // RecipeById, // Obtienes receta a partir del id
-  getQuote // Fun fact sobre comida
+  getQuote, // Fun fact sobre comida
+  getSubstitute
 }
 
 // const response = await fetch(addr + '/recipes/complexSearch' + token + diet + '&query=rice', {
