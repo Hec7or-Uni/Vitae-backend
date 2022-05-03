@@ -12,10 +12,10 @@ const fetch = require('node-fetch')
 const addr = 'https://api.spoonacular.com/'
 
 const token = '?apiKey=' + key
-// console.log(token)
+console.log(token)
 
 const dieta = 'vegetarian'
-const diet = '&diet=' + dieta
+// const diet = '&diet=' + dieta
 
 // Test inicial
 
@@ -29,7 +29,11 @@ const diet = '&diet=' + dieta
 
 // Search receta
 const searchRecipes = async function (query) {
-  const response = await fetch(addr + '/recipes/complexSearch' + token + diet, {
+  query = 'rice'
+  const params = new URLSearchParams({ apiKey: key, diet: dieta, query: query, number: '12' })
+  const url = `${addr}/recipes/complexSearch?${params.toString()}`
+  //  const response = await fetch(addr + '/recipes/complexSearch' + token + diet, {
+  const response = await fetch(url, {
     method: 'get',
     // 'body': JSON.stringify(body),
     headers: {
@@ -42,9 +46,28 @@ const searchRecipes = async function (query) {
   return data
 }
 
+// get receta
+const getRecipes = async function (query) {
+  const params = new URLSearchParams({ apiKey: key, tags: dieta, number: '12' })
+  const url = `${addr}/recipes/random?${params.toString()}`
+  const response = await fetch(url, {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  const data = response.json()
+  console.log(data)
+  return data
+}
+
 // Get Quote
 const getQuote = async function (query) {
-  const response = await fetch(addr + '/food/jokes/random' + token + diet, {
+  const params = new URLSearchParams({ apiKey: key })
+  const url = `${addr}/food/jokes/random?${params.toString()}`
+  // const response = await fetch(addr + '/food/jokes/random' + token + diet, {
+  const response = await fetch(url, {
     method: 'get',
     headers: {
       'Content-Type': 'application/json'
@@ -57,8 +80,10 @@ const getQuote = async function (query) {
 }
 
 module.exports = {
-  searchRecipes,
-  getQuote
+  searchRecipes, // Busca 10 recetas con query
+  getRecipes, // Trae 10 recetas aleatorias
+  // RecipeById, // Obtienes receta a partir del id
+  getQuote // Fun fact sobre comida
 }
 
 // const response = await fetch(addr + '/recipes/complexSearch' + token + diet + '&query=rice', {
