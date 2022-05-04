@@ -27,7 +27,7 @@ const options = {
 // import swaggerDefinitions
   swaggerDefinition: swaggerDefinition,
   // path to the API docs
-  apis: ['./app_server/routes/*.js']
+  apis: ['./app_api/routes/*.js']
 }
 // initialize swagger-jsdoc
 const swaggerSpec = swaggerJSDoc(options)

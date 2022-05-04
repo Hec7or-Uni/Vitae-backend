@@ -32,7 +32,8 @@ const dieta = 'vegetarian'
 
 // Search receta
 const searchRecipes = async function (query) {
-  query = 'rice'
+  // query = 'rice'
+  console.log(query)
   const params = new URLSearchParams({ apiKey: key, diet: dieta, query: query, number: '12', limitLicense: true, instructionsRequired: true, addRecipeInformation: true, addRecipeNutrition: true })
   const url = `${addr}/recipes/complexSearch?${params.toString()}`
   //  const response = await fetch(addr + '/recipes/complexSearch' + token + diet, {
