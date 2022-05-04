@@ -2,7 +2,10 @@
 // import key from './spoonToken.js'
 
 // const key = require('./spoonToken')
-const key = process.env.KEY
+require('dotenv').config()
+const key = process.env.key
+
+// const key = process.env.KEY
 const fetch = require('node-fetch')
 
 // ${process.env.PATH}/recipes/complexSearch/?apiKey=${process.env.API_KEY}&${parameter}
