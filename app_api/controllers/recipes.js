@@ -10,7 +10,8 @@ const recipeCreate = function (req, res) {
     healthScore: req.body.healthScore,
     spoonacularScore: req.body.spoonacularScore,
     instructions: req.body.instructions,
-    ingredients: req.body.ingredients,
+    summary: req.body.summary,
+    extendedIngredients: req.body.extendedIngredients,
     commentSchema: req.body.commentSchema
   }, (err, recipe) => {
     if (err) {
@@ -56,7 +57,13 @@ const recipeReadOne = function (req, res) {
   }
 }
 
+const recipeReadAll = function (req, res) {}
+const recipeModify = function (req, res) {}
+const recipeDelete = function (req, res) {}
 module.exports = {
   recipeCreate,
-  recipeReadOne
+  recipeReadOne,
+  recipeReadAll,
+  recipeModify,
+  recipeDelete
 }

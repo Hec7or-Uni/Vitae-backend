@@ -4,11 +4,12 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const swaggerJSDoc = require('swagger-jsdoc')
 require('./app_api/models/db')
-const routes = './app_server/routes/'
-
-const indexRouter = require(routes + 'index')
-const usersRouter = require(routes + 'users')
-const apiRoutes = require('./app_api/routes/index')
+require('./app_api/controllers/auth')
+//  const routes = './app_server/routes/'
+// const indexRouter = require(routes + 'index')
+// const usersRouter = require(routes + 'users')
+// const apiRoutes = require('./app_api/routes/index')
+const authRoutes = require('./app_server/routes/auth')
 
 const app = express()
 // swagger definition
@@ -29,6 +30,7 @@ const options = {
   // path to the API docs
   apis: ['./app_server/routes/*.js']
 }
+
 // initialize swagger-jsdoc
 const swaggerSpec = swaggerJSDoc(options)
 // serve swagger
@@ -36,15 +38,13 @@ app.get('/swagger.json', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   res.send(swaggerSpec)
 })
-
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-
-app.use('/', indexRouter)
-app.use('/api/', apiRoutes)
-app.use('/api/users', usersRouter)
+app.use('/', authRoutes)
+// app.use('/api/', apiRoutes)
+// app.use('/api/users', usersRouter)
 
 module.exports = app

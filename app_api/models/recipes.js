@@ -3,13 +3,16 @@ const mongoose = require('mongoose')
 const commentSchema = new mongoose.Schema({
   createdOn: { type: Date, default: Date.now },
   commentText: String,
-  username: String
+  username: String,
+  response: String
 })
 
 const ingredientSchema = new mongoose.Schema({
-  title: String,
+  name: String,
   image: String,
-  quantity: String
+  amount: String,
+  original: String,
+  unit: String
 })
 const recipeSchema = new mongoose.Schema({
   spoonId: Number,
@@ -19,8 +22,16 @@ const recipeSchema = new mongoose.Schema({
   healthScore: Number,
   spoonacularScore: Number,
   instructions: String,
-  ingredients: [ingredientSchema],
+  summary: String,
+  extendedIngredients: [ingredientSchema],
   commentSchema: [commentSchema]
 })
 
+const dayMenuSchema = new mongoose.Schema({
+  recipeSchema: [recipeSchema],
+  date: Date
+})
+
 mongoose.model('Recipe', recipeSchema)
+mongoose.model('DayMenu', dayMenuSchema)
+mongoose.model('Comment', commentSchema)
