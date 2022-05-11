@@ -27,8 +27,12 @@ const recipeSchema = new mongoose.Schema({
   commentSchema: [commentSchema]
 })
 
+recipeSchema.index({ spoonId: 1 }, { unique: true })
 const dayMenuSchema = new mongoose.Schema({
-  recipeSchema: [recipeSchema],
+  plate: [{
+    recipeSchema: recipeSchema,
+    mealType: String
+  }],
   date: Date
 })
 

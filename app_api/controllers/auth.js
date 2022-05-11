@@ -33,7 +33,6 @@ passport.use('login', new LocalStrategy({
 }, async (email, password, done) => {
   const user = await UserModel.findOne({ email: email })
   if (!user) {
-    console.log('wrognnggn')
     return done(null, false, { message: 'User not found' })
   }
   if (!user.validPassword(password)) {

@@ -15,8 +15,8 @@ router.post('/auth/login',
   passport.authenticate('login'),
   (req, res) => {
     console.log()
-    console.log(req.user)
-    const token = jwt.sign({ email: req.user.email }, 'top_secret')
+    console.log(req.user._id)
+    const token = jwt.sign({ email: req.user.email, _id: req.user._id }, 'top_secret')
     res.json({ token })
   })
 router.get('/protected', (req, res) => {
@@ -34,7 +34,7 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
 function createToken (req, res) {
   console.log('createToken')
   console.log(req.user.email)
-  const token = jwt.sign({ email: req.user.email }, 'top_secret')
+  const token = jwt.sign({ email: req.user.email, _id: req.user._id }, 'top_secret')
   res.json({ token })
 }
 module.exports = router

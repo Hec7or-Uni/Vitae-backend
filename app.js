@@ -8,7 +8,7 @@ require('./app_api/controllers/auth')
 //  const routes = './app_server/routes/'
 // const indexRouter = require(routes + 'index')
 // const usersRouter = require(routes + 'users')
-// const apiRoutes = require('./app_api/routes/index')
+const apiRoutes = require('./app_api/routes/index')
 const authRoutes = require('./app_server/routes/auth')
 
 const app = express()
@@ -44,7 +44,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', authRoutes)
-// app.use('/api/', apiRoutes)
+app.use('/', apiRoutes)
 // app.use('/api/users', usersRouter)
 
 module.exports = app
