@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const { Schema } = mongoose
-
 // User schema
 const UserSchema = new mongoose.Schema({
   name: String,
@@ -11,8 +10,8 @@ const UserSchema = new mongoose.Schema({
   birth: String,
   email: String,
   password: String,
-  savedRecipes: { type: [Schema.Types.ObjectId], ref: 'Recipe' },
-  menu: { type: [Schema.Types.ObjectId], ref: 'DayMenu' }
+  savedRecipes: [mongoose.model('Recipe').schema],
+  menu: [mongoose.model('DayMenu').schema]
 })
 
 // Federated schema
@@ -47,11 +46,13 @@ UserSchema.methods.validPassword = function (password) {
 }
 
 UserSchema.methods.dateToString = function (date) {
-  // TODO
+  const text = date.getFullYear() + '/' + date.getMonth() + '/' + date.getDay()
+  return text
 }
 
-UserSchema.methods.stringToDate = function (date) {
-  // TODO
+UserSchema.methods.stringToDate = function (stringDate) {
+  const myArray = stringDate.split('/')
+  return new Date(myArray)
 }
 
 module.exports = mongoose.model('User', UserSchema)

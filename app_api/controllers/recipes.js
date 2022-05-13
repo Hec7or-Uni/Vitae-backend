@@ -2,19 +2,8 @@ const mongoose = require('mongoose')
 const Rec = mongoose.model('Recipe')
 
 const recipeCreate = function (req, res) {
-  console.log(req.body.id)
-  console.log(req.body)
   Rec.create(
     req.body
-    // spoonId: req.body.spoonId,
-    // title: req.body.title,
-    // image: req.body.image,
-    // readyInMinutes: req.body.readyInMinutes,
-    // healthScore: req.body.healthScore,
-    // spoonacularScore: req.body.spoonacularScore,
-    // instructions: req.body.instructions,
-    // summary: req.body.summary,
-    // extendedIngredients: req.body.extendedIngredients
     , (err, recipe) => {
       if (err) {
         res.status(400).json(err)
@@ -25,7 +14,6 @@ const recipeCreate = function (req, res) {
 }
 
 const recipeReadOne = function (req, res) {
-  console.log(req.query)
   if (req.query && req.query.recipeId) {
     Rec
       .findById(req.query.recipeId)

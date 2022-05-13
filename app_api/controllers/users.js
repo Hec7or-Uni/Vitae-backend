@@ -83,7 +83,11 @@ const getUser = function (req, res) {
       email: req.body.email
     }
     const values = {
-      savedRecipes: 1
+      name: 1,
+      height: 1,
+      birth: 1,
+      email: 1,
+      diet: 1
     }
     User
       .findById(filter)
