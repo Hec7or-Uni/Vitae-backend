@@ -22,7 +22,7 @@ router
 */
 router
   .route('/RandomRecipes')
-  .get(ctrlRecipes.searchRecipe)
+  .get(ctrlRecipes.getRandomRecipe)
 
 /* GET quote about food */
 /**
