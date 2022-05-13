@@ -52,7 +52,7 @@ const searchRecipes = async function (query) {
 
 // get receta
 const getRecipes = async function (query) {
-  const params = new URLSearchParams({ apiKey: key, tags: dieta, number: '12', limitLicense: 'true' })
+  const params = new URLSearchParams({ apiKey: key, tags: dieta, number: '12', limitLicense: 'true', instructionsRequired: true, addRecipeInformation: true, addRecipeNutrition: true })
   const url = `${addr}/recipes/random?${params.toString()}`
   const response = await fetch(url, {
     method: 'get',

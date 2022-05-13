@@ -7,15 +7,6 @@ const recipeCreate = function (req, res) {
   console.log(req.body)
   Rec.create(
     req.body
-    // spoonId: req.body.spoonId,
-    // title: req.body.title,
-    // image: req.body.image,
-    // readyInMinutes: req.body.readyInMinutes,
-    // healthScore: req.body.healthScore,
-    // spoonacularScore: req.body.spoonacularScore,
-    // instructions: req.body.instructions,
-    // summary: req.body.summary,
-    // extendedIngredients: req.body.extendedIngredients
     , (err, recipe) => {
       if (err) {
         res.status(400).json(err)
@@ -51,8 +42,9 @@ const getRandomRecipe = async function (req, res) {
   res
     .status(200)
     .json(data)
-  console.log(res)
+  // console.log(res)
   console.log('de aqui salgo')
+  console.log(data)
   // Rec
   //  .create(data)
 }
