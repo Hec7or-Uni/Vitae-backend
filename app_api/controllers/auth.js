@@ -1,8 +1,9 @@
 const passport = require('passport')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const LocalStrategy = require('passport-local').Strategy
-const GOOGLE_CLIENT_ID = '97723735016-r9j97a401ni7s0j0n3r75bajdpum9s3g.apps.googleusercontent.com'
-const GOOGLE_CLIENT_SECRET = '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'
+require('dotenv').config()
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
 const mongoose = require('mongoose')
 const UserModel = mongoose.model('User')
 const JWTStrategy = require('passport-jwt').Strategy
@@ -55,7 +56,7 @@ passport.use('signup', new LocalStrategy({
 passport.use(
   new JWTStrategy(
     {
-      secretOrKey: 'top_secret',
+      secretOrKey: process.env.secretOrKey,
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
     },
     (jwtPayload, cb) => {
