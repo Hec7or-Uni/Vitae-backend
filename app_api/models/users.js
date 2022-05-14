@@ -16,17 +16,17 @@ const UserSchema = new mongoose.Schema({
 
 // Federated schema
 
-const FederatedCredentialSchema = new mongoose.Schema({
-  user: UserSchema,
-  provider: String,
-  subject: String
-})
-
-const todosSchema = new mongoose.Schema({
-  owner_id: Number,
-  title: String,
-  completed: Number
-})
+// const FederatedCredentialSchema = new mongoose.Schema({
+//  user: UserSchema,
+//  provider: String,
+//  subject: String
+// })
+//
+// const todosSchema = new mongoose.Schema({
+//  owner_id: Number,
+//  title: String,
+//  completed: Number
+// })
 
 // Unique constrains
 UserSchema.index({ email: 1 }, { unique: true })

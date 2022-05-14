@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const Comment = mongoose.model('Comment')
+// const mongoose = require('mongoose')
+// const Comment = mongoose.model('Comment')
 
 const getComments = function (req, res) {}
 const createComment = function (req, res) {}

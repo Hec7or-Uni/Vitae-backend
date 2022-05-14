@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Rec = mongoose.model('Recipe')
+const spoon = require('./spoon')
 
 const recipeCreate = function (req, res) {
   Rec.create(
@@ -30,6 +31,37 @@ const recipeReadOne = function (req, res) {
   } else {
     res.status(404).json({ message: 'No id in request' })
   }
+}
+
+const getRandomRecipe = async function (req, res) {
+  console.log('aqui llego')
+  const data = await spoon.getRecipes()
+  res
+    .status(200)
+    .json(data)
+  // console.log(res)
+  console.log('de aqui salgo')
+  console.log(data)
+  // Rec
+  //  .create(data)
+}
+
+const searchRecipe = async function (req, res) {
+  const data = await spoon.searchRecipes('rice')
+  res
+    .status(200)
+    .json(data)
+  console.log(res)
+  // Rec
+  //  .create(data)
+}
+
+const randomQuote = async function (req, res) {
+  const data = await spoon.getQuote()
+  res
+    .status(200)
+    .json(data)
+  console.log(res)
 }
 
 const recipeReadAll = function (req, res) {
@@ -63,6 +95,9 @@ const recipeDelete = function (req, res) {
   })
 }
 module.exports = {
+  searchRecipe,
+  randomQuote,
+  getRandomRecipe,
   recipeCreate,
   recipeReadOne,
   recipeReadAll,
