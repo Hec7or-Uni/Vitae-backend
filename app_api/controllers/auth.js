@@ -43,6 +43,20 @@ passport.use('login', new LocalStrategy({
 }
 ))
 
+const singUpTest = async (req, res) => {
+  console.log('aaaa')
+  console.log(req.body)
+  await UserModel.create(
+    req.body
+    , (err, recipe) => {
+      if (err) {
+        res.status(400).json(err)
+      } else {
+        res.status(201).json(recipe)
+      }
+    })
+}
+
 passport.use('signup', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
@@ -71,3 +85,7 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
   done(null, user)
 })
+
+module.exports = {
+  singUpTest
+}

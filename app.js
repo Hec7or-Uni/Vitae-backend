@@ -9,7 +9,7 @@ require('./app_api/controllers/auth')
 // const indexRouter = require(routes + 'index')
 // const usersRouter = require(routes + 'users')
 const apiRoutes = require('./app_api/routes/index')
-const authRoutes = require('./app_server/routes/auth')
+const authRoutes = require('./app_api/routes/auth')
 
 const app = express()
 // swagger definition
