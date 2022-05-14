@@ -1,19 +1,14 @@
+require('dotenv').config()
 /* eslint-disable space-in-parens */
 /* eslint-disable semi */
 const mongoose = require('mongoose');
 // Defined a database connection string
-const dbURI = 'mongodb://localhost/Vitae';
+const dbURI = process.env.MONGODB_URI;
 
-if (process.env.NODE_ENV === 'production') {
-  // eslint-disable-next-line no-const-assign
-  dbURI = process.env.MONGODB_URI;
-}
 // Opened a Mongoose connection at application startup
-
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Monitored the Mongoose connection events
-
 mongoose.connection.on('connected', () => {
   console.log(`Mongoose connected to ${dbURI}`);
 });
@@ -26,7 +21,6 @@ mongoose.connection.on('disconnected', () => {
 });
 
 // Monitored some Node process events so that we can close the Mongoose connection when the application ends
-
 const gracefulShutdown = (msg, callback) => {
   mongoose.connection.close( () => {
     console.log(`Mongoose disconnected through ${msg}`);
