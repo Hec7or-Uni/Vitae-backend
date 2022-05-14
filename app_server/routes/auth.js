@@ -11,17 +11,21 @@ router.get('/auth/google/callback',
   passport.authenticate('google'), createToken)
 
 router.post('/auth/signup',
-  passport.authenticate('signup', { session: false }))
+  passport.authenticate('signup', { session: false }), (req, res) => {
+    console.log(req.user._id)
+    const token = jwt.sign({ email: req.user.email, _id: req.user._id }, secret)
+    res.json({ token })
+  })
 router.post('/auth/login',
   passport.authenticate('login'),
   (req, res) => {
-    console.log()
     console.log(req.user._id)
     const token = jwt.sign({ email: req.user.email, _id: req.user._id }, secret)
     res.json({ token })
   })
 router.get('/protected', (req, res) => {
-  const token = jwt.sign({ email: req.user.email }, secret)
+  console.log(req)
+  const token = jwt.sign({ email: req.body.user.email }, secret)
   res.json({ token })
 })
 

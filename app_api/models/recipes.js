@@ -34,7 +34,7 @@ const dayMenuSchema = new mongoose.Schema({
   }],
   date: Date
 })
-
+  
 mongoose.model('Recipe', recipeSchema)
 mongoose.model('DayMenu', dayMenuSchema)
 mongoose.model('Comment', commentSchema)
