@@ -4,12 +4,12 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const swaggerJSDoc = require('swagger-jsdoc')
 require('./app_api/models/db')
-require('./app_api/controllers/auth')
-//  const routes = './app_server/routes/'
-// const indexRouter = require(routes + 'index')
-// const usersRouter = require(routes + 'users')
-const apiRoutes = require('./app_api/routes/index')
-const authRoutes = require('./app_api/routes/auth')
+
+const routes = './app_api/routes/'
+const usersRouter = require(routes + 'users')
+const apiRoutes = require(routes + 'index')
+const authRoutes = require(routes + 'auth')
+const recipeRoutes = require(routes + 'recipes')
 
 const app = express()
 // swagger definition
@@ -43,8 +43,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-app.use('/', authRoutes)
+// Routes
+app.use('/auth', authRoutes)
 app.use('/', apiRoutes)
-// app.use('/api/users', usersRouter)
-
+app.use('/users', usersRouter)
+app.use('/recipes', recipeRoutes)
 module.exports = app

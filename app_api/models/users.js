@@ -4,6 +4,8 @@ const { Schema } = mongoose
 // User schema
 const UserSchema = new mongoose.Schema({
   name: String,
+  lastname: String,
+  username: String,
   weight: [Number], // Array objetos
   diet: String,
   height: Number,
@@ -30,8 +32,8 @@ const UserSchema = new mongoose.Schema({
 
 // Unique constrains
 UserSchema.index({ email: 1 }, { unique: true })
-// UserSchema.index({ provider: 1 }, { unique: true })
-// UserSchema.index({ subject: 1 }, { unique: true })
+UserSchema.index({ username: 1 }, { unique: true })
+
 // Hash the password
 UserSchema.pre('save', function (next) {
   if (this.password) {
