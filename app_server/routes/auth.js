@@ -12,6 +12,7 @@ router.get('/auth/google/callback',
 
 router.post('/auth/signup',
   passport.authenticate('signup', { session: false }))
+
 router.post('/auth/login',
   passport.authenticate('login'),
   (req, res) => {
