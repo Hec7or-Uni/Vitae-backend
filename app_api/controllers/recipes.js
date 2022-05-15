@@ -94,6 +94,15 @@ const recipeDelete = function (req, res) {
     res.status(200)
   })
 }
+
+const notDefinedFunct = function (req, res) {
+  const data = { message: 'function not implemented' }
+  res
+    .status(407)
+    .json(data)
+  console.log('function not implemented')
+}
+
 module.exports = {
   searchRecipe,
   randomQuote,
@@ -102,5 +111,6 @@ module.exports = {
   recipeReadOne,
   recipeReadAll,
   recipeModify,
-  recipeDelete
+  recipeDelete,
+  notDefinedFunct
 }
