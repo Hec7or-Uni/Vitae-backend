@@ -9,7 +9,10 @@ router.get('/google',
   passport.authenticate('google', { scope: ['email', 'profile'] })
 )
 
-router.post('/singupTest', ctrlAuth.singUpTest)
+router.post('/singupTest', ctrlAuth.singUpTest, (req, res) => {
+  const token = jwt.sign({ email: req.user.email, _id: req.user._id }, secret)
+  res.json({ token })
+})
 
 router.get('/google/callback',
   passport.authenticate('google'), createToken)

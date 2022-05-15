@@ -59,9 +59,10 @@ const singUpTest = async (req, res) => {
 passport.use('signup', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
-}, function (email, password, done) {
-  // if (!UserModel.findOne({ email })) {)
-  return done(null, UserModel.create({ email, password }))
+}, async (req, email, password, done) => {
+  const user = await UserModel.create({ email: this.email, password: this.password })
+  // if (!UserModel.findOne({ email: this.email })) {
+  return done(null, user)
 }
 // }
 ))
