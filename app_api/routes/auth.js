@@ -2,17 +2,11 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
-const ctrlAuth = require('../controllers/auth')
 require('dotenv').config()
 const secret = process.env.secretOrKey
 router.get('/google',
   passport.authenticate('google', { scope: ['email', 'profile'] })
 )
-
-router.post('/singupTest', ctrlAuth.singUpTest, (req, res) => {
-  const token = jwt.sign({ email: req.user.email, _id: req.user._id }, secret)
-  res.json({ token })
-})
 
 router.get('/google/callback',
   passport.authenticate('google'), createToken)
