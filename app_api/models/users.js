@@ -13,9 +13,27 @@ const UserSchema = new mongoose.Schema({
   email: String,
   password: String,
   savedRecipes: [mongoose.model('Recipe').schema],
-  menu: [mongoose.model('DayMenu').schema]
+  menu: [mongoose.model('DayMenu').schema],
+  provider: String,
+  providerAccountId: String,
+  refresh_token: String,
+  access_token: String,
+  expires_at: Number,
+  token_type: String,
+  scope: String,
+  id_token: String,
+  session_state: String,
+  oauth_token_secret: String,
+  oauth_token: String
 })
 
+const SessionSchema = new mongoose.Schema({
+  id: String,
+  sessionToken: String,
+  userId: String
+}, { timestamps: true })
+
+SessionSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 })
 // Federated schema
 
 // const FederatedCredentialSchema = new mongoose.Schema({
@@ -58,5 +76,6 @@ UserSchema.methods.stringToDate = function (stringDate) {
 }
 
 module.exports = mongoose.model('User', UserSchema)
+module.export = mongoose.model('Session', SessionSchema)
 // module.exports = mongoose.model('FederatedCredentials', FederatedCredentialSchema)
 // module.exports = mongoose.model('Todos', todosSchema)

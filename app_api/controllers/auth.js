@@ -25,7 +25,7 @@ async (request, accessToken, refreshToken, profile, done) => {
       console.log('CREATE NEW USER' + email)
       return done(null, UserModel.create({ email }))
     }
-    return done(null, user)
+    return done(null, accessToken)
   } catch (error) {
     return done(error)
   }

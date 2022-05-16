@@ -1,7 +1,10 @@
+const cookieParser = require('cookie-parser')
+const dayjs = require('dayjs')
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
+// const { json } = require('express')
 require('dotenv').config()
 const secret = process.env.secretOrKey
 router.get('/google',
@@ -14,6 +17,11 @@ router.get('/google/callback',
 router.post('/signup',
   passport.authenticate('signup', { session: false }), (req, res) => {
     const token = jwt.sign({ email: req.user.email, _id: req.user._id }, secret)
+    res.cookie('secureCookie', token, {
+      secure: process.env.NODE_ENV !== 'development',
+      httpOnly: true,
+      expires: dayjs().add(30, 'days').toDate()
+    })
     res.json({ token })
   })
 router.post('/login',
@@ -24,6 +32,7 @@ router.post('/login',
     res.json({ token })
   })
 router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
+  console.log('no funca' + req.cookies)
   res.json({
     message: 'You did it',
     user: req.user
@@ -31,9 +40,12 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
 })
 
 function createToken (req, res) {
-  console.log('createToken')
-  console.log(req.user.email)
   const token = jwt.sign({ email: req.user.email, _id: req.user._id }, secret)
+  res.cookie('secureCookie', token, {
+    secure: process.env.NODE_ENV !== 'development',
+    httpOnly: true,
+    expires: dayjs().add(30, 'days').toDate()
+  })
   res.json({ token })
 }
 
