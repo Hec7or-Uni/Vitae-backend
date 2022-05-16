@@ -15,9 +15,9 @@ const app = express()
 // swagger definition
 const swaggerDefinition = {
   info: {
-    title: 'API de gestión de usuarios',
-    version: '1.0.0',
-    description: 'Descripción del API del servicio de usuarios'
+    title: 'API de Vitop',
+    version: '0.0.1',
+    description: 'Descripción de las funciones de la API'
   },
   host: 'localhost:3000',
   basePath: '/api/',
