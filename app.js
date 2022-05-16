@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const swaggerJSDoc = require('swagger-jsdoc')
 require('./app_api/models/db')
-
+require('./app_api/controllers/auth')
 const routes = './app_api/routes/'
 const usersRouter = require(routes + 'users')
 const apiRoutes = require(routes + 'index')

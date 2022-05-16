@@ -3,7 +3,22 @@ const Rec = mongoose.model('Recipe')
 const spoon = require('./spoon')
 
 const recipeCreate = function (req, res) {
+  if (req.body.spoonId !== 0) {
+    // Rec.findOne()
+  }
   Rec.create(
+    req.body
+    , (err, recipe) => {
+      if (err) {
+        res.status(400).json(err)
+      } else {
+        res.status(201).json(recipe)
+      }
+    })
+}
+
+const recipeCreateMultiple = function (req, res) {
+  Rec.insertMany(
     req.body
     , (err, recipe) => {
       if (err) {
@@ -76,7 +91,7 @@ const recipeReadAll = function (req, res) {
 }
 
 const recipeModify = function (req, res) {
-  Rec.findByIdAndUpdate(req.body.recipe.id, req.body.recipe, { new: true }.exec((err, userModify) => {
+  Rec.findByIdAndUpdate(req.body.id, req.body, { new: true }.exec((err, userModify) => {
     if (err) {
       res.status(404).json(err)
       return
@@ -86,7 +101,7 @@ const recipeModify = function (req, res) {
 }
 
 const recipeDelete = function (req, res) {
-  Rec.findByIdAndDelete(req.body.recipe.i).exec((err, recipes) => {
+  Rec.findByIdAndDelete(req.body.i).exec((err, recipes) => {
     if (err) {
       res.status(404).json(err)
       return
@@ -102,5 +117,6 @@ module.exports = {
   recipeReadOne,
   recipeReadAll,
   recipeModify,
-  recipeDelete
+  recipeDelete,
+  recipeCreateMultiple
 }

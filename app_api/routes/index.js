@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 // const ctrlUsers = require('../controllers/users') TO DO
 const ctrlRecipes = require('../controllers/recipes')
-const ctrlAuth = require('../controllers/auth')
+
 // Recipes
 router
   .route('/recipes')

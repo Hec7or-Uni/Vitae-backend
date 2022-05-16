@@ -19,12 +19,16 @@ async (request, accessToken, refreshToken, profile, done) => {
   console.log('ID: ' + profile.id)
   console.log('Name: ' + profile.displayName)
   const email = profile.emails[0].value
-  const user = await UserModel.findOne({ email })
-  if (!user) {
-    console.log('CREATE NEW USER' + email)
-    return done(null, UserModel.create({ email }))
+  try {
+    const user = await UserModel.findOne({ email })
+    if (!user) {
+      console.log('CREATE NEW USER' + email)
+      return done(null, UserModel.create({ email }))
+    }
+    return done(null, user)
+  } catch (error) {
+    return done(error)
   }
-  return done(null, user)
 }
 ))
 
@@ -32,29 +36,20 @@ passport.use('login', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password'
 }, async (email, password, done) => {
-  const user = await UserModel.findOne({ email: email })
-  if (!user) {
-    return done(null, false, { message: 'User not found' })
+  try {
+    const user = await UserModel.findOne({ email: email })
+    if (!user) {
+      return done(null, false, { message: 'User not found' })
+    }
+    if (!user.validPassword(password)) {
+      return done(null, false, { message: 'Incorrect password' })
+    }
+    return done(null, user, { message: 'Login succesful' })
+  } catch (error) {
+    return done(error)
   }
-  if (!user.validPassword(password)) {
-    return done(null, false, { message: 'Incorrect password' })
-  }
-  return done(null, user, { message: 'Login succesful' })
 }
 ))
-
-const singUpTest = async (req, res) => {
-  console.log(req.body)
-  await UserModel.create(
-    req.body
-    , (err, recipe) => {
-      if (err) {
-        res.status(400).json(err)
-      } else {
-        res.status(201).json(recipe)
-      }
-    })
-}
 
 passport.use('signup', new LocalStrategy({
   usernameField: 'email',
@@ -62,9 +57,13 @@ passport.use('signup', new LocalStrategy({
   passReqToCallback: true
 }, async (req, email, password, done) => {
   console.log(req.body)
-  const user = await UserModel.create(req.body)
-  // if (!UserModel.findOne({ email: this.email })) {
-  return done(null, user)
+  try {
+    const user = await UserModel.create(req.body)
+    // if (!UserModel.findOne({ email: this.email })) {
+    return done(null, user)
+  } catch (error) {
+    return done(error)
+  }
 }
 // }
 ))
@@ -87,7 +86,3 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
   done(null, user)
 })
-
-module.exports = {
-  singUpTest
-}
