@@ -1,9 +1,11 @@
 const passport = require('passport')
+const { getToken } = require('next-auth/jwt')
 const GoogleStrategy = require('passport-google-oauth20').Strategy
 const LocalStrategy = require('passport-local').Strategy
 require('dotenv').config()
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+const SECRET_OR_KEY = process.env.secretOrKey
 const mongoose = require('mongoose')
 const UserModel = mongoose.model('User')
 const JWTStrategy = require('passport-jwt').Strategy
@@ -16,8 +18,6 @@ passport.use(new GoogleStrategy({
   passReqToCallback: true
 },
 async (request, accessToken, refreshToken, profile, done) => {
-  console.log('ID: ' + profile.id)
-  console.log('Name: ' + profile.displayName)
   const email = profile.emails[0].value
   try {
     const user = await UserModel.findOne({ email })
@@ -25,7 +25,7 @@ async (request, accessToken, refreshToken, profile, done) => {
       console.log('CREATE NEW USER' + email)
       return done(null, UserModel.create({ email }))
     }
-    return done(null, accessToken)
+    return done(null, user)
   } catch (error) {
     return done(error)
   }
@@ -59,7 +59,6 @@ passport.use('signup', new LocalStrategy({
   console.log(req.body)
   try {
     const user = await UserModel.create(req.body)
-    // if (!UserModel.findOne({ email: this.email })) {
     return done(null, user)
   } catch (error) {
     return done(error)
@@ -71,7 +70,7 @@ passport.use('signup', new LocalStrategy({
 passport.use(
   new JWTStrategy(
     {
-      secretOrKey: process.env.secretOrKey,
+      secretOrKey: SECRET_OR_KEY,
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken()
     },
     (jwtPayload, cb) => {
@@ -86,3 +85,17 @@ passport.serializeUser(function (user, done) {
 passport.deserializeUser(function (user, done) {
   done(null, user)
 })
+
+const tokenAuth = async (req, res) => {
+  const token = await getToken({ req, SECRET_OR_KEY })
+  if (token) {
+    // Signed in
+    console.log('JSON Web Token', JSON.stringify(token, null, 2))
+  } else {
+    // Not Signed in
+    res.status(401)
+  }
+  res.end()
+}
+
+module.exports = { tokenAuth }

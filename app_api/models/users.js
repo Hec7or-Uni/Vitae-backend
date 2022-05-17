@@ -2,18 +2,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcryptjs')
 const { Schema } = mongoose
 // User schema
-const UserSchema = new mongoose.Schema({
-  name: String,
-  lastname: String,
-  username: String,
-  weight: [Number], // Array objetos
-  diet: String,
-  height: Number,
-  birth: String,
-  email: String,
-  password: String,
-  savedRecipes: [mongoose.model('Recipe').schema],
-  menu: [mongoose.model('DayMenu').schema],
+const AccountSchema = new mongoose.Schema({
   provider: String,
   providerAccountId: String,
   refresh_token: String,
@@ -30,9 +19,24 @@ const UserSchema = new mongoose.Schema({
 const SessionSchema = new mongoose.Schema({
   id: String,
   sessionToken: String,
-  userId: String
-}, { timestamps: true })
+  userId: String,
+  expire: Date
+})
 
+const UserSchema = new mongoose.Schema({
+  name: String,
+  lastname: String,
+  username: String,
+  weight: [Number], // Array objetos
+  diet: String,
+  height: Number,
+  birth: String,
+  email: String,
+  password: String,
+  savedRecipes: [mongoose.model('Recipe').schema],
+  menu: [mongoose.model('DayMenu').schema],
+  accounts: [AccountSchema]
+})
 SessionSchema.index({ createdAt: 1 }, { expireAfterSeconds: 3600 })
 // Federated schema
 
@@ -74,8 +78,8 @@ UserSchema.methods.stringToDate = function (stringDate) {
   const myArray = stringDate.split('/')
   return new Date(myArray)
 }
-
-module.exports = mongoose.model('User', UserSchema)
+module.export = mongoose.model('Account', AccountSchema)
+module.export = mongoose.model('User', UserSchema)
 module.export = mongoose.model('Session', SessionSchema)
 // module.exports = mongoose.model('FederatedCredentials', FederatedCredentialSchema)
 // module.exports = mongoose.model('Todos', todosSchema)
