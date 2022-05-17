@@ -4,7 +4,7 @@ const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
-const authCtrl = require('./app_api/controllers/auth')
+const authCtrl = require('../controllers/auth')
 // const { json } = require('express')
 require('dotenv').config()
 const secret = process.env.secretOrKey
