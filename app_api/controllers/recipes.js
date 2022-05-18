@@ -7,8 +7,8 @@ const recipeCreate = function (req, res) {
     // Rec.findOne()
   }
   Rec.create(
-    req.body
-    , (err, recipe) => {
+    req.body,
+    (err, recipe) => {
       if (err) {
         res.status(400).json(err)
       } else {
@@ -54,11 +54,6 @@ const getRandomRecipe = async function (req, res) {
   res
     .status(200)
     .json(data)
-  // console.log(res)
-  console.log('de aqui salgo')
-  console.log(data)
-  // Rec
-  //  .create(data)
 }
 
 const searchRecipe = async function (req, res) {
@@ -66,9 +61,6 @@ const searchRecipe = async function (req, res) {
   res
     .status(200)
     .json(data)
-  console.log(res)
-  // Rec
-  //  .create(data)
 }
 
 const randomQuote = async function (req, res) {
@@ -76,7 +68,6 @@ const randomQuote = async function (req, res) {
   res
     .status(200)
     .json(data)
-  console.log(res)
 }
 
 const recipeReadAll = function (req, res) {

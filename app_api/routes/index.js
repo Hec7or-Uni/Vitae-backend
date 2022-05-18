@@ -3,15 +3,16 @@ const router = express.Router()
 // const ctrlUsers = require('../controllers/users') TO DO
 const ctrlRecipes = require('../controllers/recipes')
 
-// Recipes
 router
   .route('/recipes')
   .get(ctrlRecipes.recipeReadOne)
   .put(ctrlRecipes.recipeModify)
   .post(ctrlRecipes.recipeCreate)
-router.get('recipes/discovery', ctrlRecipes.recipeReadAll)
 
-// User interactions
+router
+  .route('/recipes')
+  .get('/discovery', ctrlRecipes.recipeReadAll)
+
 router
   .route('/user')
   .get()
@@ -76,38 +77,6 @@ router
 router
   .route('/quote')
   .get(ctrlRecipes.randomQuote)
-  .post(ctrlRecipes.notDefinedFunct)
-  .delete(ctrlRecipes.notDefinedFunct)
-  .put(ctrlRecipes.notDefinedFunct)
-
-/* Just testing stuff */
-/**
-* @openapi
-* /test:
-*   get:
-*     description: testing, now is search
-*     responses:
-*       200:
-*       description: Returns recipes
-*   post:
-*     description: Function not implemented
-*     responses:
-*       407:
-*       description: Nothing implemented
-*   delete:
-*     description: Function not implemented
-*     responses:
-*       407:
-*       description: Nothing implemented
-*   put:
-*     description: Function not implemented
-*     responses:
-*       407:
-*       description: Nothing implemented
-*/
-router
-  .route('/test')
-  .get(ctrlRecipes.searchRecipe)
   .post(ctrlRecipes.notDefinedFunct)
   .delete(ctrlRecipes.notDefinedFunct)
   .put(ctrlRecipes.notDefinedFunct)

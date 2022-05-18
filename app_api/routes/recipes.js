@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 const ctrlRecipes = require('../controllers/recipes')
 
-// Recipes
 /**
 * @openapi
 * /:
@@ -20,7 +19,6 @@ router
 
 router.get('/discovery', ctrlRecipes.recipeReadAll)
 
-// Random Recipes
 /**
 * @openapi
 * /RandomRecipes:
@@ -34,7 +32,6 @@ router
   .route('/RandomRecipes')
   .get(ctrlRecipes.getRandomRecipe)
 
-/* GET quote about food */
 /**
 * @openapi
 * /quote:
@@ -47,10 +44,5 @@ router
 router
   .route('/quote')
   .get(ctrlRecipes.randomQuote)
-
-// test
-router
-  .route('/test')
-  .get(ctrlRecipes.searchRecipe)
 
 module.exports = router
