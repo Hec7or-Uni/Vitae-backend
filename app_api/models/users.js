@@ -23,7 +23,7 @@ const SessionSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   name: String,
-  last_name: String,
+  lastname: String,
   username: String,
   email: String,
   salt: String,
@@ -40,7 +40,6 @@ const UserSchema = new mongoose.Schema({
 
 // Unique constrains
 UserSchema.index({ email: 1 }, { unique: true })
-UserSchema.index({ username: 1 }, { unique: true })
 
 module.export = mongoose.model('Account', AccountSchema)
 module.export = mongoose.model('User', UserSchema)

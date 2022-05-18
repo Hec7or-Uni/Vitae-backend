@@ -3,8 +3,17 @@ const User = mongoose.model('User')
 const Recipe = mongoose.model('Recipe')
 
 const createAccount = async (req, res) => {
-  const user = await User.create(req.body)
-  res.status(200).json(user, 2, null)
+  await User.create(req.body)
+    .then((user) => {
+      res
+        .status(200)
+        .json(user)
+    })
+    .catch(err => {
+      res
+        .status(400)
+        .json(err)
+    })
 }
 
 const updateAccount = async (req, res) => {
@@ -27,6 +36,12 @@ const deleteAccount = async (req, res) => {
 
 const connectAccount = async (req, res) => {
   res.status(200).json({}, 2, null)
+}
+
+const getUser = async (req, res) => {
+  const { email: _email } = req.query
+  const user = await User.findOne({ email: _email })
+  res.status(200).json(user, 2, null)
 }
 
 // ------------------
@@ -158,27 +173,27 @@ const deleteUser = (req, res) => {
 }
 const getDailyBuy = (req, res) => {}
 
-const getUser = async (req, res) => {
-  User
-    .findById(req.user._id)
-    .select({
-      name: 1,
-      height: 1,
-      birth: 1,
-      email: 1,
-      diet: 1
-    })
-    .exec((err, recipes) => {
-      if (!recipes) {
-        res.status(200).json({ message: 'Not recipes yet' })
-        return
-      } else if (err) {
-        res.status(404).json(err)
-        return
-      }
-      res.status(200).json(recipes)
-    })
-}
+// const getUser = async (req, res) => {
+//   User
+//     .findById(req.user._id)
+//     .select({
+//       name: 1,
+//       height: 1,
+//       birth: 1,
+//       email: 1,
+//       diet: 1
+//     })
+//     .exec((err, recipes) => {
+//       if (!recipes) {
+//         res.status(200).json({ message: 'Not recipes yet' })
+//         return
+//       } else if (err) {
+//         res.status(404).json(err)
+//         return
+//       }
+//       res.status(200).json(recipes)
+//     })
+// }
 
 module.exports = {
   createAccount,
