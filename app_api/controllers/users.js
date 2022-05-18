@@ -2,13 +2,12 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Recipe = mongoose.model('Recipe')
 
-const getStorage = (req, res) => {
-  const values = {
-    savedRecipes: 1
-  }
+const getStorage = function (req, res) {
   User
     .findById(req.user._id)
-    .select(values)
+    .select({
+      savedRecipes: 1
+    })
     .exec((err, recipes) => {
       if (!recipes) {
         res.status(200).json({ message: 'Not recipes yet' })
@@ -21,12 +20,11 @@ const getStorage = (req, res) => {
     })
 }
 
-const getMenu = (req, res) => {
-  const values = {
-    menu: 1
-  }
+const getMenu = function (req, res) {
   User
-    .findById(req.user._id).select(values)
+    .findById(req.user._id).select({
+      menu: 1
+    })
     .exec((err, menu) => {
       if (!menu) {
         res.status(200).json({ message: 'Not menus yet' })
@@ -38,10 +36,11 @@ const getMenu = (req, res) => {
       res.status(200).json(menu)
     })
 }
-const modify = (req, res) => {
+const modify = function (req, res) {
   User.findByIdAndUpdate(req.user._id, req.body, { new: true }.exec((err, userModify) => {
     if (!userModify) {
       res.status(400).json({ message: 'User not found' })
+      return
     }
     if (err) {
       res.status(404).json(err)
@@ -50,13 +49,14 @@ const modify = (req, res) => {
     res.status(200).json(userModify)
   }))
 }
-const addWeight = (req, res) => {
+const addWeight = function (req, res) {
   User.findByIdAndUpdate(
     req.user._id,
     { $push: { weight: req.body } }
       .exec((err, userModify) => {
         if (!userModify) {
           res.status(400).json({ message: 'User not found' })
+          return
         }
         if (err) {
           res.status(404).json(err)
@@ -66,12 +66,13 @@ const addWeight = (req, res) => {
       }))
 }
 
-const addStorage = (req, res) => {
+const addStorage = function (req, res) {
   User.findByIdAndUpdate(
     req.user._id,
     { $push: { savedRecipes: req.body } }.exec((err, userModify) => {
       if (!userModify) {
         res.status(400).json({ message: 'User not found' })
+        return
       }
       if (err) {
         res.status(404).json(err)
@@ -80,12 +81,13 @@ const addStorage = (req, res) => {
       res.status(200).json(userModify)
     }))
 }
-const addMenuItem = (req, res) => {
+const addMenuItem = function (req, res) {
   User.findByIdAndUpdate(
     req.user._id,
     { $push: { menu: req.body } }.exec((err, userModify) => {
       if (!userModify) {
         res.status(400).json({ message: 'User not found' })
+        return
       }
       if (err) {
         res.status(404).json(err)
@@ -95,12 +97,13 @@ const addMenuItem = (req, res) => {
     }))
 }
 
-const modifyMenu = (req, res) => {
+const modifyMenu = function (req, res) {
   User.findByIdAndUpdate(
     req.user._id,
     { menu: req.body }.exec((err, userModify) => {
       if (!userModify) {
         res.status(400).json({ message: 'User not found' })
+        return
       }
       if (err) {
         res.status(404).json(err)
@@ -110,10 +113,11 @@ const modifyMenu = (req, res) => {
     }))
 }
 
-const deleteUser = (req, res) => {
+const deleteUser = function (req, res) {
   Recipe.findByIdAndDelete(req.user._id).exec((err, userDeleted) => {
     if (!userDeleted) {
       res.status(400).json({ message: 'User not found' })
+      return
     }
     if (err) {
       res.status(404).json(err)
@@ -122,18 +126,17 @@ const deleteUser = (req, res) => {
     res.status(200)
   })
 }
-const getDailyBuy = (req, res) => {}
+const getDailyBuy = function (req, res) {}
 const getUser = async (req, res) => {
-  const values = {
-    name: 1,
-    height: 1,
-    birth: 1,
-    email: 1,
-    diet: 1
-  }
   User
     .findById(req.user._id)
-    .select(values)
+    .select({
+      name: 1,
+      height: 1,
+      birth: 1,
+      email: 1,
+      diet: 1
+    })
     .exec((err, recipes) => {
       if (!recipes) {
         res.status(200).json({ message: 'Not recipes yet' })
@@ -145,6 +148,7 @@ const getUser = async (req, res) => {
       res.status(200).json(recipes)
     })
 }
+
 module.exports = {
   getStorage,
   getMenu,
