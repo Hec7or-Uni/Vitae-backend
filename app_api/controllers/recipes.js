@@ -50,6 +50,14 @@ const recipeReadOne = (req, res) => {
 
 const getRandomRecipe = async (req, res) => {
   const data = await spoon.getRecipes()
+  console.log(data)
+  res
+    .status(200)
+    .json(data)
+}
+
+const nutrients = async function (req, res) {
+  const data = await spoon.getNutrition(req)
   res
     .status(200)
     .json(data)
@@ -106,6 +114,7 @@ module.exports = {
   searchRecipe,
   randomQuote,
   getRandomRecipe,
+  nutrients,
   recipeCreate,
   recipeReadOne,
   recipeReadAll,

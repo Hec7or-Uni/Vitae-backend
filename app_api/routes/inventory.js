@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const ctrlRecipes = require('../controllers/recipes')
 
+router.get('/nutrientInfo', ctrlRecipes.nutrients)
+
 /**
 * @openapi
 * /:
