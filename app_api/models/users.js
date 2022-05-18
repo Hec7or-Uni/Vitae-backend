@@ -23,19 +23,19 @@ const SessionSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   name: String,
-  lastname: String,
+  last_name: String,
   username: String,
+  email: String,
+  salt: String,
+  hash: String,
+  accounts: [AccountSchema],
+  sessions: [SessionSchema],
+  birth: String,
   height: Number,
   weight: [Number], // Array objetos
   diet: String,
-  birth: String,
-  email: String,
-  salt: String,
-  password: String,
-  savedRecipes: [mongoose.model('Recipe').schema],
-  menu: [mongoose.model('DayMenu').schema],
-  accounts: [AccountSchema],
-  sessions: [SessionSchema]
+  saved_recipes: [mongoose.model('Recipe').schema],
+  menu: [mongoose.model('DayMenu').schema]
 }, { timestamps: true })
 
 // Unique constrains

@@ -1,12 +1,13 @@
 require('./app_api/models/db')
 const express = require('express')
 const logger = require('morgan')
+const cookieParser = require('cookie-parser')
 const swaggerJSDoc = require('swagger-jsdoc')
 const path = require('path')
 const routes = './app_api/routes/'
 const apiRoutes = require(routes + 'index')
-const usersRouter = require(routes + 'users')
-const recipeRoutes = require(routes + 'recipes')
+const usersRouter = require(routes + 'user')
+const recipeRoutes = require(routes + 'inventory')
 
 const swaggerDefinition = {
   info: {
@@ -18,6 +19,7 @@ const swaggerDefinition = {
   basePath: '/api/',
   schemes: ['http']
 }
+
 const options = {
   swaggerDefinition: swaggerDefinition, // import swaggerDefinitions
   apis: ['./app_api/routes/*.js'] // path to the API docs
@@ -31,13 +33,15 @@ const app = express()
 
 app.use(logger('dev'))
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Routes
-app.use('/', apiRoutes)
-app.use('/users', usersRouter)
-app.use('/recipes', recipeRoutes)
+app.set('base', '/api')
+app.use('/api/', apiRoutes)
+app.use('/api/user', usersRouter)
+app.use('/api/inventory', recipeRoutes)
 app.get('/swagger.json', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   res.send(swaggerSpec)

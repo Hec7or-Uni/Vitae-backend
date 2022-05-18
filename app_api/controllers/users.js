@@ -2,7 +2,35 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Recipe = mongoose.model('Recipe')
 
-const getStorage = function (req, res) {
+const createAccount = async (req, res) => {
+  const user = await User.create(req.body)
+  res.status(200).json(user, 2, null)
+}
+
+const updateAccount = async (req, res) => {
+  const { email: _email } = req.body
+  const user = await User.findOneAndUpdate({ email: _email }, req.body)
+  res.status(200).json(user, 2, null)
+}
+
+const getCredentials = async (req, res) => {
+  const { email: _email } = req.body
+  const { _id, username, email, salt, hash } = await User.findOne({ email: { $eq: _email } }, req.body)
+  res.status(200).json({ _id, username, email, salt, hash }, 2, null)
+}
+
+const deleteAccount = async (req, res) => {
+  const { email: _email } = req.body
+  const user = await User.deleteOne({ email: _email })
+  res.status(200).json(user, 2, null)
+}
+
+const connectAccount = async (req, res) => {
+  res.status(200).json({}, 2, null)
+}
+
+// ------------------
+const getStorage = (req, res) => {
   User
     .findById(req.user._id)
     .select({
@@ -20,7 +48,7 @@ const getStorage = function (req, res) {
     })
 }
 
-const getMenu = function (req, res) {
+const getMenu = (req, res) => {
   User
     .findById(req.user._id).select({
       menu: 1
@@ -36,7 +64,8 @@ const getMenu = function (req, res) {
       res.status(200).json(menu)
     })
 }
-const modify = function (req, res) {
+
+const modify = (req, res) => {
   User.findByIdAndUpdate(req.user._id, req.body, { new: true }.exec((err, userModify) => {
     if (!userModify) {
       res.status(400).json({ message: 'User not found' })
@@ -49,7 +78,8 @@ const modify = function (req, res) {
     res.status(200).json(userModify)
   }))
 }
-const addWeight = function (req, res) {
+
+const addWeight = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
     { $push: { weight: req.body } }
@@ -66,7 +96,7 @@ const addWeight = function (req, res) {
       }))
 }
 
-const addStorage = function (req, res) {
+const addStorage = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
     { $push: { savedRecipes: req.body } }.exec((err, userModify) => {
@@ -81,7 +111,7 @@ const addStorage = function (req, res) {
       res.status(200).json(userModify)
     }))
 }
-const addMenuItem = function (req, res) {
+const addMenuItem = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
     { $push: { menu: req.body } }.exec((err, userModify) => {
@@ -97,7 +127,7 @@ const addMenuItem = function (req, res) {
     }))
 }
 
-const modifyMenu = function (req, res) {
+const modifyMenu = (req, res) => {
   User.findByIdAndUpdate(
     req.user._id,
     { menu: req.body }.exec((err, userModify) => {
@@ -113,7 +143,7 @@ const modifyMenu = function (req, res) {
     }))
 }
 
-const deleteUser = function (req, res) {
+const deleteUser = (req, res) => {
   Recipe.findByIdAndDelete(req.user._id).exec((err, userDeleted) => {
     if (!userDeleted) {
       res.status(400).json({ message: 'User not found' })
@@ -126,7 +156,8 @@ const deleteUser = function (req, res) {
     res.status(200)
   })
 }
-const getDailyBuy = function (req, res) {}
+const getDailyBuy = (req, res) => {}
+
 const getUser = async (req, res) => {
   User
     .findById(req.user._id)
@@ -150,6 +181,11 @@ const getUser = async (req, res) => {
 }
 
 module.exports = {
+  createAccount,
+  updateAccount,
+  getCredentials,
+  deleteAccount,
+  connectAccount,
   getStorage,
   getMenu,
   modify,
