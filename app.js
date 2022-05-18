@@ -48,4 +48,9 @@ app.use('/auth', authRoutes)
 app.use('/', apiRoutes)
 app.use('/users', usersRouter)
 app.use('/recipes', recipeRoutes)
+app.get('/testaa', function (req, res) {
+  // Cookies that have not been signed
+  console.log('Cookies: ', req.cookies)
+})
+
 module.exports = app
