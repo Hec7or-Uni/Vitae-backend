@@ -78,6 +78,7 @@ passport.use(
     }
   )
 )
+
 passport.serializeUser(function (user, done) {
   done(null, user)
 })
@@ -87,7 +88,9 @@ passport.deserializeUser(function (user, done) {
 })
 
 const tokenAuth = async (req, res) => {
-  const token = await getToken({ req, SECRET_OR_KEY })
+  const secret = SECRET_OR_KEY
+  const token = await getToken({ req, secret })
+
   if (token) {
     // Signed in
     console.log('JSON Web Token', JSON.stringify(token, null, 2))

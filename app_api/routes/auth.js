@@ -1,10 +1,10 @@
-const cookieParser = require('cookie-parser')
 const dayjs = require('dayjs')
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
 const jwt = require('jsonwebtoken')
 const authCtrl = require('../controllers/auth')
+
 // const { json } = require('express')
 require('dotenv').config()
 const secret = process.env.secretOrKey
@@ -17,6 +17,7 @@ router.get('/google/callback',
 
 router.post('/signup',
   passport.authenticate('signup', { session: false }), createToken)
+
 router.post('/login',
   passport.authenticate('login'),
   (req, res) => {
@@ -24,6 +25,7 @@ router.post('/login',
     const token = jwt.sign({ email: req.user.email, _id: req.user._id }, secret)
     res.json({ token })
   })
+
 router.get('/profile', passport.authenticate('jwt', { session: false }), (req, res) => {
   console.log('no funca' + JSON.parse(req))
   res.json({
@@ -33,6 +35,7 @@ router.get('/profile', passport.authenticate('jwt', { session: false }), (req, r
 })
 
 router.get('/tokenTest', authCtrl.tokenAuth)
+
 function createToken (req, res) {
   const token = jwt.sign({ email: req.user.email, _id: req.user._id }, secret)
   res.cookie('secureCookie', token, {
