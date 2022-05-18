@@ -1,23 +1,8 @@
 const express = require('express')
 const router = express.Router()
-// const ctrlUsers = require('../controllers/users') TO DO
+// const ctrlUsers = require('../controllers/users')
 const ctrlRecipes = require('../controllers/recipes')
 
-router
-  .route('/recipes')
-  .get(ctrlRecipes.recipeReadOne)
-  .put(ctrlRecipes.recipeModify)
-  .post(ctrlRecipes.recipeCreate)
-
-router
-  .route('/recipes')
-  .get('/discovery', ctrlRecipes.recipeReadAll)
-
-router
-  .route('/user')
-  .get()
-
-// Random Recipes
 /**
 * @openapi
 * /RandomRecipes:
@@ -45,11 +30,10 @@ router
 router
   .route('/RandomRecipes')
   .get(ctrlRecipes.getRandomRecipe)
-  .post(ctrlRecipes.notDefinedFunct)
-  .delete(ctrlRecipes.notDefinedFunct)
-  .put(ctrlRecipes.notDefinedFunct)
+  .post(ctrlRecipes.notImplemented)
+  .delete(ctrlRecipes.notImplemented)
+  .put(ctrlRecipes.notImplemented)
 
-/* GET quote about food */
 /**
 * @openapi
 * /quote:
@@ -77,8 +61,8 @@ router
 router
   .route('/quote')
   .get(ctrlRecipes.randomQuote)
-  .post(ctrlRecipes.notDefinedFunct)
-  .delete(ctrlRecipes.notDefinedFunct)
-  .put(ctrlRecipes.notDefinedFunct)
+  .post(ctrlRecipes.notImplemented)
+  .delete(ctrlRecipes.notImplemented)
+  .put(ctrlRecipes.notImplemented)
 
 module.exports = router

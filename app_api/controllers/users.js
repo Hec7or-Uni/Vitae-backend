@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
-const Rec = mongoose.model('Recipe')
+const Recipe = mongoose.model('Recipe')
 
 const getStorage = function (req, res) {
   const values = {
@@ -111,7 +111,7 @@ const modifyMenu = function (req, res) {
 }
 
 const deleteUser = function (req, res) {
-  Rec.findByIdAndDelete(req.user._id).exec((err, userDeleted) => {
+  Recipe.findByIdAndDelete(req.user._id).exec((err, userDeleted) => {
     if (!userDeleted) {
       res.status(400).json({ message: 'User not found' })
     }

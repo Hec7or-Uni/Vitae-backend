@@ -1,13 +1,11 @@
 require('./app_api/models/db')
-require('./app_api/controllers/auth')
 const express = require('express')
-const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const swaggerJSDoc = require('swagger-jsdoc')
 const path = require('path')
 const routes = './app_api/routes/'
-const usersRouter = require(routes + 'users')
 const apiRoutes = require(routes + 'index')
+const usersRouter = require(routes + 'users')
 const recipeRoutes = require(routes + 'recipes')
 
 const swaggerDefinition = {
@@ -34,7 +32,6 @@ const app = express()
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Routes

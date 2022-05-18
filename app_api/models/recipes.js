@@ -2,11 +2,10 @@ const mongoose = require('mongoose')
 const { Schema } = mongoose
 
 const commentSchema = new mongoose.Schema({
-  createdOn: { type: Date, default: Date.now },
-  commentText: String,
   username: String,
+  commentText: String,
   response: String
-})
+}, { timestamps: true })
 
 const ingredientSchema = new mongoose.Schema({
   name: String,
@@ -38,6 +37,7 @@ const dayMenuSchema = new mongoose.Schema({
   date: Date
 })
 
-mongoose.model('Recipe', recipeSchema)
-mongoose.model('DayMenu', dayMenuSchema)
-mongoose.model('Comment', commentSchema)
+module.export = mongoose.model('Ingredient', ingredientSchema)
+module.export = mongoose.model('Comment', commentSchema)
+module.export = mongoose.model('Recipe', recipeSchema)
+module.export = mongoose.model('DayMenu', dayMenuSchema)

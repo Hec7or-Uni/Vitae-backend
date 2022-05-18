@@ -2,12 +2,11 @@ const express = require('express')
 const router = express.Router()
 const ctrlUsers = require('../controllers/users')
 
-router.route('/user')
-  .get('/', ctrlUsers.getUser)
-  .get('/storage', ctrlUsers.getStorage)
-  .get('/menu', ctrlUsers.getMenu)
-  .get('/addWeight', ctrlUsers.addWeight)
-  .get('/addStorage', ctrlUsers.addStorage)
-  .get('/modify', ctrlUsers.modify)
+router.get('/', ctrlUsers.getUser)
+router.get('/storage', ctrlUsers.getStorage)
+router.get('/menu', ctrlUsers.getMenu)
+router.get('/addWeight', ctrlUsers.addWeight)
+router.get('/addStorage', ctrlUsers.addStorage)
+router.get('/modify', ctrlUsers.modify)
 
 module.exports = router

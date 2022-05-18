@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-// User schema
 const AccountSchema = new mongoose.Schema({
   provider: String,
   providerAccountId: String,
@@ -37,7 +36,7 @@ const UserSchema = new mongoose.Schema({
   menu: [mongoose.model('DayMenu').schema],
   accounts: [AccountSchema],
   sessions: [SessionSchema]
-})
+}, { timestamps: true })
 
 // Unique constrains
 UserSchema.index({ email: 1 }, { unique: true })
