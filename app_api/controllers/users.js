@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
+const Account = mongoose.model('Accounts')
 
 const createAccount = async (req, res) => {
   await User.create(req.body)
@@ -40,10 +41,22 @@ const getUser = async (req, res) => {
 }
 
 const connectAccount = async (req, res) => {
-  const { email: _email, account } = req.body
-  const user = await User.findOneAndUpdate({ email: _email }, { $push: { accounts: account } })
+  const { email: _email, account: _account } = req.body
+  let user = await User.findOne({ email: _email })
+  if (user === null || user === undefined) {
+    res.status(404).json({ message: 'usuario no encontrados' })
+    return
+  }
+  const accounts = user.accounts.filter(item => item.provider === _account.provider)
+  if (accounts.length > 0) {
+    res.status(400).json({ message: 'cuenta ya vinculada' })
+    return
+  }
+  user = await User.findOneAndUpdate({ email: _email }, { $push: { accounts: _account } })
+  user = await Account.create(_account)
   res.status(200).json(user)
 }
+
 module.exports = {
   createAccount,
   updateAccount,

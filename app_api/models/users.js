@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 
 const AccountSchema = new mongoose.Schema({
+  userId: String,
+  type: String,
   provider: String,
   providerAccountId: String,
   refresh_token: String,
