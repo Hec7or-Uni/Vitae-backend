@@ -24,8 +24,8 @@ const updateAccount = async (req, res) => {
 
 const getCredentials = async (req, res) => {
   const { email: _email } = req.body
-  const { _id, username, email, salt, hash } = await User.findOne({ email: { $eq: _email } }, req.body)
-  res.status(200).json({ _id, username, email, salt, hash }, 2, null)
+  const { username, email, salt, hash } = await User.findOne({ email: { $eq: _email } })
+  res.status(200).json({ username, email, salt, hash })
 }
 
 const deleteAccount = async (req, res) => {
