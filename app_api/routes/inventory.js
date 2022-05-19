@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const ctrlRecipes = require('../controllers/recipes')
 
-router.get('/nutrientInfo', ctrlRecipes.nutrients)
+router.get('/nutrient-info', ctrlRecipes.nutrients)
 
 /**
 * @openapi
@@ -23,7 +23,7 @@ router.get('/discovery', ctrlRecipes.recipeReadAll)
 
 /**
 * @openapi
-* /RandomRecipes:
+* /random-recipes:
 *   get:
 *     description: Return random recipes
 *     responses:
@@ -31,7 +31,7 @@ router.get('/discovery', ctrlRecipes.recipeReadAll)
 *       description: Returns a json with 12 recipes
 */
 router
-  .route('/RandomRecipes')
+  .route('/random-recipes')
   .get(ctrlRecipes.getRandomRecipe)
 
 /**
