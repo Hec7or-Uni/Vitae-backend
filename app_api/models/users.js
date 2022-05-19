@@ -42,6 +42,6 @@ const UserSchema = new mongoose.Schema({
 // Unique constrains
 UserSchema.index({ email: 1 }, { unique: true })
 
-module.export = mongoose.model('Account', AccountSchema)
+module.export = mongoose.model('Accounts', AccountSchema)
 module.export = mongoose.model('User', UserSchema)
 module.export = mongoose.model('Session', SessionSchema)

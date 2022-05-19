@@ -17,9 +17,9 @@ const createAccount = async (req, res) => {
 }
 
 const updateAccount = async (req, res) => {
-  const { email: _email } = req.body
-  const user = await User.findOneAndUpdate({ email: _email }, req.body)
-  res.status(200).json(user, 2, null)
+  const { email } = req.body
+  const user = await User.findOneAndUpdate({ email }, req.body)
+  res.status(200).json(user)
 }
 
 const getCredentials = async (req, res) => {
@@ -29,19 +29,23 @@ const getCredentials = async (req, res) => {
 }
 
 const deleteAccount = async (req, res) => {
-  const { email: _email } = req.body
-  const user = await User.deleteOne({ email: _email })
-  res.status(200).json(user, 2, null)
+  const { email } = req.body
+  const user = await User.deleteOne({ email })
+  res.status(200).json(user)
 }
 
 const connectAccount = async (req, res) => {
-  res.status(200).json({}, 2, null)
+  const { email: _email, account } = req.body
+  console.log(_email, account)
+  const user = await User.findOneAndUpdate({ email: _email }, { $push: { accounts: account } })
+
+  res.status(200).json(user)
 }
 
 const getUser = async (req, res) => {
   const { email: _email } = req.query
   const user = await User.findOne({ email: _email })
-  res.status(200).json(user, 2, null)
+  res.status(200).json(user)
 }
 
 // ------------------
