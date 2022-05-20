@@ -15,6 +15,13 @@ const ingredientSchema = new mongoose.Schema({
   unit: String
 })
 
+const stepsSchema = new mongoose.Schema({
+  name: String,
+  steps: [{
+    number: Number,
+    step: String
+  }]
+})
 const recipeSchema = new mongoose.Schema({
   spoonId: Number,
   title: String,
@@ -26,7 +33,8 @@ const recipeSchema = new mongoose.Schema({
   summary: String,
   author: { type: [Schema.Types.ObjectId], ref: 'User' },
   extendedIngredients: [ingredientSchema],
-  commentSchema: [commentSchema]
+  comments: [commentSchema],
+  analyzedInstructions: [stepsSchema]
 })
 
 const dayMenuSchema = new mongoose.Schema({

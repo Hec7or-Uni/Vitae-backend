@@ -13,4 +13,7 @@ router.put('/connect-account', authenticate, ctrlUsers.connectAccount)
 router
   .route('/comments')
   .get(ctrlComments.getComments)
+  .post(ctrlComments.createComment)
+  .put(ctrlComments.putComment)
+  .delete(ctrlComments.deleteComment)
 module.exports = router

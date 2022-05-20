@@ -3,25 +3,36 @@ const Comment = mongoose.model('Comment')
 const Recipe = mongoose.model('Recipe')
 
 const getComments = function (req, res) {}
-const createComment = function (req, res) {
+
+const createComment = async (req, res) => {
   const { id: _id, comment: _comment } = req.body
-  const commentCreated = Comment.create(_comment)
-  Recipe.findByIdAndUpdate(
+  console.log(_comment)
+  const commentCreated = await Comment.create(_comment)
+  const data = await Recipe.findByIdAndUpdate(
     _id,
-    { $push: { comments: commentCreated } }
+    { $push: { commentSchema: commentCreated } }
   )
+  res.status(200).json(data)
 }
-const putComment = function (req, res) {
-  const { id: _id, comment: _comment } = req.body
-  // const commentFinded = Comment.findByIdAndUpdate(_comment.id, _comment)  Probar las dos
-  Recipe.findByIdAndUpdate(
-    { _id, 'comments.id': _comment.id },
-    { $set: { 'comments.$': _comment } }
-  )
-}
-const deleteComment = function (req, res) {
+
+const putComment = async (req, res) => {
   const { comment: _comment } = req.body
-  Comment.findByIdAndDelete(_comment.id)
+  const commentFinded = await Comment.findByIdAndUpdate(_comment._id, _comment)
+  await Recipe.findOneAndUpdate(
+    { 'comments._id': _comment._id },
+    { $set: { 'comments.$.commentText': _comment.commentText } }
+  )
+  res.status(200).json(commentFinded)
+}
+
+const deleteComment = async (req, res) => {
+  const { comment: _comment } = req.body
+  await Comment.findByIdAndDelete(_comment.id)
+  const data = await Recipe.findOneAndUpdate(
+    { 'comments._id': _comment._id },
+    { $pull: { comments: _comment } }
+  )
+  res.status(200).json(data)
 }
 
 module.exports = {
