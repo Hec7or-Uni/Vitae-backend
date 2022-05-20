@@ -58,9 +58,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // Routes
 app.set('base', '/api')
-app.use('/api', authenticate)
-app.use('/api/user', usersRouter)
-app.use('/api/inventory', recipeRoutes)
+app.use('/api/user', authenticate, usersRouter)
+app.use('/api/inventory', authenticate, recipeRoutes)
 app.use('/api/newsletter', newsletterRouter)
 app.use('/api/recovery', recoveryRoutes)
 app.get('/swagger.json', function (req, res) {
