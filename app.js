@@ -9,6 +9,9 @@ const routes = './app_api/routes/'
 const { authenticate } = require('./lib/auth')
 const usersRouter = require(routes + 'user')
 const recipeRoutes = require(routes + 'inventory')
+const newsletterRouter = require(routes + 'newsletter')
+const recoveryRoutes = require(routes + 'recovery')
+
 const swaggerDefinition = {
   info: {
     title: 'API de Vitop',
@@ -58,6 +61,8 @@ app.set('base', '/api')
 app.use('/api', authenticate)
 app.use('/api/user', usersRouter)
 app.use('/api/inventory', recipeRoutes)
+app.use('/api/newsletter', newsletterRouter)
+app.use('/api/recovery', recoveryRoutes)
 app.get('/swagger.json', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   res.send(swaggerSpec)

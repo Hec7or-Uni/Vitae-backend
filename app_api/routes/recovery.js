@@ -7,15 +7,15 @@ const http = require('../../lib/http')
 router
   .route('/')
   .get(ctrlRecovery.recover)
-  .post(http.getUser)
-  .put(http.getUser)
-  .delete(http.getUser)
+  .post(http.notImplemented)
+  .put(http.notImplemented)
+  .delete(http.notImplemented)
 
 router
   .route('/validate')
   .get(ctrlUser.getCredentialsById)
-  .post(http.getUser)
-  .put(http.getUser)
-  .delete(http.getUser)
+  .post(http.notImplemented)
+  .put(http.notImplemented)
+  .delete(http.notImplemented)
 
 module.exports = router

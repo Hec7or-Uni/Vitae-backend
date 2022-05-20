@@ -1,5 +1,5 @@
 const { getCredentials } = require('./users')
-const emails = require('lib/emails')
+const { sendEmail } = require('../../lib/emails')
 const jwt = require('jsonwebtoken')
 
 const recover = async (req, res) => {
@@ -22,7 +22,7 @@ const recover = async (req, res) => {
     const token = jwt.sign(payload, secret, { expiresIn: '15m' })
     const link = `${process.env.NEXT_PUBLIC_URL}/recovery/reset-password/${user.id}/${token}`
 
-    await emails(user.email, 'Recuperacion de contraseña', link)
+    await sendEmail(user.email, 'Recuperacion de contraseña', link)
       .catch(err => console.error(err))
 
     res.status(200)
