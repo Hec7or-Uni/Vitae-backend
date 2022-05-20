@@ -7,7 +7,7 @@ router
   .route('/')
   .get(http.notImplemented)
   .post(ctrlNewsletter.subscribe)
-  .put(ctrlNewsletter.unSubscribe)
-  .delete(http.notImplemented)
+  .put(http.notImplemented)
+  .delete(ctrlNewsletter.unSubscribe)
 
 module.exports = router

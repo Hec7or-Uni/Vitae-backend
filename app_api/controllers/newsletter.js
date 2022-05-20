@@ -9,6 +9,7 @@ client.setConfig({
 const subscribe = async (req, res) => {
   const { email } = req.body
   const response = await client.lists.batchListMembers(process.env.LIST_ID, {
+    update_existing: true,
     members: [{
       email_address: email,
       status: 'subscribed'
@@ -20,6 +21,7 @@ const subscribe = async (req, res) => {
 const unSubscribe = async (req, res) => {
   const { email } = req.body
   const response = await client.lists.batchListMembers(process.env.LIST_ID, {
+    update_existing: true,
     members: [{
       email_address: email,
       status: 'unsubscribed'
