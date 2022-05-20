@@ -16,4 +16,5 @@ router
   .post(ctrlComments.createComment)
   .put(ctrlComments.putComment)
   .delete(ctrlComments.deleteComment)
+
 module.exports = router

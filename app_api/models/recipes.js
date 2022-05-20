@@ -42,7 +42,7 @@ const dayMenuSchema = new mongoose.Schema({
     recipeSchema: recipeSchema,
     mealType: String
   }],
-  date: Date
+  date: String
 })
 
 module.export = mongoose.model('Ingredient', ingredientSchema)
