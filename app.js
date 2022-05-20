@@ -9,7 +9,6 @@ const routes = './app_api/routes/'
 const { authenticate } = require('./lib/auth')
 const usersRouter = require(routes + 'user')
 const recipeRoutes = require(routes + 'inventory')
-
 const swaggerDefinition = {
   info: {
     title: 'API de Vitop',
@@ -47,6 +46,7 @@ app.use(cors({
     return callback(null, true)
   }
 }))
+
 app.use(logger('dev'))
 app.use(express.json())
 app.use(cookieParser())

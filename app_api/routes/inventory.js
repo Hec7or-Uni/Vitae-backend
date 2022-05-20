@@ -2,16 +2,36 @@ const express = require('express')
 const router = express.Router()
 const ctrlRecipes = require('../controllers/recipes')
 
-router.get('/nutrient-info', ctrlRecipes.nutrients)
-
+router.get('/nutrientInfo', ctrlRecipes.nutrients)
 /**
-* @openapi
-* /:
+* @swagger
+* /recipes:
 *   get:
 *     description: Return a recipe
+*     parameters:
+*     - name: id
+*       description: id of the recipe
+*       in: formData
+*       required: true
+*       type: Number
 *     responses:
 *       200:
-*       description: Returns a json with 12 recipes
+*       description: Returns a json with the recipe
+*   post:
+*     description: Post a recipe
+*     responses:
+*       407:
+*       description: Post a recipe
+*   delete:
+*     description: Function not implemented
+*     responses:
+*       407:
+*       description: Nothing implemented
+*   put:
+*     description: Function not implemented
+*     responses:
+*       407:
+*       description: Nothing implemented
 */
 router
   .route('/')

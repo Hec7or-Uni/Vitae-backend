@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const Recipe = mongoose.model('Recipe')
 const spoon = require('../../lib/spoonacular')
+const logger = require('../../logs/logger')
 
 const recipeCreate = (req, res) => {
   if (req.body.spoonId !== 0) {
@@ -50,7 +51,7 @@ const recipeReadOne = (req, res) => {
 
 const getRandomRecipe = async (req, res) => {
   const data = await spoon.getRecipes()
-  console.log(data)
+  logger.info({ label: '/inventory', message: 'random-recipe' })
   res
     .status(200)
     .json(data)

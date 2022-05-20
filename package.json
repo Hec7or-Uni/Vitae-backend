@@ -17,11 +17,13 @@
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
     "express": "~4.16.1",
+    "express-winston": "^4.2.0",
     "mongoose": "^6.3.0",
     "morgan": "~1.9.1",
     "next-auth": "^4.3.4",
     "node-fetch": "^2.6.7",
-    "swagger-jsdoc": "^6.2.0"
+    "swagger-jsdoc": "^6.2.0",
+    "winston": "^3.7.2"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
