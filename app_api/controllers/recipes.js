@@ -1,12 +1,25 @@
 const mongoose = require('mongoose')
-const Rec = mongoose.model('Recipe')
-const spoon = require('./spoon')
+const Recipe = mongoose.model('Recipe')
+const spoon = require('../../lib/spoonacular')
+const logger = require('../../logs/logger')
 
-const recipeCreate = function (req, res) {
+const recipeCreate = (req, res) => {
   if (req.body.spoonId !== 0) {
     // Rec.findOne()
   }
-  Rec.create(
+  Recipe.create(
+    req.body,
+    (err, recipe) => {
+      if (err) {
+        res.status(400).json(err)
+      } else {
+        res.status(201).json(recipe)
+      }
+    })
+}
+
+const recipeCreateMultiple = (req, res) => {
+  Recipe.insertMany(
     req.body
     , (err, recipe) => {
       if (err) {
@@ -17,21 +30,9 @@ const recipeCreate = function (req, res) {
     })
 }
 
-const recipeCreateMultiple = function (req, res) {
-  Rec.insertMany(
-    req.body
-    , (err, recipe) => {
-      if (err) {
-        res.status(400).json(err)
-      } else {
-        res.status(201).json(recipe)
-      }
-    })
-}
-
-const recipeReadOne = function (req, res) {
+const recipeReadOne = (req, res) => {
   if (req.query && req.query.recipeId) {
-    Rec
+    Recipe
       .findById(req.query.recipeId)
       .exec((err, recipe) => {
         if (!recipe) {
@@ -48,40 +49,38 @@ const recipeReadOne = function (req, res) {
   }
 }
 
-const getRandomRecipe = async function (req, res) {
-  console.log('aqui llego')
+const getRandomRecipe = async (req, res) => {
   const data = await spoon.getRecipes()
+  logger.info({ label: '/inventory', message: 'random-recipe' })
   res
     .status(200)
     .json(data)
-  // console.log(res)
-  console.log('de aqui salgo')
-  console.log(data)
-  // Rec
-  //  .create(data)
 }
 
-const searchRecipe = async function (req, res) {
+const nutrients = async function (req, res) {
+  const data = await spoon.getNutrition(req)
+  res
+    .status(200)
+    .json(data)
+}
+
+const searchRecipe = async (req, res) => {
   const data = await spoon.searchRecipes('rice')
   res
     .status(200)
     .json(data)
-  console.log(res)
-  // Rec
-  //  .create(data)
 }
 
-const randomQuote = async function (req, res) {
+const randomQuote = async (req, res) => {
   const data = await spoon.getQuote()
   res
     .status(200)
     .json(data)
-  console.log(res)
 }
 
-const recipeReadAll = function (req, res) {
+const recipeReadAll = (req, res) => {
   if (req.params && req.params.quantity) {
-    Rec.find().limit(req.params.quantity).exec((err, recipes) => {
+    Recipe.find().limit(req.params.quantity).exec((err, recipes) => {
       if (err) {
         res.status(404).json(err)
       }
@@ -90,8 +89,8 @@ const recipeReadAll = function (req, res) {
   }
 }
 
-const recipeModify = function (req, res) {
-  Rec.findByIdAndUpdate(req.body.id, req.body, { new: true }.exec((err, userModify) => {
+const recipeModify = (req, res) => {
+  Recipe.findByIdAndUpdate(req.body.id, req.body, { new: true }.exec((err, userModify) => {
     if (err) {
       res.status(404).json(err)
       return
@@ -100,8 +99,8 @@ const recipeModify = function (req, res) {
   }))
 }
 
-const recipeDelete = function (req, res) {
-  Rec.findByIdAndDelete(req.body.i).exec((err, recipes) => {
+const recipeDelete = (req, res) => {
+  Recipe.findByIdAndDelete(req.body.i).exec((err, recipes) => {
     if (err) {
       res.status(404).json(err)
       return
@@ -109,17 +108,19 @@ const recipeDelete = function (req, res) {
     res.status(200)
   })
 }
-const notDefinedFunct = function (req, res) {}
+
+const notImplemented = (req, res) => {}
 
 module.exports = {
   searchRecipe,
   randomQuote,
   getRandomRecipe,
+  nutrients,
   recipeCreate,
   recipeReadOne,
   recipeReadAll,
   recipeModify,
   recipeDelete,
   recipeCreateMultiple,
-  notDefinedFunct
+  notImplemented
 }
