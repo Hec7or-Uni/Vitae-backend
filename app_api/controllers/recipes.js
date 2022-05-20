@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Recipe = mongoose.model('Recipe')
-const spoon = require('../../lib/spoonacular/spoon')
+const spoon = require('../../lib/spoonacular')
 
 const recipeCreate = (req, res) => {
   if (req.body.spoonId !== 0) {

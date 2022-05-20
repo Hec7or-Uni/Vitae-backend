@@ -6,7 +6,7 @@ const swaggerJSDoc = require('swagger-jsdoc')
 const cors = require('cors')
 const path = require('path')
 const routes = './app_api/routes/'
-const apiRoutes = require(routes + 'index')
+const { authenticate } = require('./lib/auth')
 const usersRouter = require(routes + 'user')
 const recipeRoutes = require(routes + 'inventory')
 
@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // Routes
 app.set('base', '/api')
-app.use('/api/', apiRoutes)
+app.use('/api', authenticate)
 app.use('/api/user', usersRouter)
 app.use('/api/inventory', recipeRoutes)
 app.get('/swagger.json', function (req, res) {
