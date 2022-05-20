@@ -28,6 +28,12 @@ const getCredentials = async (req, res) => {
   res.status(200).json({ username, email, salt, hash })
 }
 
+const getCredentialsById = async (req, res) => {
+  const { id } = req.body
+  const { username, email, salt, hash } = await User.findById({ _id: id })
+  res.status(200).json({ username, email, salt, hash })
+}
+
 const deleteAccount = async (req, res) => {
   const { email } = req.body
   const user = await User.deleteOne({ email })
@@ -35,14 +41,14 @@ const deleteAccount = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-  const { email: _email } = req.query
-  const user = await User.findOne({ email: _email })
+  const { email } = req.query
+  const user = await User.findOne({ email })
   res.status(200).json(user)
 }
 
 const connectAccount = async (req, res) => {
-  const { email: _email, account: _account } = req.body
-  let user = await User.findOne({ email: _email })
+  const { email, account: _account } = req.body
+  let user = await User.findOne({ email })
   if (user === null || user === undefined) {
     res.status(404).json({ message: 'usuario no encontrados' })
     return
@@ -52,7 +58,7 @@ const connectAccount = async (req, res) => {
     res.status(400).json({ message: 'cuenta ya vinculada' })
     return
   }
-  user = await User.findOneAndUpdate({ email: _email }, { $push: { accounts: _account } })
+  user = await User.findOneAndUpdate({ email }, { $push: { accounts: _account } })
   user = await Account.create(_account)
   res.status(200).json(user)
 }
@@ -61,6 +67,7 @@ module.exports = {
   createAccount,
   updateAccount,
   getCredentials,
+  getCredentialsById,
   deleteAccount,
   getUser,
   connectAccount

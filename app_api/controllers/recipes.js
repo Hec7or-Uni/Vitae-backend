@@ -109,8 +109,6 @@ const recipeDelete = (req, res) => {
   })
 }
 
-const notImplemented = (req, res) => {}
-
 module.exports = {
   searchRecipe,
   randomQuote,
@@ -121,6 +119,5 @@ module.exports = {
   recipeReadAll,
   recipeModify,
   recipeDelete,
-  recipeCreateMultiple,
-  notImplemented
+  recipeCreateMultiple
 }
