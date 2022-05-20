@@ -9,7 +9,6 @@ const routes = './app_api/routes/'
 const apiRoutes = require(routes + 'index')
 const usersRouter = require(routes + 'user')
 const recipeRoutes = require(routes + 'inventory')
-
 const swaggerDefinition = {
   info: {
     title: 'API de Vitop',
