@@ -36,6 +36,7 @@ const menuSchema = new mongoose.Schema({
 })
 const UserSchema = new mongoose.Schema({
   name: String,
+  admin: Boolean,
   lastname: String,
   username: String,
   email: String,

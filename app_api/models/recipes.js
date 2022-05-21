@@ -36,18 +36,6 @@ const recipeSchema = new mongoose.Schema({
   comments: [commentSchema],
   analyzedInstructions: [stepsSchema]
 })
-<<<<<<< Updated upstream
-
-const dayMenuSchema = new mongoose.Schema({
-  plate: [{
-    recipeSchema: recipeSchema,
-    mealType: String
-  }],
-  date: String
-})
-
-=======
->>>>>>> Stashed changes
 module.export = mongoose.model('Ingredient', ingredientSchema)
 module.export = mongoose.model('Comment', commentSchema)
 module.export = mongoose.model('Recipe', recipeSchema)
