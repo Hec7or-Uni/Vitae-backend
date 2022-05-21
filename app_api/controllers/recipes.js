@@ -9,7 +9,7 @@ const recipeCreate = (req, res) => {
     return
   }
   logger.info({ label: '/inventory', message: 'Create' })
-  const req.body.spoonId = req.body.id
+  req.body.spoonId = req.body.id
   Recipe.create(
     req.body,
     (err, recipe) => {

@@ -64,25 +64,21 @@ const connectAccount = async (req, res) => {
 }
 
 const storeRecipe = async (req, res) => {
-  const { email: _email, menu: _menu } = req.body
+  const { email: _email, recipe: _recipe } = req.body
   const user = await User.findByIdAndUpdate(
     { email: _email },
-    { $push: { menus: _menu } },
+    { $push: { saved_recipes: _recipe } },
     { new: true }
   )
   res.status(200).json(user)
 }
 
 const storeMenu = async (req, res) => {
-  const { email: _email } = req.body
-  
+  const { email: _email, menu: _menu } = req.body
   const user = await User.findByIdAndUpdate(
-    const { email: _email, menu: _menu } = req.body
-    const user = await User.findByIdAndUpdate(
-      { email: _email },
-      { $push: { menus: _menu } },
-      { new: true }
-    )
+    { email: _email },
+    { $push: { menus: _menu } },
+    { new: true }
   )
   res.status(200).json(user)
 }

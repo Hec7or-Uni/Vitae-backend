@@ -24,7 +24,7 @@ const SessionSchema = new mongoose.Schema({
 })
 
 const menuSchema = new mongoose.Schema({
-  recipes: [
+  dishes: [
     {
       title: String,
       recipe: { type: mongoose.ObjectId, ref: 'Recipe' },
