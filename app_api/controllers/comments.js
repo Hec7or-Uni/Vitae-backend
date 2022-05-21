@@ -6,7 +6,6 @@ const getComments = function (req, res) {}
 
 const createComment = async (req, res) => {
   const { id: _id, comment: _comment } = req.body
-  console.log(_comment)
   const commentCreated = await Comment.create(_comment)
   const data = await Recipe.findByIdAndUpdate(
     _id,

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Account = mongoose.model('Accounts')
-
+const Recipe = mongoose.model('Recipe')
 const createAccount = async (req, res) => {
   await User.create(req.body)
     .then((user) => {
@@ -63,6 +63,29 @@ const connectAccount = async (req, res) => {
   res.status(200).json(user)
 }
 
+const storeRecipe = async (req, res) => {
+  const { email: _email, menu: _menu } = req.body
+  const user = await User.findByIdAndUpdate(
+    { email: _email },
+    { $push: { menus: _menu } },
+    { new: true }
+  )
+  res.status(200).json(user)
+}
+
+const storeMenu = async (req, res) => {
+  const { email: _email } = req.body
+  
+  const user = await User.findByIdAndUpdate(
+    const { email: _email, menu: _menu } = req.body
+    const user = await User.findByIdAndUpdate(
+      { email: _email },
+      { $push: { menus: _menu } },
+      { new: true }
+    )
+  )
+  res.status(200).json(user)
+}
 module.exports = {
   createAccount,
   updateAccount,
@@ -70,5 +93,7 @@ module.exports = {
   getCredentialsById,
   deleteAccount,
   getUser,
-  connectAccount
+  connectAccount,
+  storeRecipe,
+  storeMenu
 }
