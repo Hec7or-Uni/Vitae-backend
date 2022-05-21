@@ -63,26 +63,6 @@ const connectAccount = async (req, res) => {
   res.status(200).json(user)
 }
 
-const storeRecipe = async (req, res) => {
-  const { email: _email, recipe: _recipe } = req.body
-  const user = await User.findOneAndUpdate(
-    { email: _email },
-    { $push: { saved_recipes: _recipe } },
-    { new: true }
-  )
-  res.status(200).json(user)
-}
-
-const storeMenu = async (req, res) => {
-  const { email, menu } = req.body
-  const user = await User.findOneAndUpdate(
-    { email },
-    { $push: { menus: menu } },
-    { new: true }
-  )
-  res.status(200).json(user)
-}
-
 module.exports = {
   createAccount,
   updateAccount,
@@ -90,7 +70,5 @@ module.exports = {
   getCredentialsById,
   deleteAccount,
   getUser,
-  connectAccount,
-  storeRecipe,
-  storeMenu
+  connectAccount
 }

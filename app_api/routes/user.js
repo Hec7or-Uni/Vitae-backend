@@ -12,10 +12,6 @@ router.delete('/delete-account', authenticate, ctrlUsers.deleteAccount)
 router.put('/connect-account', authenticate, ctrlUsers.connectAccount)
 
 router
-  .post('/save-menu', ctrlUsers.storeMenu)
-  // .delete('/delete-menu', ctrlUsers.getCredentials)
-
-router
   .route('/comments', authenticate)
   .get(ctrlComments.getComments)
   .post(ctrlComments.createComment)

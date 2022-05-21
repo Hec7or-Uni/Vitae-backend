@@ -8,7 +8,7 @@ const path = require('path')
 const routes = './app_api/routes/'
 const { authenticate } = require('./lib/auth')
 const usersRouter = require(routes + 'user')
-const recipeRoutes = require(routes + 'inventory')
+const inventoryRoutes = require(routes + 'inventory')
 const newsletterRouter = require(routes + 'newsletter')
 const recoveryRoutes = require(routes + 'recovery')
 
@@ -59,7 +59,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 // Routes
 app.set('base', '/api')
 app.use('/api/user', usersRouter)
-app.use('/api/inventory', authenticate, recipeRoutes)
+app.use('/api/inventory', authenticate, inventoryRoutes)
 app.use('/api/newsletter', newsletterRouter)
 app.use('/api/recovery', recoveryRoutes)
 app.get('/swagger.json', function (req, res) {

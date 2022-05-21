@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { Schema } = mongoose
 
 const commentSchema = new mongoose.Schema({
   username: String,
@@ -22,6 +21,7 @@ const stepsSchema = new mongoose.Schema({
     step: String
   }]
 })
+
 const recipeSchema = new mongoose.Schema({
   spoonId: Number,
   title: String,
@@ -31,7 +31,10 @@ const recipeSchema = new mongoose.Schema({
   spoonacularScore: Number,
   instructions: String,
   summary: String,
-  author: { type: [Schema.Types.ObjectId], ref: 'User' },
+  nutrition: [{
+    name: String,
+    value: String
+  }],
   extendedIngredients: [ingredientSchema],
   comments: [commentSchema],
   analyzedInstructions: [stepsSchema]
