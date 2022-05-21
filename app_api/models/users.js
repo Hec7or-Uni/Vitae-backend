@@ -23,17 +23,6 @@ const SessionSchema = new mongoose.Schema({
   expire: Date
 })
 
-const menuSchema = new mongoose.Schema({
-  dishes: [
-    {
-      title: String,
-      recipe: { type: mongoose.ObjectId, ref: 'Recipe' },
-      mealType: String
-    }
-  ],
-  date: String,
-  name: String
-})
 const UserSchema = new mongoose.Schema({
   name: String,
   admin: Boolean,
@@ -50,7 +39,7 @@ const UserSchema = new mongoose.Schema({
   weight: [Number], // Array objetos
   diet: String,
   saved_recipes: [mongoose.model('Recipe').schema],
-  menus: [menuSchema]
+  menus: [mongoose.model('Menus').schema]
 }, { timestamps: true })
 
 // Unique constrains

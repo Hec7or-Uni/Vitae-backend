@@ -36,6 +36,19 @@ const recipeSchema = new mongoose.Schema({
   comments: [commentSchema],
   analyzedInstructions: [stepsSchema]
 })
+
+const menuSchema = new mongoose.Schema({
+  name: String,
+  date: String,
+  recipes: [
+    {
+      recipe: Number,
+      mealType: String
+    }
+  ]
+})
+
 module.export = mongoose.model('Ingredient', ingredientSchema)
 module.export = mongoose.model('Comment', commentSchema)
 module.export = mongoose.model('Recipe', recipeSchema)
+module.export = mongoose.model('Menus', menuSchema)

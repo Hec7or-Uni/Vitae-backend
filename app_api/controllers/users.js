@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Account = mongoose.model('Accounts')
-const Recipe = mongoose.model('Recipe')
+
 const createAccount = async (req, res) => {
   await User.create(req.body)
     .then((user) => {
@@ -65,7 +65,7 @@ const connectAccount = async (req, res) => {
 
 const storeRecipe = async (req, res) => {
   const { email: _email, recipe: _recipe } = req.body
-  const user = await User.findByIdAndUpdate(
+  const user = await User.findOneAndUpdate(
     { email: _email },
     { $push: { saved_recipes: _recipe } },
     { new: true }
@@ -74,14 +74,15 @@ const storeRecipe = async (req, res) => {
 }
 
 const storeMenu = async (req, res) => {
-  const { email: _email, menu: _menu } = req.body
-  const user = await User.findByIdAndUpdate(
-    { email: _email },
-    { $push: { menus: _menu } },
+  const { email, menu } = req.body
+  const user = await User.findOneAndUpdate(
+    { email },
+    { $push: { menus: menu } },
     { new: true }
   )
   res.status(200).json(user)
 }
+
 module.exports = {
   createAccount,
   updateAccount,

@@ -21,6 +21,7 @@ const recipeCreate = (req, res) => {
       }
     })
 }
+
 const recipeCreateMultiple = (req, res) => {
   logger.info({ label: '/inventory', message: 'Create multiple' })
   Recipe.insertMany(
