@@ -18,7 +18,7 @@ const swaggerDefinition = {
     version: '0.0.1',
     description: 'Descripción de las funciones de la API'
   },
-  host: 'localhost:3000',
+  host: 'localhost:4000',
   basePath: '/api/',
   schemes: ['http']
 }

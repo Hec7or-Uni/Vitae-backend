@@ -11,6 +11,7 @@ router.get('/', authenticate, ctrlUsers.getUser)
 router.delete('/delete-account', authenticate, ctrlUsers.deleteAccount)
 router.put('/connect-account', ctrlUsers.connectAccount)
 router.put('/disconnect-account', ctrlUsers.disconnectAccount)
+router.get('/progress', ctrlUsers.getStats)
 
 router
   .route('/comments', authenticate)

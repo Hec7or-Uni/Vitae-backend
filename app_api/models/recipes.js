@@ -31,6 +31,7 @@ const recipeSchema = new mongoose.Schema({
   spoonacularScore: Number,
   instructions: String,
   summary: String,
+  mealType: String,
   nutrition: [{
     name: String,
     value: String
@@ -43,12 +44,7 @@ const recipeSchema = new mongoose.Schema({
 const menuSchema = new mongoose.Schema({
   name: String,
   date: String,
-  recipes: [
-    {
-      recipe: Number,
-      mealType: String
-    }
-  ]
+  recipes: [recipeSchema]
 })
 
 module.export = mongoose.model('Ingredient', ingredientSchema)

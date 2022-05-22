@@ -68,6 +68,20 @@ const disconnectAccount = async (req, res) => {
   res.status(200).json({ email, provider })
 }
 
+const getStats = async (req, res) => {
+  const { email } = req.query
+  // const { menus } = await User.findOne({ email }).populate('Recipe')
+  const data = await User.findOne({ email }).populate('Recipe')
+  // const temp = menus.map(item => {
+  //   return {
+  //     date: item.date,
+  //     recipes: item.recipes.map(r => r.recipe)
+  //   }
+  // })
+
+  res.status(200).json({ data })
+}
+
 module.exports = {
   createAccount,
   updateAccount,
@@ -76,5 +90,6 @@ module.exports = {
   deleteAccount,
   getUser,
   connectAccount,
-  disconnectAccount
+  disconnectAccount,
+  getStats
 }
