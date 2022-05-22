@@ -9,7 +9,8 @@ router.post('/signup', ctrlUsers.createAccount)
 router.put('/update-account', authenticate, ctrlUsers.updateAccount)
 router.get('/', authenticate, ctrlUsers.getUser)
 router.delete('/delete-account', authenticate, ctrlUsers.deleteAccount)
-router.put('/connect-account', authenticate, ctrlUsers.connectAccount)
+router.put('/connect-account', ctrlUsers.connectAccount)
+router.put('/disconnect-account', ctrlUsers.disconnectAccount)
 
 router
   .route('/comments', authenticate)

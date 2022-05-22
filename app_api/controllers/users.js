@@ -63,6 +63,11 @@ const connectAccount = async (req, res) => {
   res.status(200).json(user)
 }
 
+const disconnectAccount = async (req, res) => {
+  const { email, provider } = req.body
+  res.status(200).json({ email, provider })
+}
+
 module.exports = {
   createAccount,
   updateAccount,
@@ -70,5 +75,6 @@ module.exports = {
   getCredentialsById,
   deleteAccount,
   getUser,
-  connectAccount
+  connectAccount,
+  disconnectAccount
 }
