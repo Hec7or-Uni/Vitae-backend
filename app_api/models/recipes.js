@@ -40,6 +40,7 @@ const recipeSchema = new mongoose.Schema({
   comments: [commentSchema],
   analyzedInstructions: [stepsSchema]
 })
+recipeSchema.index({ spoonId: 1 }, { unique: true })
 
 const menuSchema = new mongoose.Schema({
   name: String,

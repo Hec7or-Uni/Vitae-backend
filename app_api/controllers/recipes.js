@@ -64,10 +64,18 @@ const recipeReadOne = (req, res) => {
 
 const getRandomRecipe = async (req, res) => {
   logger.info({ label: '/inventory/random-recipes', message: 'random-recipe' })
-  const data = await spoon.getRecipes()
+  let { recipes } = await spoon.getRecipes()
+  console.log(recipes)
+  recipes = recipes.map(recipe => {
+    return {
+      ...recipe,
+      spoonId: recipe.id
+    }
+  })
+  recipes = await Recipe.insertMany(recipes, { continueOnError: true })
   res
     .status(200)
-    .json(data)
+    .json(recipes)
 }
 
 const nutrients = async function (req, res) {
