@@ -82,6 +82,26 @@ const getStats = async (req, res) => {
 
   res.status(200).json({ data })
 }
+const addWeight = async (req, res) => {
+  const { email, weight } = req.body
+  const data = await User.findOne(
+    email,
+    { $push: { weight: weight } }
+    , { new: true })
+  res.status(200).json(data)
+}
+
+const getMenus = async (req, res) => {
+  const { email } = req.query
+  const data = await User.findOne({ email }).populate({
+    path: 'menus',
+    populate: {
+      path: 'recipes',
+      model: 'Recipe'
+    }
+  })
+  res.status(200).json({ data })
+}
 
 module.exports = {
   createAccount,
@@ -92,5 +112,7 @@ module.exports = {
   getUser,
   connectAccount,
   disconnectAccount,
-  getStats
+  getStats,
+  addWeight,
+  getMenus
 }

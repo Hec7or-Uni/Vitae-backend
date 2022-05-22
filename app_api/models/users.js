@@ -36,7 +36,10 @@ const UserSchema = new mongoose.Schema({
   birth: String,
   height: Number,
   gender: String,
-  weight: [Number], // Array objetos
+  weight: [{
+    weight: Number,
+    date: String
+  }], // Array objetos
   diet: String,
   saved_recipes: [mongoose.model('Recipe').schema],
   menus: [mongoose.model('Menus').schema]
