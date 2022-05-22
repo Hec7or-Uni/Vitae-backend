@@ -34,24 +34,38 @@ const recipeCreateMultiple = (req, res) => {
   })
 }
 
-const recipeReadOne = (req, res) => {
+const recipeReadOne = async (req, res) => {
   const { spoonId } = req.query
   logger.info({ label: '/inventory', message: 'Get recipe:' + spoonId })
-  Recipe
-    .findOne({ spoonId: Number(spoonId) })
-    .exec((err, recipe) => {
-      if (!recipe) {
-        // logger.err({ label: '/inventory', message: 'Recipe not found' })
-        // Fetch recipe from spoonacular
-        res.status(404).json({ message: 'Recipe not found' })
-        return
-      } else if (err) {
-        // logger.err({ label: '/inventory', message: err })
-        res.status(404).json(err)
-        return
+  let recipe = await Recipe.findOne({ spoonId: spoonId })
+  if (!recipe) {
+    res.status(404).json()
+    return
+  }
+
+  if (recipe.nutrients === null || recipe.nutrients === undefined || recipe.nutrients.length === 0) {
+    const nutrients = await spoon.getNutrition(spoonId)
+    recipe.nutrition = [
+      {
+        name: 'calories',
+        value: nutrients.calories
+      },
+      {
+        name: 'carbs',
+        value: nutrients.carbs
+      },
+      {
+        name: 'fat',
+        value: nutrients.fat
+      },
+      {
+        name: 'protein',
+        value: nutrients.protein
       }
-      res.status(200).json(recipe)
-    })
+    ]
+    recipe = await Recipe.findOneAndUpdate({ spoonId: spoonId }, { recipe })
+  }
+  res.status(200).json(recipe)
 }
 
 const getRandomRecipe = async (req, res) => {
