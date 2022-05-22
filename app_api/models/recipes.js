@@ -44,7 +44,7 @@ const recipeSchema = new mongoose.Schema({
 const menuSchema = new mongoose.Schema({
   name: String,
   date: String,
-  recipes: [recipeSchema]
+  recipes: [{ type: mongoose.Types.ObjectId, ref: 'Recipe' }]
 })
 
 module.export = mongoose.model('Ingredient', ingredientSchema)
