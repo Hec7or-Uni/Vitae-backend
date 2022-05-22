@@ -21,7 +21,8 @@ const saveRecipe = async (req, res) => {
   const { email, recipe } = req.body
   recipe.spoonId = recipe.id
   const user = await User.findOneAndUpdate(
-    { email },
+    // eslint-disable-next-line quote-props
+    { email, 'saved-recipes.spoonId': { '$ne': recipe.id } },
     { $push: { saved_recipes: recipe } },
     { new: true }
   )
@@ -29,12 +30,11 @@ const saveRecipe = async (req, res) => {
 }
 
 const deleteRecipe = async (req, res) => {
-  const { email, recipe } = req.body
-  const data = await User.findOneAndUpdate(
-    { email },
-    { $pull: { saved_recipes: recipe } }
-  )
-  res.status(200).json(data)
+  const { email, id } = req.body
+  let user = await User.findOne(email)
+  user.saved_recipes.pull(id)
+  user = await user.save()
+  res.status(200).json(user)
 }
 
 module.exports = {
