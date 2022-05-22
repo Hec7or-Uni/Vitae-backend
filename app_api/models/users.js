@@ -25,6 +25,7 @@ const SessionSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   name: String,
+  admin: Boolean,
   lastname: String,
   username: String,
   email: String,
@@ -35,10 +36,13 @@ const UserSchema = new mongoose.Schema({
   birth: String,
   height: Number,
   gender: String,
-  weight: [Number], // Array objetos
+  weight: [{
+    weight: Number,
+    date: String
+  }], // Array objetos
   diet: String,
-  saved_recipes: [mongoose.model('Recipe').schema],
-  menu: [mongoose.model('DayMenu').schema]
+  saved_recipes: [{ type: mongoose.Types.ObjectId, ref: 'Recipe' }],
+  menus: [mongoose.model('Menus').schema]
 }, { timestamps: true })
 
 // Unique constrains

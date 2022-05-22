@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const ctrlRecipes = require('../controllers/recipes')
+const ctrlInventory = require('../controllers/inventory')
+const http = require('../../lib/http')
 
 router.get('/nutrientInfo', ctrlRecipes.nutrients)
 /**
@@ -68,9 +70,9 @@ router.get('/discovery', ctrlRecipes.recipeReadAll)
 router
   .route('/random-recipes')
   .get(ctrlRecipes.getRandomRecipe)
-  .post(ctrlRecipes.notImplemented)
-  .delete(ctrlRecipes.notImplemented)
-  .put(ctrlRecipes.notImplemented)
+  .post(http.notImplemented)
+  .delete(http.notImplemented)
+  .put(http.notImplemented)
 
 /**
 * @openapi
@@ -99,8 +101,16 @@ router
 router
   .route('/quote')
   .get(ctrlRecipes.randomQuote)
-  .post(ctrlRecipes.notImplemented)
-  .delete(ctrlRecipes.notImplemented)
-  .put(ctrlRecipes.notImplemented)
+  .post(http.notImplemented)
+  .delete(http.notImplemented)
+  .put(http.notImplemented)
+
+router
+  .post('/save-menu', ctrlInventory.saveMenu)
+  // .delete('/delete-menu', ctrlInventory.deleteMenu)
+
+router
+  .post('/save-recipe', ctrlInventory.saveRecipe)
+  // .delete('/delete-recipe', ctrlInventory.deleteRecipe)
 
 module.exports = router
