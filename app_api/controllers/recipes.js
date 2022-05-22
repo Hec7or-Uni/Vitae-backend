@@ -38,15 +38,15 @@ const recipeReadOne = (req, res) => {
   const { spoonId } = req.query
   logger.info({ label: '/inventory', message: 'Get recipe:' + spoonId })
   Recipe
-    .findOne(req.query.recipeId)
+    .findOne({ spoonId: Number(spoonId) })
     .exec((err, recipe) => {
       if (!recipe) {
-        logger.err({ label: '/inventory', message: 'Recipe not found' })
+        // logger.err({ label: '/inventory', message: 'Recipe not found' })
         // Fetch recipe from spoonacular
         res.status(404).json({ message: 'Recipe not found' })
         return
       } else if (err) {
-        logger.err({ label: '/inventory', message: err })
+        // logger.err({ label: '/inventory', message: err })
         res.status(404).json(err)
         return
       }
@@ -57,7 +57,6 @@ const recipeReadOne = (req, res) => {
 const getRandomRecipe = async (req, res) => {
   logger.info({ label: '/inventory/random-recipes', message: 'random-recipe' })
   let { recipes } = await spoon.getRecipes()
-  console.log(recipes)
   recipes = recipes.map(recipe => {
     return {
       ...recipe,
