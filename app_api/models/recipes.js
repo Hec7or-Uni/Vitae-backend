@@ -31,7 +31,6 @@ const recipeSchema = new mongoose.Schema({
   spoonacularScore: Number,
   instructions: String,
   summary: String,
-  mealType: String,
   nutrition: [{
     name: String,
     value: String

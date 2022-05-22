@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema({
     date: String
   }], // Array objetos
   diet: String,
-  saved_recipes: [mongoose.model('Recipe').schema],
+  saved_recipes: [{ type: mongoose.Types.ObjectId, ref: 'Recipe' }],
   menus: [mongoose.model('Menus').schema]
 }, { timestamps: true })
 

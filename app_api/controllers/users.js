@@ -44,6 +44,8 @@ const deleteAccount = async (req, res) => {
 const getUser = async (req, res) => {
   const { email } = req.query
   const user = await User.findOne({ email })
+    .populate('saved_recipes')
+    .populate({ path: 'menus.recipes', model: 'Recipe' })
   res.status(200).json(user)
 }
 
