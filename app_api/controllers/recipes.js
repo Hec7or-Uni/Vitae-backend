@@ -24,42 +24,34 @@ const recipeCreate = (req, res) => {
 
 const recipeCreateMultiple = (req, res) => {
   logger.info({ label: '/inventory', message: 'Create multiple' })
-  Recipe.insertMany(
-    req.body.recipes
-    , (err, recipe) => {
-      if (err) {
-        logger.err({ label: '/inventory', message: err })
-        res.status(400).json(err)
-      } else {
-        res.status(201).json(recipe)
-      }
-    })
+  Recipe.insertMany(req.body.recipes, (err, recipe) => {
+    if (err) {
+      logger.err({ label: '/inventory', message: err })
+      res.status(400).json(err)
+    } else {
+      res.status(201).json(recipe)
+    }
+  })
 }
 
 const recipeReadOne = (req, res) => {
-  const { id: _id, spoonId: _spoonId } = req.query
-  logger.info({ label: '/inventory', message: 'Get recipe:' + _id + 'OR spoon:' + _spoonId })
-  if (!_id) {
-    Recipe
-      .findById(req.query.recipeId)
-      .exec((err, recipe) => {
-        if (!recipe) {
-          logger.err({ label: '/inventory', message: 'Recipe not found' })
-          // Fetch recipe from spoonacular
-          res.status(404).json({ message: 'Recipe not found' })
-          return
-        } else if (err) {
-          logger.err({ label: '/inventory', message: err })
-          res.status(404).json(err)
-          return
-        }
-        res.status(200).json(recipe)
-      })
-  } else if (!_spoonId) {
-    // Get recipe from spoonacular
-  }
-  logger.error({ label: '/inventory', message: 'no parameters' })
-  res.status(404).json({ message: 'No parameters in request' })
+  const { spoonId } = req.query
+  logger.info({ label: '/inventory', message: 'Get recipe:' + spoonId })
+  Recipe
+    .findOne(req.query.recipeId)
+    .exec((err, recipe) => {
+      if (!recipe) {
+        logger.err({ label: '/inventory', message: 'Recipe not found' })
+        // Fetch recipe from spoonacular
+        res.status(404).json({ message: 'Recipe not found' })
+        return
+      } else if (err) {
+        logger.err({ label: '/inventory', message: err })
+        res.status(404).json(err)
+        return
+      }
+      res.status(200).json(recipe)
+    })
 }
 
 const getRandomRecipe = async (req, res) => {
