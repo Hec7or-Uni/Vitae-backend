@@ -24,7 +24,8 @@ const updateAccount = async (req, res) => {
 
 const getCredentials = async (req, res) => {
   const { email: _email } = req.body
-  const { username, email, salt, hash } = await User.findOne({ email: { $eq: _email } })
+  console.log(_email)
+  const { username, email, salt, hash } = await User.findOne({ email: _email })
   res.status(200).json({ username, email, salt, hash })
 }
 
