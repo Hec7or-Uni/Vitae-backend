@@ -71,19 +71,6 @@ const disconnectAccount = async (req, res) => {
   res.status(200).json({ email, provider })
 }
 
-const getStats = async (req, res) => {
-  const { email } = req.query
-  // const { menus } = await User.findOne({ email }).populate('Recipe')
-  const data = await User.findOne({ email }).populate('Recipe')
-  // const temp = menus.map(item => {
-  //   return {
-  //     date: item.date,
-  //     recipes: item.recipes.map(r => r.recipe)
-  //   }
-  // })
-
-  res.status(200).json({ data })
-}
 const addWeight = async (req, res) => {
   const { email, weight } = req.body
   const data = await User.findOne(
@@ -114,7 +101,6 @@ module.exports = {
   getUser,
   connectAccount,
   disconnectAccount,
-  getStats,
   addWeight,
   getMenus
 }

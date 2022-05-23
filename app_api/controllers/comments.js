@@ -14,29 +14,29 @@ const createComment = async (req, res) => {
   res.status(200).json(data)
 }
 
-const putComment = async (req, res) => {
-  const { comment: _comment } = req.body
-  const commentFinded = await Comment.findByIdAndUpdate(_comment._id, _comment)
-  await Recipe.findOneAndUpdate(
-    { 'comments._id': _comment._id },
-    { $set: { 'comments.$.commentText': _comment.commentText } }
-  )
-  res.status(200).json(commentFinded)
-}
+// const putComment = async (req, res) => {
+//   const { comment: _comment } = req.body
+//   const commentFinded = await Comment.findByIdAndUpdate(_comment._id, _comment)
+//   await Recipe.findOneAndUpdate(
+//     { 'comments._id': _comment._id },
+//     { $set: { 'comments.$.commentText': _comment.commentText } }
+//   )
+//   res.status(200).json(commentFinded)
+// }
 
-const deleteComment = async (req, res) => {
-  const { comment: _comment } = req.body
-  await Comment.findByIdAndDelete(_comment.id)
-  const data = await Recipe.findOneAndUpdate(
-    { 'comments._id': _comment._id },
-    { $pull: { comments: _comment } }
-  )
-  res.status(200).json(data)
-}
+// const deleteComment = async (req, res) => {
+//   const { comment: _comment } = req.body
+//   await Comment.findByIdAndDelete(_comment.id)
+//   const data = await Recipe.findOneAndUpdate(
+//     { 'comments._id': _comment._id },
+//     { $pull: { comments: _comment } }
+//   )
+//   res.status(200).json(data)
+// }
 
 module.exports = {
   getComments,
-  createComment,
-  putComment,
-  deleteComment
+  createComment
+  // putComment,
+  // deleteComment
 }
