@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Recipe = mongoose.model('Recipe')
 const spoon = require('../../lib/spoonacular')
 const logger = require('../../logs/logger')
+const datos = require('./temporal')
 
 const recipeCreate = (req, res) => {
   if (req.body.spoonId && Recipe.findOne({ spoonId: req.body.spoonId })) {
@@ -42,10 +43,11 @@ const recipeReadOne = async (req, res) => {
     res.status(404).json()
     return
   }
+  console.log(recipe.nutrition)
 
-  if (recipe.nutrients === null || recipe.nutrients === undefined || recipe.nutrients.length === 0) {
+  if (recipe.nutrition === null || recipe.nutrition === undefined || recipe.nutrition.length === 0) {
     const nutrients = await spoon.getNutrition(spoonId)
-    recipe.nutrition = [
+    const nutrition = [
       {
         name: 'calories',
         value: nutrients.calories
@@ -63,7 +65,8 @@ const recipeReadOne = async (req, res) => {
         value: nutrients.protein
       }
     ]
-    recipe = await Recipe.findOneAndUpdate({ spoonId: spoonId }, { recipe })
+    recipe = await Recipe.findOneAndUpdate({ spoonId: spoonId }, { $push: { nutrition } }, { new: true })
+    console.log(recipe)
   }
   res.status(200).json(recipe)
 }
@@ -144,6 +147,24 @@ const recipeDelete = (req, res) => {
   })
 }
 
+const generateList = async function (req, res) {
+  const dict = new Map()
+  let item = {}
+  const ingredientes = datos.data.recipes[0].extendedIngredients
+  for (const value of ingredientes) {
+    item = {}
+    item = { nombre: value.name, cantidad: value.amount, unidad: value.unit }
+    if (dict.has(value.id)) {
+      item.cantidad = dict.get(value.id).cantidad + value.amount
+    }
+    dict.set(value.id, item)
+  }
+  const obj = Object.fromEntries(dict)
+  res
+    .status(207)
+    .json(obj)
+}
+
 module.exports = {
   searchRecipe,
   randomQuote,
@@ -154,5 +175,6 @@ module.exports = {
   recipeReadAll,
   recipeModify,
   recipeDelete,
-  recipeCreateMultiple
+  recipeCreateMultiple,
+  generateList
 }

@@ -113,4 +113,7 @@ router
   .post('/save-recipe', ctrlInventory.saveRecipe)
   // .delete('/delete-recipe', ctrlInventory.deleteRecipe)
 
+router
+  .get('/shopping-list', ctrlRecipes.generateList)
+
 module.exports = router
