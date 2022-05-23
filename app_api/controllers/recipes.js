@@ -93,7 +93,7 @@ const nutrients = async function (req, res) {
 
 const searchRecipe = async (req, res) => {
   logger.info({ label: '/inventory', message: 'search-recipe:' + req.search })
-  const query = { query: 'rice', dieta: 'vegan' }
+  const query = { query: req.query, dieta: req.diet }
   const data = await spoon.searchRecipes(query)
   res
     .status(200)
