@@ -1,159 +1,120 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
-const Rec = mongoose.model('Recipe')
+const Account = mongoose.model('Accounts')
 
-const getStorage = function (req, res) {
-  const values = {
-    savedRecipes: 1
-  }
-  User
-    .findById(req.user._id)
-    .select(values)
-    .exec((err, recipes) => {
-      if (!recipes) {
-        res.status(200).json({ message: 'Not recipes yet' })
-        return
-      } else if (err) {
-        res.status(404).json(err)
-        return
-      }
-      res.status(200).json(recipes)
+const createAccount = async (req, res) => {
+  await User.create(req.body)
+    .then((user) => {
+      res
+        .status(200)
+        .json(user)
+    })
+    .catch(err => {
+      res
+        .status(400)
+        .json(err)
     })
 }
 
-const getMenu = function (req, res) {
-  const values = {
-    menu: 1
-  }
-  User
-    .findById(req.user._id).select(values)
-    .exec((err, menu) => {
-      if (!menu) {
-        res.status(200).json({ message: 'Not menus yet' })
-        return
-      } else if (err) {
-        res.status(404).json(err)
-        return
-      }
-      res.status(200).json(menu)
-    })
-}
-const modify = function (req, res) {
-  User.findByIdAndUpdate(req.user._id, req.body, { new: true }.exec((err, userModify) => {
-    if (!userModify) {
-      res.status(400).json({ message: 'User not found' })
-    }
-    if (err) {
-      res.status(404).json(err)
-      return
-    }
-    res.status(200).json(userModify)
-  }))
-}
-const addWeight = function (req, res) {
-  User.findByIdAndUpdate(
-    req.user._id,
-    { $push: { weight: req.body } }
-      .exec((err, userModify) => {
-        if (!userModify) {
-          res.status(400).json({ message: 'User not found' })
-        }
-        if (err) {
-          res.status(404).json(err)
-          return
-        }
-        res.status(200).json(userModify)
-      }))
+const updateAccount = async (req, res) => {
+  const { email } = req.body
+  const user = await User.findOneAndUpdate({ email }, req.body)
+  res.status(200).json(user)
 }
 
-const addStorage = function (req, res) {
-  User.findByIdAndUpdate(
-    req.user._id,
-    { $push: { savedRecipes: req.body } }.exec((err, userModify) => {
-      if (!userModify) {
-        res.status(400).json({ message: 'User not found' })
-      }
-      if (err) {
-        res.status(404).json(err)
-        return
-      }
-      res.status(200).json(userModify)
-    }))
-}
-const addMenuItem = function (req, res) {
-  User.findByIdAndUpdate(
-    req.user._id,
-    { $push: { menu: req.body } }.exec((err, userModify) => {
-      if (!userModify) {
-        res.status(400).json({ message: 'User not found' })
-      }
-      if (err) {
-        res.status(404).json(err)
-        return
-      }
-      res.status(200).json(userModify)
-    }))
+const getCredentials = async (req, res) => {
+  const { email: _email } = req.body
+  console.log(_email)
+  const { username, email, salt, hash } = await User.findOne({ email: _email })
+  res.status(200).json({ username, email, salt, hash })
 }
 
-const modifyMenu = function (req, res) {
-  User.findByIdAndUpdate(
-    req.user._id,
-    { menu: req.body }.exec((err, userModify) => {
-      if (!userModify) {
-        res.status(400).json({ message: 'User not found' })
-      }
-      if (err) {
-        res.status(404).json(err)
-        return
-      }
-      res.status(200).json(userModify)
-    }))
+const getCredentialsById = async (req, res) => {
+  const { id } = req.body
+  const { username, email, salt, hash } = await User.findById({ _id: id })
+  res.status(200).json({ username, email, salt, hash })
 }
 
-const deleteUser = function (req, res) {
-  Rec.findByIdAndDelete(req.user._id).exec((err, userDeleted) => {
-    if (!userDeleted) {
-      res.status(400).json({ message: 'User not found' })
-    }
-    if (err) {
-      res.status(404).json(err)
-      return
-    }
-    res.status(200)
-  })
+const deleteAccount = async (req, res) => {
+  const { email } = req.body
+  const user = await User.deleteOne({ email })
+  res.status(200).json(user)
 }
-const getDailyBuy = function (req, res) {}
+
 const getUser = async (req, res) => {
-  const values = {
-    name: 1,
-    height: 1,
-    birth: 1,
-    email: 1,
-    diet: 1
-  }
-  User
-    .findById(req.user._id)
-    .select(values)
-    .exec((err, recipes) => {
-      if (!recipes) {
-        res.status(200).json({ message: 'Not recipes yet' })
-        return
-      } else if (err) {
-        res.status(404).json(err)
-        return
-      }
-      res.status(200).json(recipes)
-    })
+  const { email } = req.query
+  const user = await User.findOne({ email })
+    .populate('saved_recipes')
+    .populate({ path: 'menus.recipes', model: 'Recipe' })
+  res.status(200).json(user)
 }
+
+const connectAccount = async (req, res) => {
+  const { email, account: _account } = req.body
+  let user = await User.findOne({ email })
+  if (user === null || user === undefined) {
+    res.status(404).json({ message: 'usuario no encontrados' })
+    return
+  }
+  const accounts = user.accounts.filter(item => item.provider === _account.provider)
+  if (accounts.length > 0) {
+    res.status(400).json({ message: 'cuenta ya vinculada' })
+    return
+  }
+  user = await User.findOneAndUpdate({ email }, { $push: { accounts: _account } })
+  user = await Account.create(_account)
+  res.status(200).json(user)
+}
+
+const disconnectAccount = async (req, res) => {
+  const { email, provider } = req.body
+  res.status(200).json({ email, provider })
+}
+
+const getStats = async (req, res) => {
+  const { email } = req.query
+  // const { menus } = await User.findOne({ email }).populate('Recipe')
+  const data = await User.findOne({ email }).populate('Recipe')
+  // const temp = menus.map(item => {
+  //   return {
+  //     date: item.date,
+  //     recipes: item.recipes.map(r => r.recipe)
+  //   }
+  // })
+
+  res.status(200).json({ data })
+}
+const addWeight = async (req, res) => {
+  const { email, weight } = req.body
+  const data = await User.findOne(
+    email,
+    { $push: { weight: weight } }
+    , { new: true })
+  res.status(200).json(data)
+}
+
+const getMenus = async (req, res) => {
+  const { email } = req.query
+  const data = await User.findOne({ email }).populate({
+    path: 'menus',
+    populate: {
+      path: 'recipes',
+      model: 'Recipe'
+    }
+  })
+  res.status(200).json({ data })
+}
+
 module.exports = {
-  getStorage,
-  getMenu,
-  modify,
-  addWeight,
-  deleteUser,
-  getDailyBuy,
+  createAccount,
+  updateAccount,
+  getCredentials,
+  getCredentialsById,
+  deleteAccount,
   getUser,
-  addStorage,
-  addMenuItem,
-  modifyMenu
+  connectAccount,
+  disconnectAccount,
+  getStats,
+  addWeight,
+  getMenus
 }

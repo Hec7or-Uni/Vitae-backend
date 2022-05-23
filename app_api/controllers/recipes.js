@@ -1,17 +1,22 @@
 const jsPDF = require('jspdf')
 const mongoose = require('mongoose')
-const Rec = mongoose.model('Recipe')
-const spoon = require('./spoon')
-const datos = require('./data.js')
+const Recipe = mongoose.model('Recipe')
+const spoon = require('../../lib/spoonacular')
+const logger = require('../../logs/logger')
+const datos = {}
 
-const recipeCreate = function (req, res) {
-  if (req.body.spoonId !== 0) {
-    // Rec.findOne()
+const recipeCreate = (req, res) => {
+  if (req.body.spoonId && Recipe.findOne({ spoonId: req.body.spoonId })) {
+    res.status(200).json({ message: 'Already created' })
+    return
   }
-  Rec.create(
-    req.body
-    , (err, recipe) => {
+  logger.info({ label: '/inventory', message: 'Create' })
+  req.body.spoonId = req.body.id
+  Recipe.create(
+    req.body,
+    (err, recipe) => {
       if (err) {
+        logger.err({ label: '/inventory', message: err })
         res.status(400).json(err)
       } else {
         res.status(201).json(recipe)
@@ -19,80 +24,83 @@ const recipeCreate = function (req, res) {
     })
 }
 
-const recipeCreateMultiple = function (req, res) {
-  Rec.insertMany(
-    req.body
-    , (err, recipe) => {
-      if (err) {
-        res.status(400).json(err)
-      } else {
-        res.status(201).json(recipe)
+const recipeCreateMultiple = (req, res) => {
+  logger.info({ label: '/inventory', message: 'Create multiple' })
+  Recipe.insertMany(req.body.recipes, (err, recipe) => {
+    if (err) {
+      logger.err({ label: '/inventory', message: err })
+      res.status(400).json(err)
+    } else {
+      res.status(201).json(recipe)
+    }
+  })
+}
+
+const recipeReadOne = (req, res) => {
+  const { spoonId } = req.query
+  logger.info({ label: '/inventory', message: 'Get recipe:' + spoonId })
+  Recipe
+    .findOne({ spoonId: Number(spoonId) })
+    .exec((err, recipe) => {
+      if (!recipe) {
+        // logger.err({ label: '/inventory', message: 'Recipe not found' })
+        // Fetch recipe from spoonacular
+        res.status(404).json({ message: 'Recipe not found' })
+        return
+      } else if (err) {
+        // logger.err({ label: '/inventory', message: err })
+        res.status(404).json(err)
+        return
       }
+      res.status(200).json(recipe)
     })
 }
 
-const recipeReadOne = function (req, res) {
-  if (req.query && req.query.recipeId) {
-    Rec
-      .findById(req.query.recipeId)
-      .exec((err, recipe) => {
-        if (!recipe) {
-          res.status(404).json({ message: 'Recipe not found' })
-          return
-        } else if (err) {
-          res.status(404).json(err)
-          return
-        }
-        res.status(200).json(recipe)
-      })
-  } else {
-    res.status(404).json({ message: 'No id in request' })
-  }
-}
-
-const getRandomRecipe = async function (req, res) {
-  console.log('aqui llego')
-  const data = await spoon.getRecipes()
+const getRandomRecipe = async (req, res) => {
+  logger.info({ label: '/inventory/random-recipes', message: 'random-recipe' })
+  let { recipes } = await spoon.getRecipes()
+  recipes = recipes.map(recipe => {
+    return {
+      ...recipe,
+      spoonId: recipe.id
+    }
+  })
+  recipes = await Recipe.insertMany(recipes, { continueOnError: true })
   res
     .status(200)
-    .json(data)
-  // console.log(res)
-  console.log('de aqui salgo')
-  console.log(data)
-  // Rec
-  //  .create(data)
-}
-
-const searchRecipe = async function (req, res) {
-  const data = await spoon.searchRecipes('rice')
-  res
-    .status(200)
-    .json(data)
-  console.log(res)
-  // Rec
-  //  .create(data)
-}
-
-const randomQuote = async function (req, res) {
-  const data = await spoon.getQuote()
-  res
-    .status(200)
-    .json(data)
-  console.log(res)
+    .json(recipes)
 }
 
 const nutrients = async function (req, res) {
+  logger.info({ label: '/inventory/', message: 'nutrients' })
   const data = await spoon.getNutrition(req)
   res
     .status(200)
     .json(data)
-  console.log(res)
 }
 
-const recipeReadAll = function (req, res) {
+const searchRecipe = async (req, res) => {
+  logger.info({ label: '/inventory', message: 'search-recipe:' + req.search })
+  const data = await spoon.searchRecipes('rice')
+  res
+    .status(200)
+    .json(data)
+}
+
+const randomQuote = async (req, res) => {
+  logger.info({ label: '/inventory', message: 'randomQuote:' })
+  const data = await spoon.getQuote()
+  res
+    .status(200)
+    .json(data)
+}
+
+const recipeReadAll = (req, res) => {
+  logger.info({ label: '/inventory', message: 'recipeReadAll:' + req.params.quantity })
   if (req.params && req.params.quantity) {
-    Rec.find().limit(req.params.quantity).exec((err, recipes) => {
+    Recipe.find().limit(req.params.quantity).exec((err, recipes) => {
       if (err) {
+        logger.err({ label: '/inventory', message: err })
         res.status(404).json(err)
       }
       res.status(200).json(recipes)
@@ -100,9 +108,11 @@ const recipeReadAll = function (req, res) {
   }
 }
 
-const recipeModify = function (req, res) {
-  Rec.findByIdAndUpdate(req.body.id, req.body, { new: true }.exec((err, userModify) => {
+const recipeModify = (req, res) => {
+  logger.info({ label: '/inventory', message: 'modify:' + req.body._id })
+  Recipe.findByIdAndUpdate(req.body.id, req.body, { new: true }.exec((err, userModify) => {
     if (err) {
+      logger.err({ label: '/inventory', message: err })
       res.status(404).json(err)
       return
     }
@@ -110,9 +120,11 @@ const recipeModify = function (req, res) {
   }))
 }
 
-const recipeDelete = function (req, res) {
-  Rec.findByIdAndDelete(req.body.i).exec((err, recipes) => {
+const recipeDelete = (req, res) => {
+  logger.info({ label: '/inventory', message: 'delete:' + req.body._id })
+  Recipe.findByIdAndDelete(req.body.i).exec((err, recipes) => {
     if (err) {
+      logger.err({ label: '/inventory', message: err })
       res.status(404).json(err)
       return
     }
@@ -178,13 +190,13 @@ module.exports = {
   randomQuote,
   getRandomRecipe,
   generateList,
+  nutrients,
   recipeCreate,
   recipeReadOne,
   recipeReadAll,
   recipeModify,
   recipeDelete,
   recipeCreateMultiple,
-  nutrients,
   generateListQR,
   notDefinedFunct
 }

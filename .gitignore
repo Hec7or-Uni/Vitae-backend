@@ -1,9 +1,9 @@
 # Logs
-logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+--fix/_logs
 
 # Runtime data
 pids
@@ -33,8 +33,10 @@ bower_components
 build/Release
 
 # Dependency directories
-node_modules/
-jspm_packages/
+node_modules/*
+jspm_packages/*
+!node_modules/next-auth
+package-lock.json
 
 # Typescript v1 declaration files
 typings/
@@ -56,9 +58,3 @@ typings/
 
 # dotenv environment variables file
 .env
-
-# next.js build output
-.next
-
-# api Token
-app_api/controllers/spoonToken.js
