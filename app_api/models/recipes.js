@@ -1,16 +1,27 @@
 const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
-  createdOn: { type: Date, default: Date.now },
+  username: String,
   commentText: String,
-  username: String
-})
+  response: String
+}, { timestamps: true })
 
 const ingredientSchema = new mongoose.Schema({
-  title: String,
+  name: String,
   image: String,
-  quantity: String
+  amount: String,
+  original: String,
+  unit: String
 })
+
+const stepsSchema = new mongoose.Schema({
+  name: String,
+  steps: [{
+    number: Number,
+    step: String
+  }]
+})
+
 const recipeSchema = new mongoose.Schema({
   spoonId: Number,
   title: String,
@@ -19,8 +30,24 @@ const recipeSchema = new mongoose.Schema({
   healthScore: Number,
   spoonacularScore: Number,
   instructions: String,
-  ingredients: [ingredientSchema],
-  commentSchema: [commentSchema]
+  summary: String,
+  nutrition: [{
+    name: String,
+    value: String
+  }],
+  extendedIngredients: [ingredientSchema],
+  comments: [commentSchema],
+  analyzedInstructions: [stepsSchema]
+})
+recipeSchema.index({ spoonId: 1 }, { unique: true })
+
+const menuSchema = new mongoose.Schema({
+  name: String,
+  date: String,
+  recipes: [{ type: mongoose.Types.ObjectId, ref: 'Recipe' }]
 })
 
-mongoose.model('Recipe', recipeSchema)
+module.export = mongoose.model('Ingredient', ingredientSchema)
+module.export = mongoose.model('Comment', commentSchema)
+module.export = mongoose.model('Recipe', recipeSchema)
+module.export = mongoose.model('Menus', menuSchema)

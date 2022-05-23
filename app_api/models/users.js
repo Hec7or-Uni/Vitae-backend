@@ -1,37 +1,53 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcryptjs')
-const { Schema } = mongoose
+
+const AccountSchema = new mongoose.Schema({
+  userId: String,
+  type: String,
+  provider: String,
+  providerAccountId: String,
+  refresh_token: String,
+  access_token: String,
+  expires_at: Number,
+  token_type: String,
+  scope: String,
+  id_token: String,
+  session_state: String,
+  oauth_token_secret: String,
+  oauth_token: String
+})
+
+const SessionSchema = new mongoose.Schema({
+  id: String,
+  sessionToken: String,
+  userId: String,
+  expire: Date
+})
 
 const UserSchema = new mongoose.Schema({
+  name: String,
+  admin: Boolean,
+  lastname: String,
   username: String,
   email: String,
   salt: String,
-  password: String,
-  savedRecipes: { type: [Schema.Types.ObjectId], ref: 'Recipe' }
-})
-// Unique index for username and email
-UserSchema.index({ username: 1 }, { unique: true })
-UserSchema.index({ email: 1 }, { unique: true })
-// Hashing the password before saving it
-UserSchema.pre('save', function (next) {
-  const user = this
-  if (this.isModified('password') || this.isNew) {
-    bcrypt.genSalt(10, function (saltError, salt) {
-      if (saltError) {
-        return next(saltError)
-      } else {
-        bcrypt.hash(user.password, salt, function (hashError, hash) {
-          if (hashError) {
-            return next(hashError)
-          }
-          user.password = hash
-          next()
-        })
-      }
-    })
-  } else {
-    return next()
-  }
-})
+  hash: String,
+  accounts: [AccountSchema],
+  sessions: [SessionSchema],
+  birth: String,
+  height: Number,
+  gender: String,
+  weight: [{
+    weight: Number,
+    date: String
+  }], // Array objetos
+  diet: String,
+  saved_recipes: [{ type: mongoose.Types.ObjectId, ref: 'Recipe' }],
+  menus: [mongoose.model('Menus').schema]
+}, { timestamps: true })
 
-module.exports = mongoose.model('User', UserSchema)
+// Unique constrains
+UserSchema.index({ email: 1 }, { unique: true })
+
+module.export = mongoose.model('Accounts', AccountSchema)
+module.export = mongoose.model('User', UserSchema)
+module.export = mongoose.model('Session', SessionSchema)
