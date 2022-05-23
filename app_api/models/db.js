@@ -1,9 +1,12 @@
 require('dotenv').config()
 require('./recipes')
 require('./users')
+require('./stadistics')
+require('winston-mongodb')
 const mongoose = require('mongoose')
+const winston = require('winston')
 const dbURI = process.env.MONGODB_URI
-
+winston.add(new winston.transports.MongoDB({ db: dbURI }))
 // Opened a Mongoose connection at application startup
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 

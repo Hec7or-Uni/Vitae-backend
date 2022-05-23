@@ -15,9 +15,11 @@
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "date-fns": "^2.28.0",
     "debug": "~2.6.9",
     "dotenv": "^16.0.0",
     "express": "~4.16.1",
+    "express-session": "^1.17.3",
     "express-winston": "^4.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.3.0",
@@ -26,7 +28,8 @@
     "node-fetch": "^2.6.7",
     "nodemailer": "^6.7.5",
     "swagger-jsdoc": "^6.2.0",
-    "winston": "^3.7.2"
+    "winston": "^3.7.2",
+    "winston-mongodb": "^5.0.7"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

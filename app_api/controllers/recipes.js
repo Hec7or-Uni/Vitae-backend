@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Recipe = mongoose.model('Recipe')
 const spoon = require('../../lib/spoonacular')
-const logger = require('../../logs/logger')
+const logger = require('../../lib/logger')
 
 const recipeCreate = (req, res) => {
   if (req.body.spoonId && Recipe.findOne({ spoonId: req.body.spoonId })) {

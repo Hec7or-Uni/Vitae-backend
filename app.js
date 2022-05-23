@@ -1,12 +1,13 @@
 require('./app_api/models/db')
 const express = require('express')
-const logger = require('morgan')
+const logger = require('./lib/logger')
 const cookieParser = require('cookie-parser')
 const swaggerJSDoc = require('swagger-jsdoc')
 const cors = require('cors')
 const path = require('path')
 const routes = './app_api/routes/'
 const { authenticate } = require('./lib/auth')
+const { addVisit } = require('./lib/stadistics')
 const usersRouter = require(routes + 'user')
 const inventoryRoutes = require(routes + 'inventory')
 const newsletterRouter = require(routes + 'newsletter')
@@ -50,15 +51,16 @@ app.use(cors({
   }
 }))
 
-app.use(logger('dev'))
+// app.use(logger('dev'))
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
-
+// Combina morgan with winston
+// app.use(require('morgan')('combined', { stream: logger.stream }))
 // Routes
 app.set('base', '/api')
-app.use('/api/user', usersRouter)
+app.use('/api/user', addVisit, usersRouter)
 app.use('/api/inventory', authenticate, inventoryRoutes)
 app.use('/api/newsletter', newsletterRouter)
 app.use('/api/recovery', recoveryRoutes)
@@ -66,5 +68,7 @@ app.get('/swagger.json', function (req, res) {
   res.setHeader('Content-Type', 'application/json')
   res.send(swaggerSpec)
 })
-
+app.get('/counter', addVisit, function (req, res) {
+  res.status(200)
+})
 module.exports = app
