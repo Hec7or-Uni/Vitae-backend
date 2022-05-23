@@ -1,6 +1,8 @@
+const jsPDF = require('jspdf')
 const mongoose = require('mongoose')
 const Rec = mongoose.model('Recipe')
 const spoon = require('./spoon')
+const datos = require('./data.js')
 
 const recipeCreate = function (req, res) {
   if (req.body.spoonId !== 0) {
@@ -79,6 +81,14 @@ const randomQuote = async function (req, res) {
   console.log(res)
 }
 
+const nutrients = async function (req, res) {
+  const data = await spoon.getNutrition(req)
+  res
+    .status(200)
+    .json(data)
+  console.log(res)
+}
+
 const recipeReadAll = function (req, res) {
   if (req.params && req.params.quantity) {
     Rec.find().limit(req.params.quantity).exec((err, recipes) => {
@@ -118,14 +128,63 @@ const notDefinedFunct = function (req, res) {
   console.log('function not implemented')
 }
 
+const generateList = async function (req, res) {
+  const dict = new Map()
+  let item = {}
+  const ingredientes = datos.data.recipes[0].extendedIngredients
+  for (const value of ingredientes) {
+    item = {}
+    item = { nombre: value.name, cantidad: value.amount, unidad: value.unit }
+    if (dict.has(value.id)) {
+      item.cantidad = dict.get(value.id).cantidad + value.amount
+    }
+    dict.set(value.id, item)
+  }
+  const obj = Object.fromEntries(dict)
+  res
+    .status(207)
+    .json(obj)
+}
+
+const generateListQR = async function (req, res) {
+  const dict = new Map()
+  let item = {}
+  const ingredientes = datos.data.recipes[0].extendedIngredients
+  for (const value of ingredientes) {
+    item = {}
+    item = { nombre: value.name, cantidad: value.amount, unidad: value.unit }
+    if (dict.has(value.id)) {
+      item.cantidad = dict.get(value.id).cantidad + value.amount
+    }
+    dict.set(value.id, item)
+  }
+  const obj = Object.fromEntries(dict)
+  const doc = jsPDF.jsPDF()
+  let lista = 'My shopping list \n\n================================\n'
+  for (const [key, i] of dict) {
+    console.log(key)
+    lista = lista + '\n [   ]  ' + +i.cantidad + ' ' + i.unidad + ' of ' + i.nombre + '\n'
+  }
+  console.log(lista)
+  doc.text(lista, 20, 20)
+  doc.save('a4.pdf')
+  res
+    .status(207)
+    .json(obj)
+}
+
 module.exports = {
   searchRecipe,
   randomQuote,
   getRandomRecipe,
+  generateList,
   recipeCreate,
   recipeReadOne,
   recipeReadAll,
   recipeModify,
   recipeDelete,
-  recipeCreateMultiple
+  recipeCreateMultiple,
+  nutrients,
+  generateListQR,
+  notDefinedFunct
 }

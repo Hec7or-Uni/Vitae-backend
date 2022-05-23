@@ -1,6 +1,7 @@
 // import fetch from 'node-fetch'
 // import key from './spoonToken.js'
 
+const { datos } = require('./data.js')
 // const key = require('./spoonToken')
 require('dotenv').config()
 const key = process.env.key
@@ -52,8 +53,24 @@ const searchRecipes = async function (query) {
 
 // get receta
 const getRecipes = async function (query) {
-  const params = new URLSearchParams({ apiKey: key, tags: dieta, number: '12', limitLicense: 'true', instructionsRequired: true, addRecipeInformation: true, addRecipeNutrition: true })
+  const params = new URLSearchParams({ apiKey: key, tags: dieta, number: '1', limitLicense: 'true', instructionsRequired: true, addRecipeInformation: true, addRecipeNutrition: true })
   const url = `${addr}/recipes/random?${params.toString()}`
+  const response = await fetch(url, {
+    method: 'get',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+
+  const data = response.json()
+  console.log(data)
+  return data
+}
+
+// get receta
+const getNutrition = async function (query) {
+  const params = new URLSearchParams({ apiKey: key })
+  const url = `${addr}/recipes/7227/nutritionWidget.json?${params.toString()}`
   const response = await fetch(url, {
     method: 'get',
     headers: {
@@ -99,11 +116,18 @@ const getSubstitute = async function (query) {
   console.log(data)
 }
 
+const generateList = async function (query) {
+  // getRecipes()
+  return datos
+}
+
 module.exports = {
   searchRecipes, // Busca 10 recetas con query
   getRecipes, // Trae 10 recetas aleatorias
   // RecipeById, // Obtienes receta a partir del id
   getQuote, // Fun fact sobre comida
+  getNutrition,
+  generateList,
   getSubstitute
 }
 

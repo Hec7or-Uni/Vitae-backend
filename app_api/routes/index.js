@@ -107,9 +107,13 @@ router
 */
 router
   .route('/test')
-  .get(ctrlRecipes.searchRecipe)
+  .get(ctrlRecipes.generateListQR)
   .post(ctrlRecipes.notDefinedFunct)
   .delete(ctrlRecipes.notDefinedFunct)
   .put(ctrlRecipes.notDefinedFunct)
+
+router
+  .route('/nutrientInfo')
+  .get(ctrlRecipes.nutrients)
 
 module.exports = router

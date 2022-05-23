@@ -51,6 +51,10 @@ router
 // test
 router
   .route('/test')
-  .get(ctrlRecipes.searchRecipe)
+  .get(ctrlRecipes.generateListQR)
+
+router
+  .route('/nutrientInfo')
+  .get(ctrlRecipes.nutrients)
 
 module.exports = router
