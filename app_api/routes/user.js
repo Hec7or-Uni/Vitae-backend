@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const ctrlUsers = require('../controllers/users')
+const ctrlStadistics = require('../controllers/admin')
+const { addVisit } = require('../../lib/stadistics')
 const ctrlComments = require('../controllers/comments')
 const http = require('../../lib/http')
 const { authenticate } = require('../../lib/auth')
@@ -61,4 +63,7 @@ router
   .put(http.notImplemented) // .put(ctrlComments.putComment)
   .delete(http.notImplemented) // .delete(ctrlComments.deleteComment)
 
+router
+  .get('/statistics', ctrlStadistics.stadistics)
+  .put('/statistics', addVisit)
 module.exports = router

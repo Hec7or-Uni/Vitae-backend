@@ -1,6 +1,7 @@
 require('dotenv').config()
 require('./recipes')
 require('./users')
+require('./stadistics')
 const mongoose = require('mongoose')
 const dbURI = process.env.MONGODB_URI
 
