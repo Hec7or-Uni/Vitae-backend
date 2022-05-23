@@ -73,7 +73,7 @@ const recipeReadOne = async (req, res) => {
 
 const getRandomRecipe = async (req, res) => {
   logger.info({ label: '/inventory/random-recipes', message: 'random-recipe' })
-  let { recipes } = await spoon.getRecipes()
+  let { recipes } = await spoon.getRecipes({ dieta: 'vegan' })
   recipes = recipes.map(recipe => {
     return {
       ...recipe,
@@ -96,7 +96,8 @@ const nutrients = async function (req, res) {
 
 const searchRecipe = async (req, res) => {
   logger.info({ label: '/inventory', message: 'search-recipe:' + req.search })
-  const data = await spoon.searchRecipes('rice')
+  const query = { query: req.query, dieta: req.diet }
+  const data = await spoon.searchRecipes(query)
   res
     .status(200)
     .json(data)
