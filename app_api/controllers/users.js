@@ -1,66 +1,119 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Account = mongoose.model('Accounts')
+const winston = require('../../logs/logger')
 
 const createAccount = async (req, res) => {
   await User.create(req.body)
     .then((user) => {
-      res
-        .status(200)
-        .json(user)
+      winston.info({ label: 'createAccount - OK', message: user })
+      res.status(201).json(user)
     })
     .catch(err => {
-      res
-        .status(400)
-        .json(err)
+      winston.error({ label: 'createAccount - ERROR', message: err })
+      res.status(500).json(err)
     })
 }
 
 const updateAccount = async (req, res) => {
   const { email } = req.body
-  const user = await User.findOneAndUpdate({ email }, req.body)
-  res.status(200).json(user)
+  await User.findOneAndUpdate({ email }, req.body)
+    .then(user => {
+      winston.info({ label: 'updateAccount - OK', message: user })
+      res.status(204).json(user)
+    })
+    .catch(err => {
+      winston.error({ label: 'updateAccount - ERROR', message: err })
+      res.status(500).json(err)
+    })
 }
 
 const getCredentials = async (req, res) => {
   const { email: _email } = req.body
-  console.log(_email)
-  const { username, email, salt, hash } = await User.findOne({ email: _email })
-  res.status(200).json({ username, email, salt, hash })
+  await User.findOne({ email: _email })
+    .then(user => {
+      winston.info({ label: 'getCredentials - OK', message: user })
+      try {
+        const { username, email, salt, hash, rol } = user
+        res.status(200).json({ username, email, salt, hash, rol })
+      } catch (err) {
+        winston.error({ label: 'getCredentials - ERROR', message: err })
+        res.status(500).json(err)
+      }
+    })
+    .catch(err => {
+      winston.error({ label: 'getCredentials - ERROR', message: err })
+      res.status(500).json(err)
+    })
 }
 
 const getCredentialsById = async (req, res) => {
   const { id } = req.body
-  const { username, email, salt, hash } = await User.findById({ _id: id })
-  res.status(200).json({ username, email, salt, hash })
+  await User.findById({ _id: id })
+    .then(user => {
+      winston.info({ label: 'getCredentialsById - OK', message: user })
+      try {
+        const { username, email, salt, hash } = user
+        res.status(200).json({ username, email, salt, hash })
+      } catch (err) {
+        winston.error({ label: 'getCredentialsById - ERROR', message: err })
+        res.status(500).json(err)
+      }
+    }).catch(err => {
+      winston.error({ label: 'getCredentialsById - ERROR', message: err })
+      res.status(500).json(err)
+    })
 }
 
 const deleteAccount = async (req, res) => {
   const { email } = req.body
-  const user = await User.deleteOne({ email })
-  res.status(200).json(user)
+  await User.deleteOne({ email })
+    .then(user => {
+      winston.info({ label: 'deleteAccount - OK', message: user })
+      res.status(204).json(user)
+    })
+    .catch(err => {
+      winston.error({ label: 'deleteAccount - ERROR', message: err })
+      res.status(500).json(err)
+    })
 }
 
 const getUser = async (req, res) => {
   const { email } = req.query
-  const user = await User.findOne({ email })
+  await User.findOne({ email })
     .populate('saved_recipes')
     .populate({ path: 'menus.recipes', model: 'Recipe' })
-  res.status(200).json(user)
+    .then(user => {
+      if (user === null) {
+        winston.error({ label: 'getUser - ERROR', message: 'No user' })
+        res.status(500).json({ message: 'No user' })
+        return
+      }
+      winston.info({ label: 'getUser - OK', message: user })
+      console.log(user)
+      res.status(200).json(user)
+    })
+    .catch(err => {
+      winston.error({ label: 'getUser - ERROR', message: err })
+      res.status(500).json(err)
+    })
 }
 
 const connectAccount = async (req, res) => {
   const { email, account: _account } = req.body
   let user = await User.findOne({ email })
+
   if (user === null || user === undefined) {
-    res.status(404).json({ message: 'usuario no encontrados' })
+    res.status(404).json({ err: 'usuario no encontrados' })
     return
   }
+
   const accounts = user.accounts.filter(item => item.provider === _account.provider)
   if (accounts.length > 0) {
-    res.status(400).json({ message: 'cuenta ya vinculada' })
+    res.status(400).json({ err: 'cuenta ya vinculada' })
     return
   }
+
   user = await User.findOneAndUpdate({ email }, { $push: { accounts: _account } })
   user = await Account.create(_account)
   res.status(200).json(user)
@@ -80,18 +133,6 @@ const addWeight = async (req, res) => {
   res.status(200).json(data)
 }
 
-const getMenus = async (req, res) => {
-  const { email } = req.query
-  const data = await User.findOne({ email }).populate({
-    path: 'menus',
-    populate: {
-      path: 'recipes',
-      model: 'Recipe'
-    }
-  })
-  res.status(200).json({ data })
-}
-
 module.exports = {
   createAccount,
   updateAccount,
@@ -101,6 +142,5 @@ module.exports = {
   getUser,
   connectAccount,
   disconnectAccount,
-  addWeight,
-  getMenus
+  addWeight
 }

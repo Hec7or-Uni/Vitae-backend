@@ -2,8 +2,7 @@ const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
   username: String,
-  commentText: String,
-  response: String
+  commentText: String
 }, { timestamps: true })
 
 const ingredientSchema = new mongoose.Schema({

@@ -2,14 +2,11 @@ const mongoose = require('mongoose')
 const Comment = mongoose.model('Comment')
 const Recipe = mongoose.model('Recipe')
 
-const getComments = function (req, res) {}
-
 const createComment = async (req, res) => {
   const { id: _id, comment: _comment } = req.body
   const commentCreated = await Comment.create(_comment)
   const data = await Recipe.findByIdAndUpdate(
-    _id,
-    { $push: { commentSchema: commentCreated } }
+    _id, { $push: { commentSchema: commentCreated } }
   )
   res.status(200).json(data)
 }
@@ -35,7 +32,6 @@ const createComment = async (req, res) => {
 // }
 
 module.exports = {
-  getComments,
   createComment
   // putComment,
   // deleteComment

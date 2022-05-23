@@ -6,16 +6,16 @@ const http = require('../../lib/http')
 const { authenticate } = require('../../lib/auth')
 
 router
-  .route('/signin')
+  .route('/signup')
   .get(http.notImplemented)
-  .post(ctrlUsers.getCredentials)
+  .post(ctrlUsers.createAccount)
   .put(http.notImplemented)
   .delete(http.notImplemented)
 
 router
-  .route('/signup')
+  .route('/signin')
   .get(http.notImplemented)
-  .post(ctrlUsers.createAccount)
+  .post(ctrlUsers.getCredentials)
   .put(http.notImplemented)
   .delete(http.notImplemented)
 
@@ -56,9 +56,9 @@ router
 
 router
   .route('/comments', authenticate)
-  .get(ctrlComments.getComments)
+  .get(http.notImplemented)
   .post(ctrlComments.createComment)
-  // .put(ctrlComments.putComment)
-  // .delete(ctrlComments.deleteComment)
+  .put(http.notImplemented) // .put(ctrlComments.putComment)
+  .delete(http.notImplemented) // .delete(ctrlComments.deleteComment)
 
 module.exports = router

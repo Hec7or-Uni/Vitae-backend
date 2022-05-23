@@ -2,13 +2,14 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const jwt = require('jsonwebtoken')
 const { sendEmail } = require('../../lib/emails')
+const winston = require('../../logs/logger')
 
 const recover = async (req, res) => {
   let { email } = req.query
   email = decodeURIComponent(email)
   const user = await User.findOne({ email })
   if (!user) {
-    res.status(400)
+    res.status(400).json({ message: 'No user' })
     return
   }
 
@@ -19,13 +20,17 @@ const recover = async (req, res) => {
     email: email
   }
   const token = jwt.sign(payload, secret, { expiresIn: '15m' })
-  // const link = `${process.env.NEXT_PUBLIC_URL}/recovery/reset-password/${user.id}/${token}`
   const link = `http://localhost:3000/recovery/reset-password/${user.id}/${token}`
 
-  const emailSent = await sendEmail(user.email, 'Recuperacion de contraseña', link)
-    .catch(err => console.error(err))
-
-  res.status(200).json(emailSent)
+  await sendEmail(user.email, 'Recuperacion de contraseña', link)
+    .then(emailSent => {
+      winston.info({ label: 'recover - OK', message: emailSent })
+      res.status(200).json(emailSent)
+    })
+    .catch(err => {
+      winston.error({ label: 'recover - ERROR', message: err })
+      res.status(500).json(err)
+    })
 }
 
 module.exports = {
