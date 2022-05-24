@@ -3,7 +3,6 @@ const User = mongoose.model('User')
 
 const saveMenu = async (req, res) => {
   const { email, menu } = req.body
-  console.log(email, menu)
   const user = await User.findOneAndUpdate(
     { email },
     { $push: { menus: menu } },
