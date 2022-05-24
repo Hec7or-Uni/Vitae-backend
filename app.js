@@ -1,6 +1,5 @@
 require('./app_api/models/db')
 const express = require('express')
-const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const swaggerJSDoc = require('swagger-jsdoc')
 const cors = require('cors')
@@ -49,7 +48,7 @@ app.use(cors({
   }
 }))
 
-app.use(logger('dev'))
+// app.use(logger('dev'))
 app.use(express.json())
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: false }))

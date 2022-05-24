@@ -1,6 +1,5 @@
 const { createLogger, format, transports } = require('winston') // for transports.Console
 const path = require('path')
-// const { timeStamp } = require('console')
 const { timestamp, printf, combine } = format
 
 const myFormat = printf(({ level, message, label, timestamp }) => {

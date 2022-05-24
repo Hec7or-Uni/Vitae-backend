@@ -55,6 +55,10 @@ const recipeReadOne = async (req, res) => {
 const getRandomRecipe = async (req, res) => {
   winston.info({ label: 'getRandomRecipe - OK', message: 'random-recipe' })
   const user = await User.findOne({ email: req.query.email })
+  if (!user.diet) {
+    res.status(400).json({ error: 'no diet' })
+    return
+  }
   let { recipes } = await spoon.getRecipes({ dieta: user.diet })
   recipes = recipes.map(recipe => {
     return {
