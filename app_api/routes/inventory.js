@@ -3,17 +3,16 @@ const router = express.Router()
 const ctrlRecipes = require('../controllers/recipes')
 const ctrlInventory = require('../controllers/inventory')
 const http = require('../../lib/http')
+const { authenticate } = require('../../lib/auth')
 
-router.get('/nutrientInfo', ctrlRecipes.nutrients)
 /**
-* @swagger
-* /recipes:
+* @openapi
+* /api/inventory:
 *   get:
 *     description: Return a recipe
 *     parameters:
 *     - name: id
 *       description: id of the recipe
-*       in: formData
 *       required: true
 *       type: Number
 *     responses:
@@ -22,95 +21,115 @@ router.get('/nutrientInfo', ctrlRecipes.nutrients)
 *   post:
 *     description: Post a recipe
 *     responses:
-*       407:
-*       description: Post a recipe
+*       204:
+*       description: Recipe posted
 *   delete:
-*     description: Function not implemented
+*     description: Delete a recipe
+*     parameters:
+*     - name: id
+*       description: id of the recipe
+*       required: true
+*       type: Number
 *     responses:
-*       407:
-*       description: Nothing implemented
+*       404:
+*       description: Error print
 *   put:
-*     description: Function not implemented
+*     description: Modify a recipe
 *     responses:
-*       407:
-*       description: Nothing implemented
+*       204:
+*       description: Recipe modified
 */
 router
-  .route('/')
+  .route('/', authenticate)
   .get(ctrlRecipes.recipeReadOne)
   .put(ctrlRecipes.recipeModify)
   .post(ctrlRecipes.recipeCreate)
-
-router.get('/discovery', ctrlRecipes.recipeReadAll)
+  .delete(http.notImplemented)
 
 /**
 * @openapi
-* /RandomRecipes:
+* /api/inventory/discovery:
+*   get:
+*     description: Return  recipes for the page discover in database
+*     responses:
+*       200:
+*       description: Returns a json with N recipes
+*/
+router
+  .route('/discovery', authenticate)
+  .get(ctrlRecipes.recipeReadAll)
+  .post(http.notImplemented)
+  .delete(http.notImplemented)
+  .put(http.notImplemented)
+
+/**
+* @openapi
+* /api/inventory/random-recipes:
 *   get:
 *     description: Return random recipes
 *     responses:
 *       200:
-*       description: Returns a json with 12 recipes
-*   post:
-*     description: Function not implemented
-*     responses:
-*       407:
-*       description: Nothing implemented
-*   delete:
-*     description: Function not implemented
-*     responses:
-*       407:
-*       description: Nothing implemented
-*   put:
-*     description: Function not implemented
-*     responses:
-*       407:
-*       description: Nothing implemented
+*       description: Returns a json with N recipes
 */
 router
-  .route('/random-recipes')
+  .route('/random-recipes', authenticate)
   .get(ctrlRecipes.getRandomRecipe)
   .post(http.notImplemented)
   .delete(http.notImplemented)
   .put(http.notImplemented)
 
 /**
-* @openapi
-* /quote:
-*   get:
-*     description: Give a joke or quote about food
-*     responses:
-*       200:
-*       description: Returns a text
-*   post:
-*     description: Function not implemented
-*     responses:
-*       407:
-*       description: Nothing implemented
-*   delete:
-*     description: Function not implemented
-*     responses:
-*       407:
-*       description: Nothing implemented
-*   put:
-*     description: Function not implemented
-*     responses:
-*       407:
-*       description: Nothing implemented
-*/
+  * @openapi
+  * /api/inventory/search-recipes
+  *   post:
+  *     description: Search recipes with a query
+  *     responses:
+  *       200:
+  *       description: menu saved
+  */
 router
-  .route('/quote')
-  .get(ctrlRecipes.randomQuote)
+  .route('/search-recipes', authenticate)
+  .get(ctrlRecipes.searchRecipe)
   .post(http.notImplemented)
   .delete(http.notImplemented)
   .put(http.notImplemented)
 
+/**
+  * @openapi
+  * /api/inventory/save-menu:
+  *   post:
+  *     description: Save a menu
+  *     responses:
+  *       204:
+  *       description: menu saved
+  */
 router
-  .post('/save-menu', ctrlInventory.saveMenu)
-  // .delete('/delete-menu', ctrlInventory.deleteMenu)
+  .route('/save-menu', authenticate)
+  .post(ctrlInventory.saveMenu)
+  .get(http.notImplemented)
+  .delete(http.notImplemented)
+  .put(http.notImplemented)
+
+
+/**
+* @openapi
+* /api/inventory/save-recipe:
+*   post:
+*     description: Save a recipe
+*     responses:
+*       204:
+*       description: Recipe saved to storage
+*/
+router
+  .route('/save-recipe', authenticate)
+  .post(ctrlInventory.saveRecipe)
+  .get(http.notImplemented)
+  .delete(http.notImplemented)
+  .put(http.notImplemented)
+  // .delete('/delete-recipe', ctrlInventory.deleteRecipe)
 
 router
-  .post('/save-recipe', ctrlInventory.saveRecipe)
-  // .delete('/delete-recipe', ctrlInventory.deleteRecipe)
+  .route('/nutrientInfo')
+  .get(ctrlRecipes.nutrients)
 
 module.exports = router
