@@ -79,14 +79,14 @@ router
   .put(http.notImplemented)
 
 /**
-* @openapi
-* /api/inventory/save-menu:
-*   post:
-*     description: Save a menu
-*     responses:
-*       204:
-*       description: menu saved
-*/
+  * @openapi
+  * /api/inventory/search-recipes
+  *   post:
+  *     description: Search recipes with a query
+  *     responses:
+  *       200:
+  *       description: menu saved
+  */
 router
   .route('/search-recipes', authenticate)
   .get(ctrlRecipes.searchRecipe)
@@ -94,6 +94,15 @@ router
   .delete(http.notImplemented)
   .put(http.notImplemented)
 
+/**
+  * @openapi
+  * /api/inventory/save-menu:
+  *   post:
+  *     description: Save a menu
+  *     responses:
+  *       204:
+  *       description: menu saved
+  */
 router
   .route('/save-menu', authenticate)
   .post(ctrlInventory.saveMenu)
