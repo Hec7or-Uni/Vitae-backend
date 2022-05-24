@@ -2,7 +2,8 @@ const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
   creatorEmail: String,
-  content: String
+  content: String,
+  parentId: mongoose.Types.ObjectId
 }, { timestamps: true })
 commentSchema.add({ response: [commentSchema] })
 

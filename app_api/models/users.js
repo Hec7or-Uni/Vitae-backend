@@ -25,7 +25,7 @@ const SessionSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   name: String,
-  admin: Boolean,
+  role: { type: Number, default: 0 },
   lastname: String,
   username: String,
   email: String,

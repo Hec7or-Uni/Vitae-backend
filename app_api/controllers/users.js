@@ -45,8 +45,8 @@ const getCredentials = async (req, res) => {
     .then(user => {
       winston.info({ label: 'getCredentials - OK', message: user })
       try {
-        const { username, email, salt, hash, rol } = user
-        res.status(200).json({ username, email, salt, hash, rol })
+        const { username, email, salt, hash, role } = user
+        res.status(200).json({ username, email, salt, hash, role })
       } catch (err) {
         winston.error({ label: 'getCredentials - ERROR', message: err })
         res.status(500).json(err)
@@ -134,14 +134,6 @@ const disconnectAccount = async (req, res) => {
   res.status(200).json({ email, provider })
 }
 
-const addWeight = async (req, res) => {
-  const { email, weight } = req.body
-  const data = await User.findOne({ email },
-    { $push: { weight: weight } }
-    , { new: true })
-  res.status(200).json(data)
-}
-
 module.exports = {
   createAccount,
   updateAccount,
@@ -150,6 +142,5 @@ module.exports = {
   deleteAccount,
   getUser,
   connectAccount,
-  disconnectAccount,
-  addWeight
+  disconnectAccount
 }

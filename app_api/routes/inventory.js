@@ -59,8 +59,10 @@ const { authenticate } = require('../../lib/auth')
 *       204:
 *       description: Recipe modified
 */
+
 router
-  .route('/', authenticate)
+  .use(authenticate)
+  .route('/')
   .get(ctrlRecipes.recipeReadOne)
   .put(ctrlRecipes.recipeModify)
   .post(ctrlRecipes.recipeCreate)
@@ -79,6 +81,7 @@ router
 *       description: Returns a json with N recipes
 */
 router
+  .use(authenticate)
   .route('/discovery', authenticate)
   .get(ctrlRecipes.recipeReadAll)
   .post(http.notImplemented)
@@ -98,6 +101,7 @@ router
 *       description: Returns a json with N recipes
 */
 router
+  .use(authenticate)
   .route('/random-recipes', authenticate)
   .get(ctrlRecipes.getRandomRecipe)
   .post(http.notImplemented)
@@ -117,6 +121,7 @@ router
   *       description: menu saved
   */
 router
+  .use(authenticate)
   .route('/search-recipes')
   .get(ctrlRecipes.searchRecipe)
   .post(http.notImplemented)
@@ -136,6 +141,7 @@ router
   *       description: menu saved
   */
 router
+  .use(authenticate)
   .route('/save-menu', authenticate)
   .post(ctrlInventory.saveMenu)
   .get(http.notImplemented)
@@ -156,6 +162,7 @@ router
 *       description: Recipe saved to storage
 */
 router
+  .use(authenticate)
   .route('/save-recipe', authenticate) // esto no funciona
   .post(ctrlInventory.saveRecipe)
   .get(http.notImplemented)
