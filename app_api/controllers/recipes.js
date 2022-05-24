@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Recipe = mongoose.model('Recipe')
+const User = mongoose.model('User')
 const spoon = require('../../lib/spoonacular')
 const winston = require('../../logs/logger')
 
@@ -53,7 +54,8 @@ const recipeReadOne = async (req, res) => {
 
 const getRandomRecipe = async (req, res) => {
   winston.info({ label: 'getRandomRecipe - OK', message: 'random-recipe' })
-  let { recipes } = await spoon.getRecipes({ dieta: req.query.dieta })
+  const user = await User.findOne({ email: req.query.email })
+  let { recipes } = await spoon.getRecipes({ dieta: user.diet })
   recipes = recipes.map(recipe => {
     return {
       ...recipe,

@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const Account = mongoose.model('Accounts')
 const winston = require('../../logs/logger')
+const { __TODAY, fromTimestamp } = require('../../lib/dates')
 
 const createAccount = async (req, res) => {
   await User.create(req.body)
@@ -16,10 +17,17 @@ const createAccount = async (req, res) => {
 }
 
 const updateAccount = async (req, res) => {
-  const { email } = req.body
-  await User.findOneAndUpdate({ email }, req.body)
+  const { email, weight, ...data } = req.body
+  await User.findOneAndUpdate({ email }, data, { new: true })
     .then(user => {
+      if (!(user.weight[user.weight.length - 1].date === fromTimestamp(__TODAY))) {
+        // caso para crear un nuevo peso
+        user.weight.push({ weight, date: fromTimestamp(__TODAY) })
+      } else {
+        user.weight[user.weight.length - 1] = { weight, date: fromTimestamp(__TODAY) }
+      }
       winston.info({ label: 'updateAccount - OK', message: user })
+      user = user.save()
       res.status(204).json(user)
     })
     .catch(err => {
@@ -126,8 +134,7 @@ const disconnectAccount = async (req, res) => {
 
 const addWeight = async (req, res) => {
   const { email, weight } = req.body
-  const data = await User.findOne(
-    email,
+  const data = await User.findOne({ email },
     { $push: { weight: weight } }
     , { new: true })
   res.status(200).json(data)

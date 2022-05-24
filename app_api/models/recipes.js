@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
 const commentSchema = new mongoose.Schema({
-  username: String,
-  commentText: String
+  creatorEmail: String,
+  content: String
 }, { timestamps: true })
-commentSchema.add({ response: [commentSchema], _id: false })
+commentSchema.add({ response: [commentSchema] })
 
 const ingredientSchema = new mongoose.Schema({
   name: String,
