@@ -1,8 +1,10 @@
+const jsPDF = require('jspdf')
 const mongoose = require('mongoose')
 const Recipe = mongoose.model('Recipe')
 const User = mongoose.model('User')
 const spoon = require('../../lib/spoonacular')
 const winston = require('../../logs/logger')
+
 
 const recipeCreate = (req, res) => {
   if (req.body.spoonId && Recipe.findOne({ spoonId: req.body.spoonId })) {
@@ -67,9 +69,10 @@ const getRandomRecipe = async (req, res) => {
 }
 
 const searchRecipe = async (req, res) => {
-  const user = await User.findOne({ email: req.query.email })
-  winston.info({ label: '/inventory', message: 'search-recipe:' + req.search })
-  const query = { query: req.query.query, dieta: user.diet }
+  const { email, search } = req.query
+  const user = await User.findOne({ email })
+  winston.info({ label: '/inventory', message: 'search-recipe:' + search })
+  const query = { query: search, dieta: user.diet }
   const data = await spoon.searchRecipes(query)
   res.status(200).json(data)
 }
@@ -111,6 +114,59 @@ const recipeDelete = (req, res) => {
   })
 }
 
+const notDefinedFunct = function (req, res) {
+  const data = { message: 'function not implemented' }
+  res
+    .status(407)
+    .json(data)
+  console.log('function not implemented')
+}
+
+const generateList = async function (req, res) {
+  const dict = new Map()
+  let item = {}
+  const ingredientes = datos.data.recipes[0].extendedIngredients
+  for (const value of ingredientes) {
+    item = {}
+    item = { nombre: value.name, cantidad: value.amount, unidad: value.unit }
+    if (dict.has(value.id)) {
+      item.cantidad = dict.get(value.id).cantidad + value.amount
+    }
+    dict.set(value.id, item)
+  }
+  const obj = Object.fromEntries(dict)
+  res
+    .status(207)
+    .json(obj)
+}
+
+const generateListQR = async function (req, res) {
+  const dict = new Map()
+  let item = {}
+  const ingredientes = datos.data.recipes[0].extendedIngredients
+  for (const value of ingredientes) {
+    item = {}
+    item = { nombre: value.name, cantidad: value.amount, unidad: value.unit }
+    if (dict.has(value.id)) {
+      item.cantidad = dict.get(value.id).cantidad + value.amount
+    }
+    dict.set(value.id, item)
+  }
+  const obj = Object.fromEntries(dict)
+  const doc = jsPDF.jsPDF()
+  let lista = 'My shopping list \n\n================================\n'
+  for (const [key, i] of dict) {
+    console.log(key)
+    lista = lista + '\n [   ]  ' + +i.cantidad + ' ' + i.unidad + ' of ' + i.nombre + '\n'
+  }
+  console.log(lista)
+  doc.text(lista, 20, 20)
+  doc.save('a4.pdf')
+  res
+    .status(207)
+    .json(obj)
+}
+
 module.exports = {
   searchRecipe,
   getRandomRecipe,
@@ -124,3 +180,4 @@ module.exports = {
 // searchRecipe,
 // recipeDelete,
 // recipeCreateMultiple,
+
