@@ -134,14 +134,6 @@ const disconnectAccount = async (req, res) => {
   res.status(200).json({ email, provider })
 }
 
-const addWeight = async (req, res) => {
-  const { email, weight } = req.body
-  const data = await User.findOne({ email },
-    { $push: { weight: weight } }
-    , { new: true })
-  res.status(200).json(data)
-}
-
 module.exports = {
   createAccount,
   updateAccount,
@@ -150,6 +142,5 @@ module.exports = {
   deleteAccount,
   getUser,
   connectAccount,
-  disconnectAccount,
-  addWeight
+  disconnectAccount
 }

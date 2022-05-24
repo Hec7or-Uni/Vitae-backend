@@ -122,7 +122,7 @@ router
 */
 router
   .route('/comments', authenticate)
-  .get(http.notImplemented)
+  .get(ctrlComments.getRecipeComments)
   .post(ctrlComments.createComment)
   .put(ctrlComments.putComment) // .put(ctrlComments.putComment)
   .delete(ctrlComments.deleteComment) // .delete(ctrlComments.deleteComment)
