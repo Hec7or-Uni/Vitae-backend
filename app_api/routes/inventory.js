@@ -109,7 +109,7 @@ router
   .get(http.notImplemented)
   .delete(http.notImplemented)
   .put(http.notImplemented)
-
+// .delete('/delete-menu', ctrlInventory.deleteMenu)
 
 /**
 * @openapi
@@ -127,9 +127,5 @@ router
   .delete(http.notImplemented)
   .put(http.notImplemented)
   // .delete('/delete-recipe', ctrlInventory.deleteRecipe)
-
-router
-  .route('/nutrientInfo')
-  .get(ctrlRecipes.nutrients)
 
 module.exports = router
