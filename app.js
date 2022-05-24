@@ -10,20 +10,46 @@ const inventoryRoutes = require(routes + 'inventory')
 const newsletterRouter = require(routes + 'newsletter')
 const recoveryRoutes = require(routes + 'recovery')
 
+// const swaggerDefinition = {
+//   info: {
+//     title: 'API de Vitop',
+//     version: '0.0.1',
+//     description: 'Descripción de las funciones de la API'
+//   },
+//   openapi: '3.0.0',
+//   host: 'localhost:4000',
+//   basePath: '/api/',
+//   schemes: ['http']
+// }
+
 const swaggerDefinition = {
+  openapi: '3.0.0',
   info: {
-    title: 'API de Vitop',
-    version: '0.0.1',
-    description: 'Descripción de las funciones de la API'
+    title: 'Vitop API',
+    version: '0.0.2',
+    description:
+      'This is a REST API application for Vitop by Vitae app.',
+    termsOfService: 'http://localhost:3000/tos/',
+    contact: {
+      name: 'Contact',
+      email: 'hi@vitop.xyz'
+    }
   },
-  host: 'localhost:4000',
-  basePath: '/api/',
-  schemes: ['http']
+  servers: [
+    {
+      url: 'http://localhost:3000/api/',
+      description: 'Frontend'
+    },
+    {
+      url: 'http://localhost:4000/api/',
+      description: 'Backend'
+    }
+  ]
 }
 
 const options = {
   swaggerDefinition: swaggerDefinition, // import swaggerDefinitions
-  apis: ['./app_api/routes/*.js'] // path to the API docs
+  apis: ['./app_api/routes/*.js', './public/openapi.yaml'] // path to the API docs
 }
 
 // initialize swagger-jsdoc

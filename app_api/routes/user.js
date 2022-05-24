@@ -9,8 +9,11 @@ const { authenticate } = require('../../lib/auth')
 
 /**
 * @openapi
-* /api/user/signup:
+* /user/signup:
 *   post:
+*     tags:
+*      - User
+*      - Backend
 *     description: Signup a user
 *     parameters:
 *     - name: email
@@ -30,8 +33,11 @@ router
 
 /**
 * @openapi
-* /api/user/signin:
+* /user/signin:
 *   post:
+*     tags:
+*      - User
+*      - Backend
 *     description: Signup a user
 *     parameters:
 *     - name: email
@@ -55,12 +61,12 @@ router
 
 /**
 * @openapi
-* /api/user/update-account
+* /user/update-account
 *   put:
 *     description: Modify a user
 *     responses:
 *       204:
-*       description: user modified
+*         description: user modified
 */
 router
   .route('/update-account', authenticate)
@@ -71,7 +77,7 @@ router
 
 /**
 * @openapi
-* /api/user/
+* /user/
 *   get:
 *     description: get a user
 *     responses:
@@ -108,7 +114,7 @@ router
 
 /**
 * @openapi
-* /api/user/comments
+* /user/comments
 *   put:
 *     description: Responde a comment in a recipe
 *     responses:

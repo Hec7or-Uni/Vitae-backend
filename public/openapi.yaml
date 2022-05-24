@@ -37,6 +37,7 @@ paths:
 
     get: # documentation for GET operation for this path
       tags:
+        - Frontend
         - Sitemap
       # summary is up to 120 symbold but we recommend to be shortest as possible
       description: Get info about the pages
@@ -56,6 +57,7 @@ paths:
   /auth/callback/google:
     post:
       tags:
+        - Frontend
         - Auth
       summary: Google Auth
       description: You got the credentials with google
@@ -65,6 +67,7 @@ paths:
   /auth/callback/twitter:
     post:
       tags:
+        - Frontend
         - Auth
       summary: Twitter Auth
       description: You got the credentials with twitter
@@ -75,6 +78,7 @@ paths:
     post:
       deprecated: true
       tags:
+        - Frontend
         - Auth
       summary: Instagram Auth
       description: You got the credentials with instagram
