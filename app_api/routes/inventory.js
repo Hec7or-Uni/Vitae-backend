@@ -9,7 +9,7 @@ const { authenticate } = require('../../lib/auth')
 * @openapi
 *  tags:
 *    name: Inventory
-*    description: API to manage your books.
+*    description: About recipes
 *
 */
 
