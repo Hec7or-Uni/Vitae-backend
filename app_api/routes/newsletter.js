@@ -5,8 +5,11 @@ const http = require('../../lib/http')
 
 /**
 * @openapi
-* /api/newsletter:
+* /newsletter:
 *   post:
+*     tags:
+*      - Newsletter
+*      - Backend
 *     description: Suscribe newsletter
 *     parameters:
 *     - name: email
@@ -17,6 +20,9 @@ const http = require('../../lib/http')
 *       204:
 *       description: Suscribed
 *   delete:
+*     tags:
+*      - Newsletter
+*      - Backend
 *     description: Unsuscribe newsletter
 *     parameters:
 *     - name: email

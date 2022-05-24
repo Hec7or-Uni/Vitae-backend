@@ -7,8 +7,19 @@ const { authenticate } = require('../../lib/auth')
 
 /**
 * @openapi
-* /api/inventory:
+*  tags:
+*    name: Inventory
+*    description: API to manage your books.
+*
+*/
+
+/**
+* @openapi
+* /inventory
 *   get:
+*     tags:
+*      - Inventory
+*      - Backend
 *     description: Return a recipe
 *     parameters:
 *     - name: id
@@ -19,11 +30,17 @@ const { authenticate } = require('../../lib/auth')
 *       200:
 *       description: Returns a json with the recipe
 *   post:
+*     tags:
+*      - Inventory
+*      - Backend
 *     description: Post a recipe
 *     responses:
 *       204:
 *       description: Recipe posted
 *   delete:
+*     tags:
+*      - Inventory
+*      - Backend
 *     description: Delete a recipe
 *     parameters:
 *     - name: id
@@ -34,6 +51,9 @@ const { authenticate } = require('../../lib/auth')
 *       404:
 *       description: Error print
 *   put:
+*     tags:
+*      - Inventory
+*      - Backend
 *     description: Modify a recipe
 *     responses:
 *       204:
@@ -48,8 +68,11 @@ router
 
 /**
 * @openapi
-* /api/inventory/discovery:
+* /inventory/discovery
 *   get:
+*     tags:
+*      - Inventory
+*      - Backend
 *     description: Return  recipes for the page discover in database
 *     responses:
 *       200:
@@ -64,8 +87,11 @@ router
 
 /**
 * @openapi
-* /api/inventory/random-recipes:
+* /inventory/random-recipes
 *   get:
+*     tags:
+*      - Inventory
+*      - Backend
 *     description: Return random recipes
 *     responses:
 *       200:
@@ -80,8 +106,11 @@ router
 
 /**
   * @openapi
-  * /api/inventory/search-recipes
+  * /inventory/search-recipes
   *   post:
+  *     tags:
+  *      - Inventory
+  *      - Backend
   *     description: Search recipes with a query
   *     responses:
   *       200:
@@ -96,8 +125,11 @@ router
 
 /**
   * @openapi
-  * /api/inventory/save-menu:
+  * /inventory/save-menu
   *   post:
+  *     tags:
+  *      - Inventory
+  *      - Backend
   *     description: Save a menu
   *     responses:
   *       204:
@@ -113,15 +145,18 @@ router
 
 /**
 * @openapi
-* /api/inventory/save-recipe:
+* /inventory/save-recipe
 *   post:
+*     tags:
+*      - Inventory
+*      - Backend
 *     description: Save a recipe
 *     responses:
 *       204:
 *       description: Recipe saved to storage
 */
 router
-  .route('/save-recipe', authenticate)
+  .route('/save-recipe', authenticate) // esto no funciona
   .post(ctrlInventory.saveRecipe)
   .get(http.notImplemented)
   .delete(http.notImplemented)
