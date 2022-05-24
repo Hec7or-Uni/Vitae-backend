@@ -12,9 +12,9 @@ const getRecipeComments = (req, res) => {
 }
 
 const createComment = async (req, res) => {
-  const { spoonId, comment } = req.body
+  const { recipeId, comment } = req.body
   const data = await Recipe.findOneAndUpdate(
-    spoonId, { $push: { comments: comment } }, { new: true }
+    { spoonId: recipeId }, { $push: { comments: comment } }, { new: true }
   ).select({ _id: 1, spoonId: 1, comments: 1 })
   res.status(201).json(data)
 }
