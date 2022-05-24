@@ -66,10 +66,9 @@ router
   .route('/update-account', authenticate)
   .get(http.notImplemented)
   .post(http.notImplemented)
-  .put(ctrlUsers.updateTest)
+  .put(ctrlUsers.updateAccount)
   .delete(http.notImplemented)
 
-router.put('/update-test', authenticate, ctrlUsers.updateTest)
 /**
 * @openapi
 * /api/user/

@@ -36,7 +36,7 @@ const unSubscribe = async (req, res) => {
   })
     .then(response => {
       winston.info({ label: 'unSubscribe - OK', message: response })
-      res.status(204).json(response)
+      res.status(204).json(response.json())
     }).catch(err => {
       winston.error({ label: 'unSubscribe - ERROR', message: err })
       res.status(500).json(err)
