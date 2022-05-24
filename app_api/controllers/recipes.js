@@ -63,25 +63,46 @@ const getRandomRecipe = async (req, res) => {
       spoonId: recipe.id
     }
   })
-  recipes = await Recipe.insertMany(recipes, { continueOnError: true })
+
+  const __recipes = await Recipe.find({})
+  const __recipesIds = __recipes.map(item => item.spoonId)
+  const newRecipes = recipes.filter(item => !__recipesIds.includes(item.spoonId))
+  // const oldrecipes = recipes.filter(item => __recipes_ids.includes(item.spoonId))
   res.status(200).json(recipes)
+
+  Recipe.insertMany(newRecipes)
+    .then(data => {
+      winston.info({ label: 'Insert - OK', message: data })
+    }).catch(err => {
+      winston.info({ label: '/Insert - Error', message: err })
+    })
 }
 
 const searchRecipe = async (req, res) => {
   const { email, search } = req.query
   const user = await User.findOne({ email })
   winston.info({ label: '/inventory', message: 'search-recipe:' + search })
-  const query = { query: search, dieta: user.diet }
-  let data = await spoon.searchRecipes(query)
-  console.log('data', data)
-  data = data.map(recipe => {
+  const query = { query: search || '', dieta: user.diet || '' }
+  let recipes = await spoon.searchRecipes(query)
+  recipes = recipes.results.map(result => {
     return {
-      ...recipe,
-      spoonId: recipe.id
+      ...result,
+      spoonId: result.id
     }
   })
-  data = await Recipe.insertMany(data, { continueOnError: true })
-  res.status(200).json(data)
+  res.status(200).json(recipes)
+
+  const __recipes = await Recipe.find({})
+  const __recipesIds = __recipes.map(item => item.spoonId)
+  const newRecipes = recipes.filter(item => !__recipesIds.includes(item.spoonId))
+  // const oldrecipes = recipes.filter(item => __recipes_ids.includes(item.spoonId))
+
+  Recipe.insertMany(newRecipes)
+    .then(data => {
+      winston.info({ label: 'Insert - OK', message: data })
+    }).catch(err => {
+      winston.info({ label: '/Insert - Error', message: err })
+    })
 }
 
 const recipeReadAll = (req, res) => {
