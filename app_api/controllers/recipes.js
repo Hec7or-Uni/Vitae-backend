@@ -67,9 +67,10 @@ const getRandomRecipe = async (req, res) => {
 }
 
 const searchRecipe = async (req, res) => {
-  const user = await User.findOne({ email: req.query.email })
-  winston.info({ label: '/inventory', message: 'search-recipe:' + req.search })
-  const query = { query: req.query.query, dieta: user.diet }
+  const { email, search } = req.query
+  const user = await User.findOne({ email })
+  winston.info({ label: '/inventory', message: 'search-recipe:' + search })
+  const query = { query: search, dieta: user.diet }
   const data = await spoon.searchRecipes(query)
   res.status(200).json(data)
 }

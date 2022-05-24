@@ -98,7 +98,6 @@ const getUser = async (req, res) => {
         return
       }
       winston.info({ label: 'getUser - OK', message: user })
-      console.log(user)
       res.status(200).json(user)
     })
     .catch(err => {

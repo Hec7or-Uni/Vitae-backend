@@ -15,7 +15,6 @@ const createComment = async (req, res) => {
 
 const respondeComment = async (req, res) => {
   const { parentId, comment } = req.body
-  console.log(parentId, comment)
   // const commentCreated = await Comment.create(comment)
   const data = await Recipe.findOneAndUpdate(
     { 'comments._id': parentId }
@@ -26,7 +25,6 @@ const respondeComment = async (req, res) => {
 }
 const putComment = async (req, res) => {
   const { comment: _comment } = req.body
-  console.log(_comment)
   const commentFinded = await Comment.findByIdAndUpdate(_comment._id, _comment)
   await Recipe.findOneAndUpdate(
     { 'comments._id': _comment._id },
@@ -37,7 +35,6 @@ const putComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
   const { _id } = req.body
-  // console.log(_id)
   await Comment.findByIdAndDelete(_id)
   const recipe = await Recipe.findOne(
     { 'comments._id': _id }
