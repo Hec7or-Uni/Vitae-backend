@@ -33,26 +33,29 @@ const respondeComment = async (req, res) => {
 const putComment = async (req, res) => {
   const { recipeId, comment: _comment } = req.body
   let recipe; let data
-  if (_comment.padreId) { // es el hijo
+  if (_comment.padreId !== '') { // es el hijo
     recipe = await Recipe.findOne({ spoonId: recipeId })
     recipe.comments.id(_comment.padreId).response.id(_comment._id).content = _comment.content
     data = await recipe.save()
+    console.log(data)
   } else { // es el padre
     data = await Recipe.findOneAndUpdate({ spoonId: recipeId, 'comments._id': _comment._id },
       { $set: { 'comments.$.content': _comment.content } }, { new: true })
   }
-  res.status(201).json(data.comments)
+  res.status(201).json(data)
 }
 
 const deleteComment = async (req, res) => {
   const { recipeId, comment: _comment } = req.body
+  console.log(recipeId, _comment)
+  console.log('barrera')
+
   const recipe = await Recipe.findOne(
     { spoonId: recipeId }
   // { $set: { 'comments.$.content': _comment.content } }
   )
-  if (_comment.padreId) { // es el hijo
+  if (_comment.padreId !== '') { // es el hijo
     recipe.comments.id(_comment.padreId).response.pull(_comment._id)
-    console.log(recipe.comments)
   } else { // es el padre
     recipe.comments.pull(_comment._id)
   }
