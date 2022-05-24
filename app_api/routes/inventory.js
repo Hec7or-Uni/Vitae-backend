@@ -88,7 +88,7 @@ router
   *       description: menu saved
   */
 router
-  .route('/search-recipes', authenticate)
+  .route('/search-recipes')
   .get(ctrlRecipes.searchRecipe)
   .post(http.notImplemented)
   .delete(http.notImplemented)
