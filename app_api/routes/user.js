@@ -85,7 +85,8 @@ router
 *       description: get user
 */
 router
-  .route('/', authenticate)
+  .use(authenticate)
+  .route('/')
   .get(ctrlUsers.getUser)
   .post(http.notImplemented)
   .put(http.notImplemented)
@@ -127,13 +128,14 @@ router
 *       description: Account disconnected
 */
 router
-  .route('/comments', authenticate)
+  .use(authenticate)
+  .route('/comments')
   .get(ctrlComments.getRecipeComments)
   .post(ctrlComments.createComment)
   .put(ctrlComments.putComment) // .put(ctrlComments.putComment)
   .delete(ctrlComments.deleteComment) // .delete(ctrlComments.deleteComment)
 
-router.post('/comment-reply', ctrlComments.respondeComment)
+router.post('/comment-reply', authenticate, ctrlComments.respondeComment)
 
 router
   .get('/statistics', ctrlStadistics.stadistics)
