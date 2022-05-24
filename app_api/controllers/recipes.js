@@ -55,11 +55,8 @@ const recipeReadOne = async (req, res) => {
 const getRandomRecipe = async (req, res) => {
   winston.info({ label: 'getRandomRecipe - OK', message: 'random-recipe' })
   const user = await User.findOne({ email: req.query.email })
-  if (!user.diet) {
-    res.status(400).json({ error: 'no diet' })
-    return
-  }
-  let { recipes } = await spoon.getRecipes({ dieta: user.diet })
+  const diet = user.diet || ''
+  let { recipes } = await spoon.getRecipes({ dieta: diet })
   recipes = recipes.map(recipe => {
     return {
       ...recipe,
@@ -75,7 +72,15 @@ const searchRecipe = async (req, res) => {
   const user = await User.findOne({ email })
   winston.info({ label: '/inventory', message: 'search-recipe:' + search })
   const query = { query: search, dieta: user.diet }
-  const data = await spoon.searchRecipes(query)
+  let data = await spoon.searchRecipes(query)
+  console.log('data', data)
+  data = data.map(recipe => {
+    return {
+      ...recipe,
+      spoonId: recipe.id
+    }
+  })
+  data = await Recipe.insertMany(data, { continueOnError: true })
   res.status(200).json(data)
 }
 
