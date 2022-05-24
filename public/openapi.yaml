@@ -39,7 +39,7 @@ paths:
       tags:
         - Sitemap
       # summary is up to 120 symbold but we recommend to be shortest as possible
-      summary: Get info about the pages
+      description: Get info about the pages
       responses: # list of responses
         '200':
           description: Success
@@ -53,9 +53,8 @@ paths:
                               <priority>0.9</priority>
                             </url>"
 
-
   /auth/callback/google:
-    get:
+    post:
       tags:
         - Auth
       summary: Google Auth
@@ -64,7 +63,7 @@ paths:
         '200':
           description: Returns an html file with the sesion
   /auth/callback/twitter:
-    get:
+    post:
       tags:
         - Auth
       summary: Twitter Auth
@@ -73,7 +72,8 @@ paths:
         '200':
           description: Returns an html file with the sesion
   /auth/callback/instagram: 
-    get:
+    post:
+      deprecated: true
       tags:
         - Auth
       summary: Instagram Auth
