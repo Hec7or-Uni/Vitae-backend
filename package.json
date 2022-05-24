@@ -11,6 +11,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@haileybot/captcha-generator": "^1.7.0",
     "@mailchimp/mailchimp_marketing": "^3.0.75",
     "@panva/hkdf": "^1.0.2",
     "connect-mongo": "^4.6.0",
