@@ -88,6 +88,13 @@ router
 *       description: menu saved
 */
 router
+  .route('/search-recipes', authenticate)
+  .get(ctrlRecipes.searchRecipe)
+  .post(http.notImplemented)
+  .delete(http.notImplemented)
+  .put(http.notImplemented)
+
+router
   .route('/save-menu', authenticate)
   .post(ctrlInventory.saveMenu)
   .get(http.notImplemented)
