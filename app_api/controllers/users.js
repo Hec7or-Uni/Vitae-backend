@@ -17,23 +17,9 @@ const createAccount = async (req, res) => {
 }
 
 const updateAccount = async (req, res) => {
-  const { email, weight, ...data } = req.body
-  await User.findOneAndUpdate({ email }, data, { new: true })
-    .then(user => {
-      if (!(user.weight[user.weight.length - 1].date === fromTimestamp(__TODAY))) {
-        // caso para crear un nuevo peso
-        user.weight.push({ weight, date: fromTimestamp(__TODAY) })
-      } else {
-        user.weight[user.weight.length - 1] = { weight, date: fromTimestamp(__TODAY) }
-      }
-      winston.info({ label: 'updateAccount - OK', message: user })
-      user = user.save()
-      res.status(204).json(user)
-    })
-    .catch(err => {
-      winston.error({ label: 'updateAccount - ERROR', message: err })
-      res.status(500).json(err)
-    })
+  const { email } = req.body
+  console.log(email)
+  res.status(200)
 }
 
 const getCredentials = async (req, res) => {
@@ -139,6 +125,28 @@ const addWeight = async (req, res) => {
   res.status(200).json(data)
 }
 
+const updateTest = async (req, res) => {
+  const { email, weight, ...data } = req.body
+  await User.findOneAndUpdate({ email }, data, { new: true })
+    .then(user => {
+      if (user.weight.length === 0) {
+        user.weight.push({ weight, date: fromTimestamp(__TODAY) })
+      } else if (!(user.weight[user.weight.length - 1].date === fromTimestamp(__TODAY))) {
+        // caso para crear un nuevo peso
+        user.weight.push({ weight, date: fromTimestamp(__TODAY) })
+      } else {
+        user.weight[user.weight.length - 1] = { weight, date: fromTimestamp(__TODAY) }
+      }
+      winston.info({ label: 'updateAccount - OK', message: user })
+      user = user.save()
+      res.status(204).json(user)
+    })
+    .catch(err => {
+      winston.error({ label: 'updateAccount - ERROR', message: err })
+      res.status(500).json(err)
+    })
+}
+
 module.exports = {
   createAccount,
   updateAccount,
@@ -148,5 +156,6 @@ module.exports = {
   getUser,
   connectAccount,
   disconnectAccount,
+  updateTest,
   addWeight
 }

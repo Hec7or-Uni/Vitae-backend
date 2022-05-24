@@ -66,9 +66,10 @@ router
   .route('/update-account', authenticate)
   .get(http.notImplemented)
   .post(http.notImplemented)
-  .put(ctrlUsers.updateAccount)
+  .put(ctrlUsers.updateTest)
   .delete(http.notImplemented)
 
+router.put('/update-test', authenticate, ctrlUsers.updateTest)
 /**
 * @openapi
 * /api/user/
@@ -85,15 +86,6 @@ router
   .put(http.notImplemented)
   .delete(http.notImplemented)
 
-/**
-* @openapi
-* /api/user/detele-account
-*   delete:
-*     description: Modify a user
-*     responses:
-*       201:
-*       description: user modified
-*/
 router
   .route('/delete-account', authenticate)
   .get(http.notImplemented)
@@ -101,15 +93,6 @@ router
   .put(http.notImplemented)
   .delete(ctrlUsers.deleteAccount)
 
-/**
-* @openapi
-* /api/user/connect-account
-*   put:
-*     description: Connect a account from user
-*     responses:
-*       200:
-*       description: Account connected
-*/
 router
   .route('/connect-account')
   .get(http.notImplemented)
@@ -117,15 +100,6 @@ router
   .put(ctrlUsers.connectAccount)
   .delete(http.notImplemented)
 
-/**
-* @openapi
-* /api/user/discconect-account
-*   put:
-*     description: Disconnect a account from user
-*     responses:
-*       200:
-*       description: Account disconnected
-*/
 router
   .route('/disconnect-account')
   .get(http.notImplemented)
@@ -155,20 +129,7 @@ router
   .delete(ctrlComments.deleteComment) // .delete(ctrlComments.deleteComment)
 
 router.post('/comment-reply', ctrlComments.respondeComment)
-/**
-* @openapi
-* /api/user/statistics
-*   put:
-*     description: Count a visit
-*     responses:
-*       200:
-*       description: Account disconnected
-*   get:
-*     description: Get the statistics of the app
-*     responses:
-*       200:
-*       description: Account disconnected
-*/
+
 router
   .get('/statistics', ctrlStadistics.stadistics)
   .put('/statistics', addVisit)
