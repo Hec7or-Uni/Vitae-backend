@@ -19,7 +19,6 @@ const http = require('../../lib/http')
 *     parameters:
 *     - in: "body"
 *       name: "body"
-*       description: "Pet object that needs to be added to the store"
 *       required: true
 *     responses:
 *       200:
