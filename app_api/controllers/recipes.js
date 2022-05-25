@@ -106,9 +106,9 @@ const searchRecipe = async (req, res) => {
 }
 
 const recipeReadAll = (req, res) => {
-  winston.info({ label: '/inventory', message: 'recipeReadAll:' + req.params.quantity })
-  if (req.params && req.params.quantity) {
-    Recipe.find().limit(req.params.quantity).exec((err, recipes) => {
+  winston.info({ label: '/inventory', message: 'recipeReadAll:' + req.query.quantity })
+  if (req.params && req.query.quantity) {
+    Recipe.find().limit(req.query.quantity).exec((err, recipes) => {
       if (err) {
         winston.err({ label: '/inventory', message: err })
         res.status(404).json(err)
