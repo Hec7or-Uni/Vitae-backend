@@ -5,24 +5,15 @@ const winston = require('../../logs/logger')
 
 const saveMenu = async (req, res) => {
   const { email, menu } = req.body
-  // const aux = _menu.recipes.map(item => {
-  //   return mongoose.Types.ObjectId(item)
-  // })
-  // console.log(aux)
-  // const menu = {
-  //   name: _menu.name,
-  //   date: _menu.date,
-  //   recipes: _menu.recipes
-  // }
-  // console.log(menu)
-  const menuCreate = await Menus.create({ menu })
-  console.log(menu.recipes)
+  console.log(menu)
+  Menus.create(menu)
+
   const user = await User.findOneAndUpdate(
     { email },
-    { $push: { menus: menuCreate } },
+    { $push: { menus: menu } },
     { new: true }
   )
-  res.status(200).json(user)
+  res.status(200).json(user.menus)
 }
 
 const getMenu = async (req, res) => {
@@ -36,11 +27,17 @@ const getMenu = async (req, res) => {
 }
 
 const deleteMenu = async (req, res) => {
-  const { email, menu } = req.body
-  await User.updateOne({ email })
-  res.status(200).json(menu)
+  const { email, menuId } = req.body
+  const user = await User.findOne(email)
+  user.menus.pull(menuId)
+  res.status(204).json(user.save())
 }
 
+const getAllMenus = async (req, res) => {
+  winston.info({ label: 'getMenus - OK ', message: 'Get menus:' })
+  const menus = await Menus.find()
+  res.status(200).json(menus)
+}
 const saveRecipe = async (req, res) => {
   const { email, recipe } = req.body
   recipe.spoonId = recipe.id
@@ -65,6 +62,7 @@ const deleteRecipe = async (req, res) => {
 module.exports = {
   saveMenu,
   getMenu,
+  getAllMenus,
   deleteMenu,
   saveRecipe,
   deleteRecipe

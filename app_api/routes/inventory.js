@@ -154,6 +154,7 @@ router
   .put(http.notImplemented)
   .delete(ctrlInventory.deleteMenu)
 
+router.get('/menu/all', ctrlInventory.getAllMenus)
 /**
 * @openapi
 * /inventory/save-recipe
