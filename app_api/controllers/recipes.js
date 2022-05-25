@@ -151,7 +151,3 @@ module.exports = {
   recipeModify,
   recipeDelete
 }
-
-// searchRecipe,
-// recipeDelete,
-// recipeCreateMultiple,

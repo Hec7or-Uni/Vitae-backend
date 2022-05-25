@@ -130,7 +130,7 @@ router
 
 /**
   * @openapi
-  * /inventory/save-menu
+  * /inventory/menu
   *   post:
   *     tags:
   *      - Inventory
@@ -142,12 +142,11 @@ router
   */
 router
   .use(authenticate)
-  .route('/save-menu', authenticate)
+  .route('/menu', authenticate)
+  .get(ctrlInventory.getMenu)
   .post(ctrlInventory.saveMenu)
-  .get(http.notImplemented)
-  .delete(http.notImplemented)
   .put(http.notImplemented)
-// .delete('/delete-menu', ctrlInventory.deleteMenu)
+  .delete(ctrlInventory.deleteMenu)
 
 /**
 * @openapi

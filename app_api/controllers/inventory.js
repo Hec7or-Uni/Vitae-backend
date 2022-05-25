@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
+const Menus = mongoose.model('Menus')
+const winston = require('../../logs/logger')
 
 const saveMenu = async (req, res) => {
   const { email, menu } = req.body
@@ -10,13 +12,24 @@ const saveMenu = async (req, res) => {
     { new: true }
   )
   res.status(200).json(user)
+  Menus.create({ menu })
 }
 
-// const deleteMenu = async (req, res) => {
-//   const { email, recipe } = req.body
-//   const user = await User.updateOne({ email })
-//   res.status(200).json(user)
-// }
+const getMenu = async (req, res) => {
+  const { _id } = req.query
+  winston.info({ label: 'getMenu - OK ', message: 'Get menu:' + _id })
+  const menu = await Menus.findById({ _id })
+  if (!menu) {
+    res.status(404).json({ err: 'No menu' })
+  }
+  res.status(200).json(menu)
+}
+
+const deleteMenu = async (req, res) => {
+  const { email, menu } = req.body
+  await User.updateOne({ email })
+  res.status(200).json(menu)
+}
 
 const saveRecipe = async (req, res) => {
   const { email, recipe } = req.body
@@ -40,7 +53,8 @@ const deleteRecipe = async (req, res) => {
 
 module.exports = {
   saveMenu,
-  // deleteMenu,
+  getMenu,
+  deleteMenu,
   saveRecipe,
   deleteRecipe
 }
