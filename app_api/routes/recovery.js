@@ -6,10 +6,10 @@ const http = require('../../lib/http')
 
 /**
 * @openapi
-* /inventory/recovery:
+* /user/recovery:
 *   get:
 *     tags:
-*      - Inventory
+*      - User
 *      - Backend
 *     description: Return random recipes
 *     consumes:
@@ -35,10 +35,10 @@ router
 
 /**
 * @openapi
-* /inventory/recovery/validate:
+* /user/recovery/validate:
 *   get:
 *     tags:
-*      - Inventory
+*      - User
 *      - Backend
 *     description: Return random recipes
 *     responses:

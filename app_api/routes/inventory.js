@@ -21,49 +21,49 @@ const { authenticate } = require('../../lib/auth')
 
 /**
 * @openapi
-*  /inventory
-*    get:
-*      tags:
+* /inventory:
+*   get:
+*     tags:
 *       - Inventory
 *       - Backend
-*      description: Return a recipe
-*      parameters:
-*        name: id
-*        description: id of the recipe
-*        required: true
-*        type: Number
-*      responses:
-*        200:
-*        description: Returns a json with the recipe
-*    post:
-*      tags:
+*     description: Return a recipe
+*     parameters:
+*       name: id
+*       description: id of the recipe
+*       required: true
+*       type: Number
+*     responses:
+*       200:
+*       description: Returns a json with the recipe
+*   post:
+*     tags:
 *       - Inventory
 *       - Backend
-*      description: Post a recipe
-*      responses:
-*        204:
-*        description: Recipe posted
-*    delete:
-*      tags:
-*       - Inventory
-*       - Backend
-*      description: Delete a recipe
-*      parameters:
-*        name: id
-*        description: id of the recipe
-*        required: true
-*        type: Number
-*      responses:
-*        404:
-*        description: Error print
-*    put:
-*      tags:
-*       - Inventory
-*       - Backend
-*      description: Modify a recipe
-*      responses:
-*        204:
-*        description: Recipe modified
+*     description: Post a recipe
+*     responses:
+*       204:
+*       description: Recipe posted
+*   delete:
+*     tags:
+*      - Inventory
+*      - Backend
+*     description: Delete a recipe
+*     parameters:
+*       name: id
+*       description: id of the recipe
+*       required: true
+*       type: Number
+*     responses:
+*       404:
+*       description: Error print
+*   put:
+*     tags:
+*      - Inventory
+*      - Backend
+*     description: Modify a recipe
+*     responses:
+*       204:
+*       description: Recipe modified
 */
 
 router
@@ -76,7 +76,7 @@ router
 
 /**
 * @openapi
-* /inventory/discovery
+* /inventory/discovery:
 *   get:
 *     tags:
 *      - Inventory
@@ -96,7 +96,7 @@ router
 
 /**
 * @openapi
-* /inventory/random-recipes
+* /inventory/random-recipes:
 *   get:
 *     tags:
 *      - Inventory
@@ -116,15 +116,15 @@ router
 
 /**
   * @openapi
-  * /inventory/search-recipes
-  *   post:
+  * /inventory/search-recipes:
+  *   get:
   *     tags:
   *      - Inventory
   *      - Backend
   *     description: Search recipes with a query
   *     responses:
   *       200:
-  *       description: menu saved
+  *       description: get recipes
   */
 router
   .use(authenticate)
@@ -136,7 +136,7 @@ router
 
 /**
   * @openapi
-  * /inventory/menu
+  * /inventory/menu:
   *   post:
   *     tags:
   *      - Inventory
@@ -157,7 +157,7 @@ router
 router.get('/menu/all', ctrlInventory.getAllMenus)
 /**
 * @openapi
-* /inventory/save-recipe
+* /inventory/save-recipe:
 *   post:
 *     tags:
 *      - Inventory

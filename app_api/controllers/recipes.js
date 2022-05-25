@@ -70,7 +70,7 @@ const getRandomRecipe = async (req, res) => {
   // const oldrecipes = recipes.filter(item => __recipes_ids.includes(item.spoonId))
   res.status(200).json(recipes)
 
-  Recipe.insertMany(newRecipes)
+  await Recipe.insertMany(newRecipes)
     .then(data => {
       winston.info({ label: 'Insert - OK', message: data })
     }).catch(err => {

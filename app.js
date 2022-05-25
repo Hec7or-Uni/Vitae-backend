@@ -49,8 +49,8 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition: swaggerDefinition, // import swaggerDefinitions
-  apis: ['./app_api/routes/*.js']
-  // apis: ['./app_api/routes/*.js', './public/openapi.yaml'] // path to the API docs
+  // apis: ['./app_api/routes/*.js']
+  apis: ['./app_api/routes/*.js', './public/openapi.yaml'] // path to the API docs
 }
 
 // initialize swagger-jsdoc

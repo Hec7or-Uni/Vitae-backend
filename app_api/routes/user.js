@@ -61,8 +61,11 @@ router
 
 /**
 * @openapi
-* /user/update-account
+* /user/update-account:
 *   put:
+*     tags:
+*      - User
+*      - Backend
 *     description: Modify a user
 *     responses:
 *       204:
@@ -77,8 +80,11 @@ router
 
 /**
 * @openapi
-* /user/
+* /user:
 *   get:
+*     tags:
+*      - User
+*      - Backend
 *     description: get a user
 *     responses:
 *       200:
@@ -92,6 +98,18 @@ router
   .put(http.notImplemented)
   .delete(http.notImplemented)
 
+/**
+* @openapi
+* /user/delete-account:
+*   delete:
+*     tags:
+*      - User
+*      - Backend
+*     description: delete a user
+*     responses:
+*       200:
+*       description: user delete
+*/
 router
   .route('/delete-account', authenticate)
   .get(http.notImplemented)
@@ -99,6 +117,18 @@ router
   .put(http.notImplemented)
   .delete(ctrlUsers.deleteAccount)
 
+/**
+* @openapi
+* /user/connect-account:
+*   put:
+*     tags:
+*      - User
+*      - Backend
+*     description: link account to an existing user
+*     responses:
+*       200:
+*       description: user linked
+*/
 router
   .route('/connect-account')
   .get(http.notImplemented)
@@ -106,6 +136,18 @@ router
   .put(ctrlUsers.connectAccount)
   .delete(http.notImplemented)
 
+/**
+* @openapi
+* /user/disconnect-account:
+*   put:
+*     tags:
+*      - User
+*      - Backend
+*     description: unlink account to an existing user
+*     responses:
+*       200:
+*       description: user unlinked
+*/
 router
   .route('/disconnect-account')
   .get(http.notImplemented)
@@ -115,14 +157,36 @@ router
 
 /**
 * @openapi
-* /user/comments
-*   put:
-*     description: Responde a comment in a recipe
+* /user/comments:
+*   get:
+*     tags:
+*      - Comment
+*      - Backend
+*     description: Get comments in a recipe
 *     responses:
 *       200:
 *       description: Account disconnected
 *   post:
+*     tags:
+*      - Comment
+*      - Backend
 *     description: Create a comment in a recipe
+*     responses:
+*       200:
+*       description: Account disconnected
+*   put:
+*     tags:
+*      - Comment
+*      - Backend
+*     description: Modify a comment in a recipe
+*     responses:
+*       200:
+*       description: Account disconnected
+*   delete:
+*     tags:
+*      - Comment
+*      - Backend
+*     description: Delete a comment in a recipe
 *     responses:
 *       200:
 *       description: Account disconnected
@@ -135,8 +199,40 @@ router
   .put(ctrlComments.putComment) // .put(ctrlComments.putComment)
   .delete(ctrlComments.deleteComment) // .delete(ctrlComments.deleteComment)
 
+/**
+* @openapi
+* /user/comments/comment-reply:
+*   post:
+*     tags:
+*      - Comment
+*      - Backend
+*     description: Reply a comment in a recipe
+*     responses:
+*       200:
+*       description: Account disconnected
+*/
 router.post('/comment-reply', authenticate, ctrlComments.respondeComment)
 
+/**
+* @openapi
+* /user/stadistics:
+*   get:
+*     tags:
+*      - Admin
+*      - Backend
+*     description: Get stadistics of the app
+*     responses:
+*       200:
+*       description: Stadistics
+*   put:
+*     tags:
+*      - Admin
+*      - Backend
+*     description: Put stadistics of the app
+*     responses:
+*       200:
+*       description: Added visit
+*/
 router
   .get('/statistics', ctrlStadistics.stadistics)
   .put('/statistics', addVisit)
