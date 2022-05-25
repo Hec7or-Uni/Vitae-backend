@@ -3,10 +3,8 @@ const Recipe = mongoose.model('Recipe')
 
 const getRecipeComments = async (req, res) => {
   const { spoonId } = req.query
-  console.log(typeof spoonId, spoonId)
   await Recipe.findOne({ spoonId }).select({ comments: 1, _id: 0 })
     .then(comment => {
-      console.log(comment)
       res.status(200).json(comment)
     }).catch(err => {
       res.status(200).json(err)

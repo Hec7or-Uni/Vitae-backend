@@ -5,7 +5,6 @@ const winston = require('../../logs/logger')
 
 const saveMenu = async (req, res) => {
   const { email, menu } = req.body
-  console.log(menu)
   Menus.create(menu)
 
   const user = await User.findOneAndUpdate(
@@ -41,7 +40,6 @@ const getAllMenus = async (req, res) => {
 const saveRecipe = async (req, res) => {
   const { email, recipe } = req.body
   recipe.spoonId = recipe.id
-  console.log(recipe._id)
   const user = await User.findOneAndUpdate(
     // eslint-disable-next-line quote-props
     { email, 'saved-recipes.spoonId': { '$ne': recipe.id } },
