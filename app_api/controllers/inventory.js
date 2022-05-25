@@ -5,14 +5,24 @@ const winston = require('../../logs/logger')
 
 const saveMenu = async (req, res) => {
   const { email, menu } = req.body
-  console.log(email, menu)
+  // const aux = _menu.recipes.map(item => {
+  //   return mongoose.Types.ObjectId(item)
+  // })
+  // console.log(aux)
+  // const menu = {
+  //   name: _menu.name,
+  //   date: _menu.date,
+  //   recipes: _menu.recipes
+  // }
+  // console.log(menu)
+  const menuCreate = await Menus.create({ menu })
+  console.log(menu.recipes)
   const user = await User.findOneAndUpdate(
     { email },
-    { $push: { menus: menu } },
+    { $push: { menus: menuCreate } },
     { new: true }
   )
   res.status(200).json(user)
-  Menus.create({ menu })
 }
 
 const getMenu = async (req, res) => {
@@ -34,6 +44,7 @@ const deleteMenu = async (req, res) => {
 const saveRecipe = async (req, res) => {
   const { email, recipe } = req.body
   recipe.spoonId = recipe.id
+  console.log(recipe._id)
   const user = await User.findOneAndUpdate(
     // eslint-disable-next-line quote-props
     { email, 'saved-recipes.spoonId': { '$ne': recipe.id } },
