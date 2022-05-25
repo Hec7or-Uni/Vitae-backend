@@ -19,7 +19,7 @@ const saveMenu = async (req, res) => {
 const getMenu = async (req, res) => {
   const { _id } = req.query
   winston.info({ label: 'getMenu - OK ', message: 'Get menu:' + _id })
-  const menu = await Menus.findById({ _id })
+  const menu = await Menus.findById({ _id }).populate('recipes')
   if (!menu) {
     res.status(404).json({ err: 'No menu' })
   }
@@ -35,7 +35,7 @@ const deleteMenu = async (req, res) => {
 
 const getAllMenus = async (req, res) => {
   winston.info({ label: 'getMenus - OK ', message: 'Get menus:' })
-  const menus = await Menus.find()
+  const menus = await Menus.find().populate('recipes')
   res.status(200).json(menus)
 }
 const saveRecipe = async (req, res) => {
