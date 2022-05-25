@@ -8,56 +8,62 @@ const { authenticate } = require('../../lib/auth')
 /**
 * @openapi
 *  tags:
-*    name: Inventory
-*    description: About recipes
-*
+*    name: Backend
+*    description: Backend API
 */
 
 /**
 * @openapi
-* /inventory
-*   get:
-*     tags:
-*      - Inventory
-*      - Backend
-*     description: Return a recipe
-*     parameters:
-*     - name: id
-*       description: id of the recipe
-*       required: true
-*       type: Number
-*     responses:
-*       200:
-*       description: Returns a json with the recipe
-*   post:
-*     tags:
-*      - Inventory
-*      - Backend
-*     description: Post a recipe
-*     responses:
-*       204:
-*       description: Recipe posted
-*   delete:
-*     tags:
-*      - Inventory
-*      - Backend
-*     description: Delete a recipe
-*     parameters:
-*     - name: id
-*       description: id of the recipe
-*       required: true
-*       type: Number
-*     responses:
-*       404:
-*       description: Error print
-*   put:
-*     tags:
-*      - Inventory
-*      - Backend
-*     description: Modify a recipe
-*     responses:
-*       204:
-*       description: Recipe modified
+*  tags:
+*    name: Frontend
+*    description: Frontend API
+*/
+
+/**
+* @openapi
+*  /inventory
+*    get:
+*      tags:
+*       - Inventory
+*       - Backend
+*      description: Return a recipe
+*      parameters:
+*        name: id
+*        description: id of the recipe
+*        required: true
+*        type: Number
+*      responses:
+*        200:
+*        description: Returns a json with the recipe
+*    post:
+*      tags:
+*       - Inventory
+*       - Backend
+*      description: Post a recipe
+*      responses:
+*        204:
+*        description: Recipe posted
+*    delete:
+*      tags:
+*       - Inventory
+*       - Backend
+*      description: Delete a recipe
+*      parameters:
+*        name: id
+*        description: id of the recipe
+*        required: true
+*        type: Number
+*      responses:
+*        404:
+*        description: Error print
+*    put:
+*      tags:
+*       - Inventory
+*       - Backend
+*      description: Modify a recipe
+*      responses:
+*        204:
+*        description: Recipe modified
 */
 
 router

@@ -22,14 +22,6 @@ const recoveryRoutes = require(routes + 'recovery')
 //   schemes: ['http']
 // }
 
-// const fs = require('fs')
-// const Captcha = require('@haileybot/captcha-generator')
-
-// const captcha = new Captcha()
-// console.log(captcha.value)
-// captcha.PNGStream.pipe(fs.createWriteStream(path.join(__dirname, `${captcha.value}.png`)))
-// captcha.JPEGStream.pipe(fs.createWriteStream(path.join(__dirname, `${captcha.value}.jpeg`)))
-
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
@@ -57,7 +49,8 @@ const swaggerDefinition = {
 
 const options = {
   swaggerDefinition: swaggerDefinition, // import swaggerDefinitions
-  apis: ['./app_api/routes/*.js', './public/openapi.yaml'] // path to the API docs
+  apis: ['./app_api/routes/*.js']
+  // apis: ['./app_api/routes/*.js', './public/openapi.yaml'] // path to the API docs
 }
 
 // initialize swagger-jsdoc
