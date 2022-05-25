@@ -43,6 +43,14 @@ const { authenticate } = require('../../lib/auth')
 *      responses:
 *        204:
 *        description: Recipe posted
+*    put:
+*      tags:
+*       - Inventory
+*       - Backend
+*      description: Modify a recipe
+*      responses:
+*        204:
+*        description: Recipe modified
 *    delete:
 *      tags:
 *       - Inventory
@@ -56,22 +64,13 @@ const { authenticate } = require('../../lib/auth')
 *      responses:
 *        404:
 *        description: Error print
-*    put:
-*      tags:
-*       - Inventory
-*       - Backend
-*      description: Modify a recipe
-*      responses:
-*        204:
-*        description: Recipe modified
 */
-
 router
   .use(authenticate)
   .route('/')
   .get(ctrlRecipes.recipeReadOne)
-  .put(ctrlRecipes.recipeModify)
   .post(ctrlRecipes.recipeCreate)
+  .put(ctrlRecipes.recipeModify)
   .delete(http.notImplemented)
 
 /**
@@ -91,8 +90,8 @@ router
   .route('/discovery', authenticate)
   .get(ctrlRecipes.recipeReadAll)
   .post(http.notImplemented)
-  .delete(http.notImplemented)
   .put(http.notImplemented)
+  .delete(http.notImplemented)
 
 /**
 * @openapi
@@ -111,8 +110,8 @@ router
   .route('/random-recipes', authenticate)
   .get(ctrlRecipes.getRandomRecipe)
   .post(http.notImplemented)
-  .delete(http.notImplemented)
   .put(http.notImplemented)
+  .delete(http.notImplemented)
 
 /**
   * @openapi
@@ -131,8 +130,8 @@ router
   .route('/search-recipes')
   .get(ctrlRecipes.searchRecipe)
   .post(http.notImplemented)
-  .delete(http.notImplemented)
   .put(http.notImplemented)
+  .delete(http.notImplemented)
 
 /**
   * @openapi
@@ -170,10 +169,10 @@ router.get('/menu/all', ctrlInventory.getAllMenus)
 router
   .use(authenticate)
   .route('/save-recipe', authenticate) // esto no funciona
-  .post(ctrlInventory.saveRecipe)
   .get(http.notImplemented)
-  .delete(http.notImplemented)
+  .post(ctrlInventory.saveRecipe)
   .put(http.notImplemented)
+  .delete(http.notImplemented)
   // .delete('/delete-recipe', ctrlInventory.deleteRecipe)
 
 module.exports = router
