@@ -105,17 +105,17 @@ const searchRecipe = async (req, res) => {
     })
 }
 
-const recipeReadAll = (req, res) => {
-  winston.info({ label: '/inventory', message: 'recipeReadAll:' + req.query.quantity })
-  if (req.params && req.query.quantity) {
-    Recipe.find().limit(req.query.quantity).exec((err, recipes) => {
-      if (err) {
-        winston.err({ label: '/inventory', message: err })
-        res.status(404).json(err)
-      }
-      res.status(200).json(recipes)
-    })
-  }
+const recipeReadAll = async (req, res) => {
+  const { quantity } = req.query
+  winston.info({ label: '/inventory', message: 'recipeReadAll:' + quantity })
+  await Recipe.find().limit(quantity).exec((err, recipes) => {
+    if (err) {
+      winston.err({ label: '/inventory', message: err })
+      res.status(404).json(err)
+      return
+    }
+    res.status(200).json(recipes)
+  })
 }
 
 const recipeModify = (req, res) => {
