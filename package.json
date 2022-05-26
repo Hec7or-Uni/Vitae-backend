@@ -7,7 +7,7 @@
     "npm": ">= 8.3.1"
   },
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
     "prepare": "husky install"
   },
   "dependencies": {
