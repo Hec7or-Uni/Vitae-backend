@@ -32,7 +32,7 @@ const recipeReadOne = async (req, res) => {
     return
   }
 
-  if (recipe.nutrition === null || recipe.nutrition === undefined || recipe.nutrition.length === 0) {
+  if (recipe.nutrition === null || recipe.nutrition === undefined || recipe.nutrition !== [] || recipe.nutrition.length !== 4) {
     const nutrients = await spoon.getNutrition(spoonId)
     const nutrition = [{
       name: 'calories',
