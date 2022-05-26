@@ -10,18 +10,6 @@ const inventoryRoutes = require(routes + 'inventory')
 const newsletterRouter = require(routes + 'newsletter')
 const recoveryRoutes = require(routes + 'recovery')
 
-// const swaggerDefinition = {
-//   info: {
-//     title: 'API de Vitop',
-//     version: '0.0.1',
-//     description: 'Descripción de las funciones de la API'
-//   },
-//   openapi: '3.0.0',
-//   host: 'localhost:4000',
-//   basePath: '/api/',
-//   schemes: ['http']
-// }
-
 const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
@@ -41,7 +29,7 @@ const swaggerDefinition = {
       description: 'Frontend'
     },
     {
-      url: 'https://vitop.xyz/api/',
+      url: 'https://vitop-app.herokuapp.com/api/',
       description: 'Backend'
     }
   ]
