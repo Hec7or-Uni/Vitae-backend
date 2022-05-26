@@ -1,3 +1,4 @@
+require('dotenv').config()
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 const jwt = require('jsonwebtoken')
@@ -20,7 +21,7 @@ const recover = async (req, res) => {
     email: email
   }
   const token = jwt.sign(payload, secret, { expiresIn: '15m' })
-  const link = `http://localhost:3000/recovery/reset-password/${user.id}/${token}`
+  const link = `${process.env.NEXTAUTH_URL}recovery/reset-password/${user.id}/${token}`
 
   await sendEmail(user.email, 'Recuperacion de contraseña', link)
     .then(emailSent => {
