@@ -22,7 +22,7 @@ const { authenticate } = require('../../lib/auth')
 *      - Backend
 *     responses:
 *       204:
-*       description: Suscribed
+*         description: Suscribed
 */
 router
   .route('/signup')
@@ -50,7 +50,7 @@ router
 *       type: String
 *     responses:
 *       204:
-*       description: Suscribed
+*         description: Suscribed
 */
 router
   .route('/signin')
@@ -101,7 +101,7 @@ router
 *     description: get a user
 *     responses:
 *       200:
-*       description: get user
+*         description: get user
 */
 router
   .use(authenticate)
@@ -128,7 +128,7 @@ router
 *     description: delete a user
 *     responses:
 *       200:
-*       description: user delete
+*         description: user delete
 */
 router
   .route('/delete-account', authenticate)
@@ -153,7 +153,7 @@ router
 *     description: link account to an existing user
 *     responses:
 *       200:
-*       description: user linked
+*         description: user linked
 */
 router
   .route('/connect-account')
@@ -181,7 +181,7 @@ router
 *     description: unlink account to an existing user
 *     responses:
 *       200:
-*       description: user unlinked
+*         description: user unlinked
 */
 router
   .route('/disconnect-account')
@@ -208,7 +208,7 @@ router
 *     description: Get comments in a recipe
 *     responses:
 *       200:
-*       description: Account disconnected
+*         description: Account disconnected
 *   post:
 *     tags:
 *      - Comment
@@ -226,7 +226,7 @@ router
 *     description: Create a comment in a recipe
 *     responses:
 *       200:
-*       description: Account disconnected
+*         description: Account disconnected
 *   put:
 *     tags:
 *      - Comment
@@ -252,7 +252,7 @@ router
 *     description: Delete a comment in a recipe
 *     responses:
 *       200:
-*       description: Account disconnected
+*         description: Account disconnected
 */
 router
   .use(authenticate)
