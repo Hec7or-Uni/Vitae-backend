@@ -24,14 +24,16 @@ const { authenticate } = require('../../lib/auth')
 * /inventory:
 *   get:
 *     tags:
-*       - Inventory
-*       - Backend
+*     - Inventory
+*     - Backend
 *     description: Return a recipe
 *     parameters:
 *       name: id
 *       description: id of the recipe
 *       required: true
 *       type: Number
+*     security:
+*       OAuth2: [admin]
 *     responses:
 *       200:
 *       description: Returns a json with the recipe
@@ -40,10 +42,19 @@ const { authenticate } = require('../../lib/auth')
 *       - Inventory
 *       - Backend
 *     description: Post a recipe
+*     parameters:
+*     - in: "body"
+*       name: recipe
+*       description: json of a recipe
+*       required: true
+*       type: Object
 *     responses:
 *       204:
 *       description: Recipe posted
+*     security:
+*       OAuth2: [admin]
 *   delete:
+*     consumes:
 *     tags:
 *      - Inventory
 *      - Backend
@@ -53,6 +64,8 @@ const { authenticate } = require('../../lib/auth')
 *       description: id of the recipe
 *       required: true
 *       type: Number
+*     security:
+*       OAuth2: [admin]
 *     responses:
 *       404:
 *       description: Error print
@@ -61,6 +74,14 @@ const { authenticate } = require('../../lib/auth')
 *      - Inventory
 *      - Backend
 *     description: Modify a recipe
+*     parameters:
+*     - in: "body"
+*       name: Recipe
+*       description: json of a recipe
+*       required: true
+*       type: Object
+*     security:
+*       OAuth2: [admin]
 *     responses:
 *       204:
 *       description: Recipe modified
@@ -77,10 +98,17 @@ router
 * @openapi
 * /inventory/discovery:
 *   get:
+*     parameters:
+*       name: quantity
+*       description: Number of recipes
+*       required: true
+*       type: Number
 *     tags:
 *      - Inventory
 *      - Backend
 *     description: Return  recipes for the page discover in database
+*     security:
+*       OAuth2: [user]
 *     responses:
 *       200:
 *       description: Returns a json with N recipes
@@ -100,6 +128,13 @@ router
 *     tags:
 *      - Inventory
 *      - Backend
+*     parameters:
+*       name: email
+*       description: get email to get the diet of the user
+*       required: true
+*       type: String
+*     security:
+*       OAuth2: [user]
 *     description: Return random recipes
 *     responses:
 *       200:
@@ -117,6 +152,8 @@ router
   * @openapi
   * /inventory/search-recipes:
   *   get:
+  *     security:
+  *       OAuth2: [user]
   *     tags:
   *      - Inventory
   *      - Backend
@@ -136,7 +173,14 @@ router
 /**
   * @openapi
   * /inventory/menu:
-  *   post:
+  *   get:
+  *     parameters:
+  *       name: id
+  *       description: id of the recipe
+  *       required: true
+  *       type: Number
+  *     security:
+  *       OAuth2: [user]
   *     tags:
   *      - Inventory
   *      - Backend
@@ -144,6 +188,38 @@ router
   *     responses:
   *       204:
   *       description: menu saved
+  *   post:
+  *     parameters:
+  *     - in: "body"
+  *       name: Menu
+  *       description: json of a Menu
+  *       required: true
+  *       type: Object
+  *     security:
+  *       OAuth2: [user]
+  *     tags:
+  *      - Inventory
+  *      - Backend
+  *     description: Save a menu
+  *     responses:
+  *       204:
+  *       description: menu saved
+  *   delete:
+  *     produces:
+  *     parameters:
+  *       name: id
+  *       description: id of the menu
+  *       required: true
+  *       type: Number
+  *     security:
+  *       OAuth2: [user]
+  *     tags:
+  *      - Inventory
+  *      - Backend
+  *     description: delete a menu
+  *     responses:
+  *       204:
+  *       description: menu deleted
   */
 router
   .use(authenticate)
@@ -158,6 +234,14 @@ router.get('/menu/all', ctrlInventory.getAllMenus)
 * @openapi
 * /inventory/save-recipe:
 *   post:
+*     parameters:
+*     - in: "body"
+*       name: recipe
+*       description: json of a recipe
+*       required: true
+*       type: Object
+*     security:
+*       OAuth2: [user]
 *     tags:
 *      - Inventory
 *      - Backend
@@ -168,7 +252,7 @@ router.get('/menu/all', ctrlInventory.getAllMenus)
 */
 router
   .use(authenticate)
-  .route('/save-recipe', authenticate) // esto no funciona
+  .route('/save-recipe') // esto no funciona
   .get(http.notImplemented)
   .post(ctrlInventory.saveRecipe)
   .put(http.notImplemented)

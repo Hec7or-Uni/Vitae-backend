@@ -11,15 +11,15 @@ const { authenticate } = require('../../lib/auth')
 * @openapi
 * /user/signup:
 *   post:
+*     parameters:
+*     - in: "body"
+*       name: user
+*       description: json of a user
+*       required: true
+*       type: Object
 *     tags:
 *      - User
 *      - Backend
-*     description: Signup a user
-*     parameters:
-*     - name: email
-*       description: email of the user
-*       required: true
-*       type: String
 *     responses:
 *       204:
 *       description: Suscribed
@@ -63,6 +63,12 @@ router
 * @openapi
 * /user/update-account:
 *   put:
+*     parameters:
+*     - in: "body"
+*       name: user
+*       description: json of a user
+*       required: true
+*       type: Object
 *     tags:
 *      - User
 *      - Backend
@@ -82,6 +88,13 @@ router
 * @openapi
 * /user:
 *   get:
+*     parameters:
+*       name: id
+*       description: Id of a user
+*       required: true
+*       type: Number
+*     security:
+*       OAuth2: [user]
 *     tags:
 *      - User
 *      - Backend
@@ -102,6 +115,13 @@ router
 * @openapi
 * /user/delete-account:
 *   delete:
+*     parameters:
+*       name: id
+*       description: Id of a user
+*       required: true
+*       type: Number
+*     security:
+*       OAuth2: [user]
 *     tags:
 *      - User
 *      - Backend
@@ -121,6 +141,12 @@ router
 * @openapi
 * /user/connect-account:
 *   put:
+*     parameters:
+*     - in: "body"
+*       name: Account
+*       description: Account of a user
+*       required: true
+*       type: Object
 *     tags:
 *      - User
 *      - Backend
@@ -140,6 +166,15 @@ router
 * @openapi
 * /user/disconnect-account:
 *   put:
+*     parameters:
+*       - name: email
+*         description: email of a user
+*         required: true
+*         type: String
+*       - name: provider
+*         description: provider of a user
+*         required: true
+*         type: String
 *     tags:
 *      - User
 *      - Backend
@@ -159,6 +194,14 @@ router
 * @openapi
 * /user/comments:
 *   get:
+*     parameters:
+
+*       - name: spoonId
+*         description: id of a recipe
+*         required: true
+*         type: String
+*     security:
+*       OAuth2: [user]
 *     tags:
 *      - Comment
 *      - Backend
@@ -170,6 +213,16 @@ router
 *     tags:
 *      - Comment
 *      - Backend
+*     security:
+*       OAuth2: [user]
+*     parameters:
+*     - in: "body"
+*       name: comment
+*       description: comment of a user
+*       required: true
+*       type: Object
+*      - Comment
+*      - Backend
 *     description: Create a comment in a recipe
 *     responses:
 *       200:
@@ -179,10 +232,20 @@ router
 *      - Comment
 *      - Backend
 *     description: Modify a comment in a recipe
+*     security:
+*       OAuth2: [user]
+*     parameters:
+*     - in: "body"
+*       name: comment
+*       description: modify a comment  of a user
+*       required: true
+*       type: Object
 *     responses:
 *       200:
 *       description: Account disconnected
 *   delete:
+*     security:
+*       OAuth2: [user]
 *     tags:
 *      - Comment
 *      - Backend
@@ -203,13 +266,21 @@ router
 * @openapi
 * /user/comments/comment-reply:
 *   post:
+*     security:
+*       OAuth2: [user]
+*     parameters:
+*     - in: "body"
+*       name: Account
+*       description: comment reply of a user in a comment
+*       required: true
+*       type: Object
 *     tags:
 *      - Comment
 *      - Backend
 *     description: Reply a comment in a recipe
 *     responses:
 *       200:
-*       description: Account disconnected
+*       description: Replied
 */
 router.post('/comment-reply', authenticate, ctrlComments.respondeComment)
 

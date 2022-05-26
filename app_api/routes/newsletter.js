@@ -11,6 +11,8 @@ const http = require('../../lib/http')
 *      - Newsletter
 *      - Backend
 *     description: Suscribe newsletter
+*     security:
+*       OAuth2: [user]
 *     parameters:
 *     - name: email
 *       description: email of the user
@@ -23,6 +25,8 @@ const http = require('../../lib/http')
 *     tags:
 *      - Newsletter
 *      - Backend
+*     security:
+*       OAuth2: [user]
 *     description: Unsuscribe newsletter
 *     parameters:
 *     - name: email
